@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>OldPhoneDeals</title>
+		<link rel="stylesheet"href="css/main.css">
+	</head>
+    <body>
+        <header>
+            <div id="navBarMenu">
+                <div id="navBarTitle">
+                    OldPhoneDeals
+                </div>
+                <nav>
+                    <ul id="navBarLinks">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Checkout</a></li>
+                        <% if (!loggedIn) { %>
+                            <li><a href="#">Sign In</a></li>
+                        <% } else { %>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Sign Out</a></li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+            <div id="navBarSearchItems">
+                <div id="navBarSearchStateItems">
+                    <% if (state == "search") { %>
+                    <!-- change the options to a list of brands from req -->
+                    <div id="searchBrandFilterContainer">
+                        <select id="searchBrandFilter">
+                            <option value="apple">Apple</option>
+                        </select>
+                    </div>
+                    
+                    <!-- change the max to highest price and add value = max -->
+                    <div id="searchPriceFilterContainer">
+                        $min
+                        <input id="searchPriceFilter" type="range" min="0" max="100">
+                        $value
+                    </div>
+                    <% } %>
+                </div>
+                <div id="navBarSearchBar">
+                    <input id="searchBar" type="search">
+                    <button>Search</button>
+                </div>
+            </div>
+        </header>
+        
+        <div id="mainContent">
+
+        </div>
+    </body>
+</html>
