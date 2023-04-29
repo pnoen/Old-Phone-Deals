@@ -11,6 +11,7 @@ div#searchPriceFilterContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     padding: 0 1em;
 }
 
@@ -51,4 +52,48 @@ ul#navBarLinks li a:hover {
 
 div#navBarSearchBar button {
     cursor: pointer;
+}
+
+div#mainContent {
+    margin: 2em;
+}
+
+h1.phoneListingHeading {
+    text-align: center;
+}
+
+div.phoneListingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+div.phoneCard, img.phoneCardImg {
+    width: 16em;
+}
+
+div.phoneCard {
+    background-color: #add7af;
+    padding: 1em;
+    margin: 1em;
+    border: 3px solid #9cc29e;
+    border-radius: 13px;
+}
+
+div.phoneCardImgContainer, 
+div.phoneCardDescContainer, 
+button.phoneCardAddBtn {
+    width: 100%;
+}
+
+div.phoneCardDescContainer {
+    text-align: center;
+}
+
+div.phoneCardDescContainer h3 {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    
 }

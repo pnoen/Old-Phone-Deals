@@ -3,6 +3,11 @@
 	<head>
         <title>OldPhoneDeals</title>
 		<link rel="stylesheet"href="css/main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script>
+            var state = "<%= state %>"; 
+        </script>
+        <script src="js/main.js"></script>
 	</head>
     <body>
         <header>
@@ -26,14 +31,14 @@
             <div id="navBarSearchItems">
                 <div id="navBarSearchStateItems">
                     <% if (state == "search") { %>
-                    <!-- change the options to a list of brands from req -->
+                    <!-- TODO change the options to a list of brands from req -->
                     <div id="searchBrandFilterContainer">
                         <select id="searchBrandFilter">
                             <option value="apple">Apple</option>
                         </select>
                     </div>
                     
-                    <!-- change the max to highest price and add value = max -->
+                    <!-- TODO change the max to highest price and add value = max -->
                     <div id="searchPriceFilterContainer">
                         $min
                         <input id="searchPriceFilter" type="range" min="0" max="100">
@@ -49,7 +54,16 @@
         </header>
         
         <div id="mainContent">
-
+            <% if (state == "home") { %>
+                <h1 class="phoneListingHeading">Sold out soon</h1>
+                <div id="soldSoonContainer" class="phoneListingContainer">
+                    
+                </div>
+                <h1 class="phoneListingHeading">Best sellers</h1>
+                <div id="bestSellerContainer" class="phoneListingContainer">
+                    
+                </div>
+            <% } %>
         </div>
     </body>
 </html>
