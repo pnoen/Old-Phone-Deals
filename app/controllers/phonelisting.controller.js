@@ -27,3 +27,17 @@ module.exports.getBestSeller = async function (req, res) {
 		}
 	});
 }
+
+module.exports.getPhone = async function (req, res) {
+	title = req.query.title;
+	seller = req.query.seller;
+
+	phonelisting.findPhone(title, seller, function (err, result) {
+		if (err) {
+			console.log("db error");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}

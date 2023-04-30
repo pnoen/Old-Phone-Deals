@@ -41,6 +41,14 @@ phonelistingSchema.statics.find5HighestAverageRating = function (callback) {
         .exec(callback)
 }
 
+phonelistingSchema.statics.findPhone = function (title, seller, callback) {
+    return this.find({
+        'title': title,
+        'seller': seller})
+        .limit(1)
+        .exec(callback)
+}
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

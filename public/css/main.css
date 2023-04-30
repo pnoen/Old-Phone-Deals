@@ -71,6 +71,7 @@ div.phoneListingContainer {
 
 div.phoneCard, img.phoneCardImg {
     width: 16em;
+    border-radius: 13px;
 }
 
 div.phoneCard {
@@ -78,12 +79,11 @@ div.phoneCard {
     padding: 1em;
     margin: 1em;
     border: 3px solid #9cc29e;
-    border-radius: 13px;
 }
 
 div.phoneCardImgContainer, 
 div.phoneCardDescContainer, 
-button.phoneCardAddBtn {
+button.phoneCardViewBtn {
     width: 100%;
 }
 
@@ -95,5 +95,44 @@ div.phoneCardDescContainer h3 {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
-    
+}
+
+div.itemListingContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+div.itemImgContainer {
+    width: 25em;
+    padding: 1em;
+}
+
+div.itemImgContainer img {
+    width: 100%;
+}
+
+div.itemInfoContainer {
+    width: 70%;
+}
+
+div.itemAllReviews {
+    margin: 1em auto;
+}
+
+span.itemReviewRating {
+    padding-left: 1em;
+    color: #ecc900;
+}
+
+span.itemReviewRatingEmpty {
+    color: #b9b9b9;
+}
+
+div.itemAddReviewContainer h4 {
+    margin: 2em auto 0.5em auto;
+}
+
+div.itemAddReviewRatingContainer {
+    margin: 0.5em auto;
 }

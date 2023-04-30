@@ -4,10 +4,6 @@
         <title>OldPhoneDeals</title>
 		<link rel="stylesheet"href="css/main.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script>
-            var state = "<%= state %>"; 
-        </script>
-        <script src="js/main.js"></script>
 	</head>
     <body>
         <header>
@@ -54,16 +50,57 @@
         </header>
         
         <div id="mainContent">
-            <% if (state == "home") { %>
-                <h1 class="phoneListingHeading">Sold out soon</h1>
-                <div id="soldSoonContainer" class="phoneListingContainer">
-                    
+            <!-- TODO remove temporary layout for item state -->
+            <% if (state == "item") { %>
+                <div class="itemListingContainer">
+                    <div class="itemImgContainer">
+                        <img src="img/Samsung.jpeg">
+                    </div>
+                    <div class="itemInfoContainer">
+                        <h2>Galaxy s III mini SM-G730V Verizon Cell Phone BLUE </h2>
+                        <h3>Price: $59.99</h3>
+                        <p>Brand: Samsung</p>
+                        <p>Seller: Robert Vasques</p>
+                        <p>Stock: 3</p>
+                        <p>Quantity in cart: <span class="itemCartQuantity">1</span></p>
+                        <button>Add to cart</button>
+                    </div>
                 </div>
-                <h1 class="phoneListingHeading">Best sellers</h1>
-                <div id="bestSellerContainer" class="phoneListingContainer">
+                <div class="itemReviewsContainer">
+                    <h3>Reviews</h3>
+                    <div class="itemAllReviews">
+                        <div class="itemReview">
+                            <p>
+                                Robert Vasques 
+                                <span class="itemReviewRating">★★★</span><span class="itemReviewRatingEmpty">★★</span>
+                            </p>
+                            <p class="itemReviewComment">This product never worked I charged it all day an still it never came on</p>
+                        </div>
+                        <button>Show more reviews</button>
+                    </div>
                     
+                    <div class="itemAddReviewContainer">
+                        <h4>Add review</h4>
+                        <textarea id="itemAddReviewComment" rows="5" cols="40"></textarea>
+                        <div class="itemAddReviewRatingContainer">
+                            <label for="itemAddReviewRating">Rating:</label>
+                            <select id="itemAddReviewRating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <button>Comment</button>
+                    </div>
                 </div>
             <% } %>
+            
         </div>
+        <script>
+            var state = "<%= state %>"; 
+        </script>
+        <script src="js/main.js"></script>
     </body>
 </html>
