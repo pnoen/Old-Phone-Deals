@@ -1,3 +1,22 @@
+async function updateMainState(state) {
+    // console.log(state);
+    let params = {
+        state: state
+    }
+    // let data = {
+    //     "data": params
+    // }
+    await $.post("/updateMainState", params);
+}
+
+function changeToHomeState() {
+    emptyContainer("#mainContent");
+    updateMainState("home");
+    createHomeContainers();
+    getSoldSoon();
+    getBestSeller();
+}
+
 async function getSoldSoon() {
     let data;
     await $.getJSON("/getSoldSoon", null, function (res) {
@@ -6,6 +25,9 @@ async function getSoldSoon() {
     
     data.forEach(function (phone) {
         $("#soldSoonContainer").append(createPhoneElement(phone));
+        $("#soldSoonContainer div:last button").click(function (e) {
+            changeToItemState(phone.title, phone.seller);
+        });
     });
 }
 
@@ -52,9 +74,12 @@ function emptyContainer(selector) {
     $(selector).empty();
 }
 
-function changeToItemState(phoneTitle, phoneSeller) {
+async function changeToItemState(phoneTitle, phoneSeller) {
     emptyContainer("#mainContent");
-    getPhone(phoneTitle, phoneSeller);
+    reviewCounter = 0;
+    updateMainState("item");
+    let phone = await getPhone(phoneTitle, phoneSeller);
+    createItemPage(phone);
 }
 
 async function getPhone(title, seller) {
@@ -67,9 +92,13 @@ async function getPhone(title, seller) {
     await $.getJSON("/getPhone", params, function (res) {
         data = res;
     });
-    console.log(data);
-    let element = await createItemListingElement(data[0])
-    $("#mainContent").append(element);
+    // console.log(data);
+    return data[0];
+}
+
+function createItemPage(phone) {
+    createItemListingElement(phone);
+    createItemReviewsElement(phone);
 }
 
 async function getUserById(id) {
@@ -81,15 +110,14 @@ async function getUserById(id) {
     await $.getJSON("/user/getUserById", params, function (res) {
         data = res;
     });
-    console.log(data);
-
+    // console.log(data);
     return data[0];
 }
 
 async function createItemListingElement(phone) {
     let user = await getUserById(phone.seller);
 
-    return `<div class="itemListingContainer">
+    let element = `<div class="itemListingContainer">
         <div class="itemImgContainer">
             <img src="${phone.image}">
         </div>
@@ -103,19 +131,76 @@ async function createItemListingElement(phone) {
             <button>Add to cart</button>
         </div>
     </div>
+    <div class="itemReviewsContainer">
+        <h3>Reviews (${phone.reviews.length})</h3>
+        <div class="itemAllReviews">
+            <button>Show more reviews</button>
+        </div>
+        <div class="itemAddReviewContainer">
+            <h4>Add review</h4>
+            <textarea id="itemAddReviewComment" rows="5" cols="40"></textarea>
+            <div class="itemAddReviewRatingContainer">
+                <label for="itemAddReviewRating">Rating:</label>
+                <select id="itemAddReviewRating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <button>Comment</button>
+        </div>
+    </div>
     `
+    $("#mainContent").append(element);
+    // $("#mainContent").append(createItemReviewsContainerElement());
+    $(".itemAllReviews button:last").click(async function (e) {
+        let updatedPhone = await getPhone(phone.title, phone.seller);
+        createItemReviewsElement(updatedPhone);
+    });
 }
 
-// TODO Add the reviews section of item state
-// function createItemReviewsElement(phone) {
+async function createItemReviewsElement(phone) {
+    // console.log(phone);
+    let reviews = phone.reviews;
+    for (let i = reviewCounter; i < reviews.length; i++) {
+        if (i == reviewCounter + 3) { // Displays reviews 3 at a time
+            reviewCounter = i;
+            break;
+        }
+        let review = reviews[i];
+        // console.log(review);
+        let user = await getUserById(review.reviewer);
+        let rating = "★".repeat(review.rating);
+        let ratingEmpty = "★".repeat(5 - review.rating);
+        let element = `<div class="itemReview">
+            <p>
+            ${user.firstname} ${user.lastname} 
+                <span class="itemReviewRating">${rating}</span><span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+            </p>
+            <p class="itemReviewComment">${review.comment}</p>
+        </div>
+        `
+        $(".itemAllReviews button").before(element);
+        if (i == reviews.length - 1) {
+            reviewCounter = reviews.length;
+        }
+    }
+}
 
-// }
+function updateHomeAnchor() {
+    $("#navBarLinks a:first").click(function (e) {
+        changeToHomeState();
+    })
+}
 
+var reviewCounter = 0;
+
+// initial page load
+updateHomeAnchor();
 if (state == "home") {
-    emptyContainer("#mainContent");
-    createHomeContainers();
-    getSoldSoon();
-    getBestSeller();
+    changeToHomeState();
 }
 else if (state == "item") {
     // TODO change item state 'changeToItemState()' need last title and seller

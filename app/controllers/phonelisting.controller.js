@@ -41,3 +41,9 @@ module.exports.getPhone = async function (req, res) {
 		}
 	});
 }
+
+module.exports.updateMainState = async function (req, res) {
+	state = req.body.state;
+	req.app.locals.state = state;
+	res.send("updated");
+}

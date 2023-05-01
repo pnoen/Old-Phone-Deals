@@ -6,5 +6,6 @@ router.get('/', controller.showHome);
 router.get('/getSoldSoon', controller.getSoldSoon);
 router.get('/getBestSeller', controller.getBestSeller);
 router.get('/getPhone', controller.getPhone);
+router.post('/updateMainState', controller.updateMainState);
 
 module.exports = router;
