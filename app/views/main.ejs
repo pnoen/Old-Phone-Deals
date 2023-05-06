@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-        <title>OldPhoneDeals</title>
+    <title>OldPhoneDeals</title>
 		<link rel="stylesheet"href="css/main.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	</head>
     <body>
         <header>
@@ -33,7 +33,7 @@
                             <option value="apple">Apple</option>
                         </select>
                     </div>
-                    
+
                     <!-- TODO change the max to highest price and add value = max -->
                     <div id="searchPriceFilterContainer">
                         $min
@@ -44,16 +44,17 @@
                 </div>
                 <div id="navBarSearchBar">
                     <input id="searchBar" type="search">
-                    <button>Search</button>
+                    <button id="navBarSearchBtn">Search</button>
                 </div>
             </div>
         </header>
-        
+
         <div id="mainContent">
         </div>
         <script>
-            var state = "<%= state %>"; 
+            var state = "<%= state %>";
         </script>
         <script src="js/main.js"></script>
+				<script src="js/search.js"></script>
     </body>
 </html>
