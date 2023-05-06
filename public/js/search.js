@@ -1,70 +1,60 @@
 document.getElementById("navBarSearchBtn").addEventListener("click", changeToSearchState);
 
-function changeToSearchState(event) {
-  var searchTerm = document.getElementById("navBarSearchBar")
-                           .querySelector("input").value;
+function changeToSearchState() {
+	var searchTerm = $("#navBarSearchBar input").val();
+	var brand;
+	var maxPrice;
 
-  emptyContainer("#mainContent");
-  updateMainState("search");
+	if (state == "search") {
+		brand = $("#searchBrandFilter :selected").val();
+		maxPrice = $("#searchPriceFilter").val();
+	}
 
-  // Creates the containers with the searched for product
-  createHomeContainers();
-  getSoldSoonSearch(searchTerm);
-  getBestSellerSearch(searchTerm);
+	emptyContainer("#mainContent");
+	updateMainState("search");
 
-  // Adds options to the filter
-  createFilterOptions();
+	// Creates the containers with the searched for product
+	$("#mainContent").append(createPhoneListingContainer("Searched Phones", "searchedContainer"));
+	searchPhones(searchTerm, brand, maxPrice);
+
+	// Adds options to the filter
+	createFilterOptions();
 }
 
+// TODO add the dropdodwn when search state and add an empty option
 async function createFilterOptions() {
-  let data;
-  await $.getJSON("/getBrandsList", null, function(res) {
-    data = res;
-  });
+	let data;
+	await $.getJSON("/getBrandsList", null, function (res) {
+		data = res;
+	});
 
-  var filterBox = document.getElementById("searchBrandFilter");
-  if (filterBox !== null) {
-    filterBox.options.length = 0;
-    for (var i = 0; i < data.length; i++) {
-      var newOption = document.createElement('option');
-      newOption.value = newOption.innerHTML = data[i];
-      filterBox.appendChild(newOption);
-    }
-  }
+	var filterBox = document.getElementById("searchBrandFilter");
+	if (filterBox !== null) {
+		filterBox.options.length = 0;
+		for (var i = 0; i < data.length; i++) {
+			var newOption = document.createElement("option");
+			newOption.value = newOption.innerHTML = data[i];
+			filterBox.appendChild(newOption);
+		}
+	}
 }
 
-async function getSoldSoonSearch(searchTerm) {
-  let data;
-  await $.getJSON("/getSoldSoon", null, function(res) {
-    data = res;
-  });
-
-  data.forEach(function(phone) {
-    if (phone.title.toUpperCase()
-                   .includes(searchTerm.toUpperCase())) {
-      $("#soldSoonContainer").append(createPhoneElement(phone));
-      $("#soldSoonContainer div:last button").click(function (e) {
-        changeToItemState(phone.title, phone.seller);
-      });
+async function searchPhones(searchTerm, brand, maxPrice) {
+	let data;
+	let params = {
+        searchTerm: searchTerm,
+		brand: brand,
+		maxPrice: maxPrice
     }
-  });
+
+	await $.getJSON("/getPhones", params, function (res) {
+		data = res;
+	});
+
+	data.forEach(function (phone) {
+		$("#searchedContainer").append(createPhoneElement(phone));
+		$("#searchedContainer div:last button").click(function (e) {
+			changeToItemState(phone.title, phone.seller);
+		});
+	});
 }
-
-async function getBestSellerSearch(searchTerm) {
-  let data;
-  await $.getJSON("/getBestSeller", null, function (res) {
-    data = res;
-  });
-
-  data.forEach(function (phone) {
-    if (phone.title.toUpperCase()
-                   .includes(searchTerm.toUpperCase())) {
-      $("#bestSellerContainer").append(createPhoneElement(phone));
-      $("#bestSellerContainer div:last button").click(function (e) {
-        changeToItemState(phone.title, phone.seller);
-      });
-    }
-  });
-}
-
-var test = "Test";

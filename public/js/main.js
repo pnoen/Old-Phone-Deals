@@ -1,11 +1,9 @@
-async function updateMainState(state) {
+async function updateMainState(newState) {
+    state = newState;
     // console.log(state);
     let params = {
-        state: state
+        state: newState
     }
-    // let data = {
-    //     "data": params
-    // }
     await $.post("/updateMainState", params);
 }
 

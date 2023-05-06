@@ -49,6 +49,26 @@ phonelistingSchema.statics.findPhone = function (title, seller, callback) {
         .exec(callback)
 }
 
+phonelistingSchema.statics.getPhones = function (searchTerm, brand, maxPrice, callback) {
+    // https://stackoverflow.com/a/30851002
+    filteredSearch = searchTerm.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+
+    params = {
+        'title': { $regex: filteredSearch },
+        'disabled': { $exists: false }
+    }
+
+    if (brand) {
+        params['brand'] = brand;
+    }
+    if (maxPrice) {
+        params['price'] = { $lte: maxPrice };
+    }
+
+    return this.find(params)
+        .exec(callback)
+}
+
 phonelistingSchema.statics.getListOfBrands = function (callback) {
   return this.distinct('brand').exec(callback);
 }

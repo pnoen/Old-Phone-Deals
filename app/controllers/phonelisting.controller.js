@@ -42,6 +42,22 @@ module.exports.getPhone = async function (req, res) {
 	});
 }
 
+module.exports.getPhones = async function (req, res) {
+	searchTerm = req.query.searchTerm;
+	console.log(searchTerm);
+	brand = req.query.brand;
+	maxPrice = req.query.maxPrice;
+
+	phonelisting.getPhones(searchTerm, brand, maxPrice, function (err, result) {
+		if (err) {
+			console.log("db error");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}
+
 module.exports.getBrandsList = async function (req, res) {
   phonelisting.getListOfBrands(function (err, result) {
     if (err) {
