@@ -65,7 +65,7 @@ function createPhoneElement(phone) {
             <h3>${phone.title}</h3>
             <h4>Stock: ${phone.stock}</h4>
             <h4>$${phone.price}</h4>
-            <button class="phoneCardViewBtn">View</button>
+            <button class="phoneCardViewBtn">VIEW</button>
         </div>
     </div>`
 }
@@ -126,7 +126,7 @@ async function createItemListingElement(phone) {
             <p>Stock: ${phone.stock}</p>
             <div class="quantityCartSection">
               <p>Quantity in cart: <span class="itemCartQuantity">0</span></p>
-              <button>Add to cart</button>
+              <button>ADD TO CART</button>
             </div>
         </div>
         <div class="itemImgContainer">
@@ -140,7 +140,7 @@ async function createItemListingElement(phone) {
         </div>
         <div class="itemAddReviewContainer">
             <h4>Add review</h4>
-            <textarea id="itemAddReviewComment" rows="5" cols="40"></textarea>
+            <textarea id="itemAddReviewComment" rows="5" cols="100"></textarea>
             <div class="itemAddReviewRatingContainer">
                 <label for="itemAddReviewRating">Rating:</label>
                 <select id="itemAddReviewRating">
@@ -150,8 +150,8 @@ async function createItemListingElement(phone) {
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
+                <button>Comment</button>
             </div>
-            <button>Comment</button>
         </div>
     </div>
     `
@@ -179,7 +179,7 @@ async function createItemReviewsElement(phone) {
         let element = `<div class="itemReview">
             <div class="itemReviewTop">
               <p>
-                ${user.firstname} ${user.lastname}                
+                ${user.firstname} ${user.lastname}
               </p>
               <div class="ratingStars">
                 <span class="itemReviewRating">${rating}</span>
