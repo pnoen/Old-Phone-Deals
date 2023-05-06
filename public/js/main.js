@@ -22,7 +22,7 @@ async function getSoldSoon() {
     await $.getJSON("/getSoldSoon", null, function (res) {
         data = res;
     });
-    
+
     data.forEach(function (phone) {
         $("#soldSoonContainer").append(createPhoneElement(phone));
         $("#soldSoonContainer div:last button").click(function (e) {
@@ -36,7 +36,7 @@ async function getBestSeller() {
     await $.getJSON("/getBestSeller", null, function (res) {
         data = res;
     });
-    
+
     data.forEach(function (phone) {
         $("#bestSellerContainer").append(createPhoneElement(phone));
         $("#bestSellerContainer div:last button").click(function (e) {
@@ -117,18 +117,20 @@ async function getUserById(id) {
 async function createItemListingElement(phone) {
     let user = await getUserById(phone.seller);
 
-    let element = `<div class="itemListingContainer">
-        <div class="itemImgContainer">
-            <img src="${phone.image}">
-        </div>
+    let element = `<h2>${phone.title}</h2>
+        <div class="itemListingContainer">
         <div class="itemInfoContainer">
-            <h2>${phone.title}</h2>
             <h3>Price: $${phone.price}</h3>
             <p>Brand: ${phone.brand}</p>
             <p>Seller: ${user.firstname} ${user.lastname}</p>
             <p>Stock: ${phone.stock}</p>
-            <p>Quantity in cart: <span class="itemCartQuantity">0</span></p>
-            <button>Add to cart</button>
+            <div class="quantityCartSection">
+              <p>Quantity in cart: <span class="itemCartQuantity">0</span></p>
+              <button>Add to cart</button>
+            </div>
+        </div>
+        <div class="itemImgContainer">
+            <img src="${phone.image}">
         </div>
     </div>
     <div class="itemReviewsContainer">
@@ -175,10 +177,15 @@ async function createItemReviewsElement(phone) {
         let rating = "★".repeat(review.rating);
         let ratingEmpty = "★".repeat(5 - review.rating);
         let element = `<div class="itemReview">
-            <p>
-            ${user.firstname} ${user.lastname} 
-                <span class="itemReviewRating">${rating}</span><span class="itemReviewRatingEmpty">${ratingEmpty}</span>
-            </p>
+            <div class="itemReviewTop">
+              <p>
+                ${user.firstname} ${user.lastname}                
+              </p>
+              <div class="ratingStars">
+                <span class="itemReviewRating">${rating}</span>
+                <span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+              </div>
+            </div>
             <p class="itemReviewComment">${review.comment}</p>
         </div>
         `
@@ -206,4 +213,3 @@ else if (state == "item") {
     // TODO change item state 'changeToItemState()' need last title and seller
     getPhone();
 }
-
