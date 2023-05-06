@@ -1,22 +1,28 @@
 html, body {
     margin: 0;
     padding: 0;
+
+    font-family: "Trebuchet MS";
+
 }
 
-header, 
-div#navBarMenu, 
-div#navBarSearchItems, 
-div#navBarSearchStateItems, 
+header,
+div#navBarMenu,
+div#navBarSearchItems,
+div#navBarSearchStateItems,
 div#searchPriceFilterContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     padding: 0 1em;
+
+    font-family: "Trebuchet MS";
 }
 
 header {
-    background-color: #5d8a60;
+    /*background-color: #5d8a60;*/
+    background-color: cornflowerblue;
     color: #fff;
     font-size: 18px;
 }
@@ -46,8 +52,8 @@ ul#navBarLinks li a {
 }
 
 ul#navBarLinks li a:hover {
-    background-color: #426345;
-
+    /*background-color: #426345;*/
+    background-color: #4a80e0;
 }
 
 div#navBarSearchBar button {
@@ -70,21 +76,38 @@ div.phoneListingContainer {
 }
 
 div.phoneCard, img.phoneCardImg {
-    width: 16em;
+    width: 14em;
     border-radius: 13px;
 }
 
 div.phoneCard {
-    background-color: #add7af;
+    background-color: white;
+    box-shadow: 0px 10px 25px 0px rgba(97, 97, 105, 0.3);
     padding: 1em;
     margin: 1em;
-    border: 3px solid #9cc29e;
+    /*border: 3px solid #9cc29e;*/
 }
 
-div.phoneCardImgContainer, 
-div.phoneCardDescContainer, 
-button.phoneCardViewBtn {
+div.phoneCard:hover {
+  transform: scale(1.02);
+  transition-duration: 0.5s;
+}
+
+div.phoneCardImgContainer,
+div.phoneCardDescContainer {
     width: 100%;
+}
+
+button.phoneCardViewBtn {
+  width: 90%;
+  border-radius: 10px;
+  border: none;
+  background-color: lightblue;
+  padding: 5px;
+}
+
+button.phoneCardViewBtn:hover {
+  cursor: pointer;
 }
 
 div.phoneCardDescContainer {
@@ -92,9 +115,13 @@ div.phoneCardDescContainer {
 }
 
 div.phoneCardDescContainer h3 {
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
+}
+
+div.phoneCardDescContainer h4 {
+    font-weight: 300;
 }
 
 div.itemListingContainer {
