@@ -16,7 +16,7 @@ var phonelistingSchema = new mongoose.Schema({
         }
     ],
     disabled: String
-}) 
+})
 
 phonelistingSchema.statics.find5LeastQuantityAvaliable = function (callback) {
     return this.find({
@@ -47,6 +47,10 @@ phonelistingSchema.statics.findPhone = function (title, seller, callback) {
         'seller': seller})
         .limit(1)
         .exec(callback)
+}
+
+phonelistingSchema.statics.getListOfBrands = function (callback) {
+  return this.distinct('brand').exec(callback);
 }
 
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');

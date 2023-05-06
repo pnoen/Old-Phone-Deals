@@ -42,6 +42,16 @@ module.exports.getPhone = async function (req, res) {
 	});
 }
 
+module.exports.getBrandsList = async function (req, res) {
+  phonelisting.getListOfBrands(function (err, result) {
+    if (err) {
+    	console.log("Could not get the list of brands.");
+    } else {
+    	res.json(result);
+    }
+  });
+}
+
 module.exports.updateMainState = async function (req, res) {
 	state = req.body.state;
 	req.app.locals.state = state;
