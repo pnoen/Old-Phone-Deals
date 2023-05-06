@@ -2,8 +2,13 @@ html, body {
     margin: 0;
     padding: 0;
 
-    font-family: "Trebuchet MS";
+    font-family: "Helvetica";
+    background-image: linear-gradient(to bottom, white, ghostwhite, aliceblue);
+}
 
+button {
+  font-family: "Helvetica";
+  font-size: 90%;
 }
 
 header,
@@ -17,7 +22,7 @@ div#searchPriceFilterContainer {
     flex-wrap: wrap;
     padding: 0 1em;
 
-    font-family: "Trebuchet MS";
+    font-family: "Helvetica";
 }
 
 header {
@@ -37,6 +42,7 @@ ul#navBarLinks {
     list-style: none;
     margin: 0;
     padding: 0;
+    font-size: 15px;
 }
 
 ul#navBarLinks li {
@@ -54,6 +60,7 @@ ul#navBarLinks li a {
 ul#navBarLinks li a:hover {
     /*background-color: #426345;*/
     background-color: #4a80e0;
+    cursor: pointer;
 }
 
 div#navBarSearchBar button {
@@ -64,8 +71,16 @@ div#mainContent {
     margin: 2em;
 }
 
+div#mainContent h2 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 200;
+}
+
 h1.phoneListingHeading {
     text-align: center;
+    font-size: 30px;
+    font-weight: 200;
 }
 
 div.phoneListingContainer {
@@ -77,7 +92,7 @@ div.phoneListingContainer {
 
 div.phoneCard, img.phoneCardImg {
     width: 14em;
-    border-radius: 13px;
+    /*border-radius: 13px;*/
 }
 
 div.phoneCard {
@@ -115,55 +130,116 @@ div.phoneCardDescContainer {
 }
 
 div.phoneCardDescContainer h3 {
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 div.phoneCardDescContainer h4 {
-    font-weight: 300;
+    font-weight: 200;
 }
 
 div.itemListingContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+
+    width: 80%;
+    box-shadow: 0px 10px 25px 0px rgba(97, 97, 105, 0.3);
+    padding: 2%;
+    margin: 0 auto;
+    background-color: white;
 }
 
 div.itemImgContainer {
-    width: 25em;
-    padding: 1em;
+    width: 25%;
+    padding: 0em 2em 0em 2em;
 }
 
 div.itemImgContainer img {
+    align-self: right;
     width: 100%;
+    border-radius: 20px;
 }
 
 div.itemInfoContainer {
-    width: 70%;
+    width: 60%;
 }
 
 span.itemCartQuantity {
+    /*
     background-color: #add7af;
     border: 2px solid #9cc29e;
-    padding: 0.2em;
+    */
+    background-color: lightblue;
+    padding: 6px;
+    border-radius: 10px;
+}
+
+div.quantityCartSection {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+div.quantityCartSection p {
+  margin-right: 10%;
+}
+
+div.quantityCartSection button {
+  border-radius: 10px;
+  border: none;
+  background-color: lightblue;
+  /*height: 70%;*/
+  padding: 7px;
+
+  align-self: center;
 }
 
 div.itemAllReviews {
     margin: 1em auto;
 }
 
+div.itemReview {
+  box-shadow: 0px 5px 5px 0px rgba(97, 97, 105, 0.3);
+  border-top: none;
+  background-color: white;
+  padding: 1%;
+}
+
+div.itemReviewTop {
+  display: flex;
+  align-items: center;
+}
+
+div.itemReviewTop p {
+  font-weight: 600;
+}
+
+div.ratingStars {
+  margin-left: auto;
+}
+
 span.itemReviewRating {
-    padding-left: 1em;
     color: #ecc900;
 }
 
 span.itemReviewRatingEmpty {
     color: #b9b9b9;
+    margin-left: -5px;
 }
 
 p.itemReviewComment {
-    padding-left: 1em;
+  font-weight: 400;
+  padding-left: 1em;
+  font-size: 80%;
+}
+
+div.itemAllReviews button {
+  margin-top: 1.5em;
 }
 
 div.itemAddReviewContainer h4 {
