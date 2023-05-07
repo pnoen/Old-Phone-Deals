@@ -5,7 +5,7 @@ module.exports.showHome = function (req, res) {
 }
 
 module.exports.getUserById = async function (req, res) {
-    id = req.query.id;
+    let id = req.query.id;
 
 	userlist.getUserById(id, function (err, result) {
 		if (err) {

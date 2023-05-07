@@ -77,7 +77,9 @@ async function changeToItemState(phoneTitle, phoneSeller) {
     reviewCounter = 0;
     updateMainState("item");
     let phone = await getPhone(phoneTitle, phoneSeller);
-    createItemPage(phone);
+    // createItemPage(phone);
+    await createItemListingElement(phone);
+    createItemReviewsElement(phone);
 }
 
 async function getPhone(title, seller) {
@@ -94,10 +96,10 @@ async function getPhone(title, seller) {
     return data[0];
 }
 
-function createItemPage(phone) {
-    createItemListingElement(phone);
-    createItemReviewsElement(phone);
-}
+// function createItemPage(phone) {
+//     createItemListingElement(phone);
+//     // createItemReviewsElement(phone);
+// }
 
 async function getUserById(id) {
     let data;
@@ -112,8 +114,23 @@ async function getUserById(id) {
     return data[0];
 }
 
+async function getCartItemQuantity(title, seller) {
+    let data;
+    let params = {
+        title: title,
+        seller: seller
+    }
+
+    await $.getJSON("/getCartItemQuantity", params, function (res) {
+        data = res;
+    });
+    // console.log(data);
+    return data;
+}
+
 async function createItemListingElement(phone) {
     let user = await getUserById(phone.seller);
+    let cartItem = await getCartItemQuantity(phone.title, phone.seller);
 
     let element = `<h2>${phone.title}</h2>
         <div class="itemListingContainer">
@@ -123,7 +140,7 @@ async function createItemListingElement(phone) {
             <p>Seller: ${user.firstname} ${user.lastname}</p>
             <p>Stock: ${phone.stock}</p>
             <div class="quantityCartSection">
-              <p>Quantity in cart: <span class="itemCartQuantity">0</span></p>
+              <p>Quantity in cart: <span class="itemCartQuantity">${cartItem.quantity}</span></p>
               <button>ADD TO CART</button>
             </div>
         </div>
@@ -154,11 +171,47 @@ async function createItemListingElement(phone) {
     </div>
     `
     $("#mainContent").append(element);
+    $(".quantityCartSection button").click(function (e) {
+        let remainingStock = phone.stock - cartItem.quantity;
+        if (remainingStock > 0) {
+            let quantity = prompt("Please enter the quantity", "1");
+            if (
+                quantity && // if exists
+                !isNaN(quantity) && // if is a number
+                quantity >= 1 &&
+                quantity <= remainingStock &&
+                quantity.indexOf(".") == -1 // if not a decimal
+            ) {
+                // quantity = parseInt(quantity);
+                addToCart(phone, quantity);
+                alert("The item has been added to the cart");
+                changeToItemState(phone.title, phone.seller);
+            }
+            else {
+                alert("You have entered an invalid quantity");
+            }
+        }
+        else {
+            alert("You cannot add more of this item");
+        }
+    })
     // $("#mainContent").append(createItemReviewsContainerElement());
     $(".itemAllReviews button:last").click(async function (e) {
         let updatedPhone = await getPhone(phone.title, phone.seller);
         createItemReviewsElement(updatedPhone);
     });
+
+    // createItemReviewsElement(phone);
+}
+
+async function addToCart(phone, quantity) {
+    let params = {
+        phone: phone,
+        quantity: quantity
+    }
+
+    // console.log(params);
+    await $.post("/addToCart", params);
 }
 
 async function createItemReviewsElement(phone) {

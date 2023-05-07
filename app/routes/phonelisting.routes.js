@@ -8,6 +8,8 @@ router.get('/getBestSeller', controller.getBestSeller);
 router.get('/getPhone', controller.getPhone);
 router.get('/getPhones', controller.getPhones);
 router.get('/getBrandsList', controller.getBrandsList);
+router.post('/addToCart', controller.addToCart);
+router.get('/getCartItemQuantity', controller.getCartItemQuantity);
 router.post('/updateMainState', controller.updateMainState);
 
 module.exports = router;
