@@ -6,6 +6,11 @@ module.exports.showHome = async function (req, res) {
 	res.render("main.ejs", { loggedIn: false, state: state });
 }
 
+module.exports.showCheckout = async function (req, res) {
+	let state = req.app.locals.state;
+	res.render("checkout.ejs", {loggedIn: false, state: state});
+}
+
 module.exports.getSoldSoon = async function (req, res) {
 	phonelisting.find5LeastQuantityAvaliable(function (err, result) {
 		if (err) {

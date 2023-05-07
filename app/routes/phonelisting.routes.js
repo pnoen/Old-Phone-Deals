@@ -9,5 +9,6 @@ router.get('/getPhone', controller.getPhone);
 router.get('/getPhones', controller.getPhones);
 router.get('/getBrandsList', controller.getBrandsList);
 router.post('/updateMainState', controller.updateMainState);
+router.get('/checkout', controller.showCheckout);
 
 module.exports = router;

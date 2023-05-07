@@ -80,6 +80,12 @@ async function changeToItemState(phoneTitle, phoneSeller) {
     createItemPage(phone);
 }
 
+async function changeToCheckoutState() {
+    emptyContainer("#mainContent")
+    updateMainState("checkout");
+    createCheckoutPage();
+}
+
 async function getPhone(title, seller) {
     let data;
     let params = {
@@ -97,6 +103,23 @@ async function getPhone(title, seller) {
 function createItemPage(phone) {
     createItemListingElement(phone);
     createItemReviewsElement(phone);
+}
+
+function createCheckoutPage() {
+    let element = `<div class="top-bar">
+            <button>back</button>
+        </div>
+        <div class="product-box">
+            <label>Phone Name</label>
+            <label>$</label>
+            <input type="number" value="1"/>
+            <button>Remove</button>
+        </div>
+        <div class="footer">
+            <label>Total price: $</label>
+            <input type="button">Confirm</input>
+        </div>
+`
 }
 
 async function getUserById(id) {
