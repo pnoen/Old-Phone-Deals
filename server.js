@@ -7,6 +7,7 @@ var phonelistingRoutes = require("./app/routes/phonelisting.routes");
 
 var app = express();
 app.locals.state = "home";
+app.locals.cart = [];
 
 app.set('views', path.join(__dirname,'/app/views'));
 

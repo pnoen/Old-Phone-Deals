@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Checkout</title>
-    </head>
+	<head>
+    <title>OldPhoneDeals</title>
+		<link rel="stylesheet"href="css/checkout.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	</head>
     <body>
-        <div class="top-bar">
-            <button>back</button>
+        <header>
+            <div id="navBarMenu">
+                <div id="navBarTitle">
+                    OldPhoneDeals
+                </div>
+                <nav>
+                    <ul id="navBarLinks">
+                        <li><a href="/">Home</a></li>
+                        <li><a>Checkout</a></li>
+                        <% if (!loggedIn) { %>
+                            <li><a href="#">Sign In</a></li>
+                        <% } else { %>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Sign Out</a></li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+            <div id="navBarSearchItems">
+                <div id="navBarSearchStateItems">
+                    <% if (state == "search") { %>
+                    <div id="searchBrandFilterContainer">
+                        <select id="searchBrandFilter">
+                        </select>
+                    </div>
+
+                    <!-- TODO change the max to highest price and add value = max -->
+                    <div id="searchPriceFilterContainer">
+                        $min
+                        <input id="searchPriceFilter" type="range" min="0" max="100">
+                        $value
+                    </div>
+                    <% } %>
+                </div>
+                <div id="navBarSearchBar">
+                    <input id="searchBar" type="search">
+                    <button id="navBarSearchBtn">Search</button>
+                </div>
+            </div>
+        </header>
+        <div id="checkoutContent">
+            <h2> Checkout </h2>
+            <div class="product-box">
+                <label>Phone Name</label>
+                <label>$</label>
+                <input type="number" value="1"/>
+                <button>Remove</button>
+            </div>
+            <div class="product-box">
+                <label>Phone Name</label>
+                <label>$</label>
+                <input type="number" value="1"/>
+                <button>Remove</button>
+            </div>
+            <div class="footer">
+                <label>Total price: $</label>
+                <button>Confirm</button>
+                <button>Back</button>
+            </div>
         </div>
-        <div class="product-box">
-            <label>Phone Name</label>
-            <label>$</label>
-            <input type="number" value="1"/>
-            <button>Remove</button>
         </div>
-        <div class="footer">
-            <label>Total price: $</label>
-            <input type="button">Confirm</input>
-        </div>
+        <script>
+            var state = "<%= state %>";
+        </script>
+        <script src="js/main.js"></script>
+        <script src="js/search.js"></script>
     </body>
 </html>

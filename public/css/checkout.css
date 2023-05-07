@@ -1,0 +1,114 @@
+html, body {
+    margin: 0;
+    padding: 0;
+
+    font-family: "Helvetica";
+    background-image: linear-gradient(to bottom, white, ghostwhite, aliceblue);
+}
+
+button {
+  font-family: "Helvetica";
+  font-size: 75%;
+  cursor: pointer;
+  font-weight: 700;
+
+  border-radius: 2px;
+  border: none;
+  background-color: lightblue;
+  padding: 10px;
+}
+
+header,
+div#navBarMenu,
+div#navBarSearchItems,
+div#navBarSearchStateItems,
+div#searchPriceFilterContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0 1em;
+
+    font-family: "Helvetica";
+}
+
+header {
+    /*background-color: #5d8a60;*/
+    background-color: cornflowerblue;
+    color: #fff;
+    font-size: 18px;
+}
+
+div#navBarTitle {
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 2em;
+}
+
+ul#navBarLinks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+}
+
+ul#navBarLinks li {
+    display: inline-block;
+}
+
+ul#navBarLinks li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 1em;
+}
+
+ul#navBarLinks li a:hover {
+    /*background-color: #426345;*/
+    background-color: #4a80e0;
+    cursor: pointer;
+}
+
+div#checkoutContent {
+    margin: 2em;
+}
+
+div#checkoutContent h2 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 200;
+}
+
+div.product-box {
+    border: 2px solid #4a80e0;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+span.itemCartQuantity {
+    /*
+    background-color: #add7af;
+    border: 2px solid #9cc29e;
+    */
+    background-color: lightblue;
+    padding: 6px;
+    border-radius: 2px;
+}
+
+div.quantityCartSection {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+div.quantityCartSection p {
+  margin-right: 10%;
+}
+
+div.quantityCartSection button {
+  align-self: center;
+}
