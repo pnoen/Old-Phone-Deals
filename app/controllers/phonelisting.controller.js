@@ -8,8 +8,7 @@ module.exports.showHome = function (req, res) {
 }
 
 module.exports.showCheckout = async function (req, res) {
-	let state = req.app.locals.state;
-	res.render("checkout.ejs", {loggedIn: false, state: state});
+	res.render("checkout.ejs", {loggedIn: false, cart: req.app.locals.cart});
 }
 
 module.exports.getSoldSoon = function (req, res) {
