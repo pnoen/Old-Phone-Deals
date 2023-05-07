@@ -1,8 +1,9 @@
-async function updateMainState(newState) {
+async function updateMainState(newState, data) {
     state = newState;
     // console.log(state);
     let params = {
-        state: newState
+        state: newState,
+        data: data
     }
     await $.post("/updateMainState", params);
 }
@@ -75,9 +76,13 @@ function emptyContainer(selector) {
 async function changeToItemState(phoneTitle, phoneSeller) {
     emptyContainer("#mainContent");
     reviewCounter = 0;
-    updateMainState("item");
     let phone = await getPhone(phoneTitle, phoneSeller);
-    // createItemPage(phone);
+    let viewedItem = {
+        title: phone.title,
+        seller: phone.seller
+    }
+
+    updateMainState("item", viewedItem);
     await createItemListingElement(phone);
     createItemReviewsElement(phone);
 }
@@ -95,11 +100,6 @@ async function getPhone(title, seller) {
     // console.log(data);
     return data[0];
 }
-
-// function createItemPage(phone) {
-//     createItemListingElement(phone);
-//     // createItemReviewsElement(phone);
-// }
 
 async function getUserById(id) {
     let data;
@@ -171,10 +171,11 @@ async function createItemListingElement(phone) {
     </div>
     `
     $("#mainContent").append(element);
+    // TODO need to check if its logged in before letting them add to cart
     $(".quantityCartSection button").click(function (e) {
         let remainingStock = phone.stock - cartItem.quantity;
         if (remainingStock > 0) {
-            let quantity = prompt("Please enter the quantity", "1");
+            let quantity = prompt("Please enter the quantity");
             if (
                 quantity && // if exists
                 !isNaN(quantity) && // if is a number
@@ -200,8 +201,6 @@ async function createItemListingElement(phone) {
         let updatedPhone = await getPhone(phone.title, phone.seller);
         createItemReviewsElement(updatedPhone);
     });
-
-    // createItemReviewsElement(phone);
 }
 
 async function addToCart(phone, quantity) {
@@ -261,6 +260,6 @@ if (state == "home") {
     changeToHomeState();
 }
 else if (state == "item") {
-    // TODO change item state 'changeToItemState()' need last title and seller
-    getPhone();
+    changeToItemState(mainPageData.title, mainPageData.seller);
 }
+// TODO add the initial load for search state

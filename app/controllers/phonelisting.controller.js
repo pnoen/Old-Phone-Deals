@@ -3,7 +3,8 @@ var phonelisting = require("../models/phonelisting");
 module.exports.showHome = function (req, res) {
 	// TODO loggedIn is a placeholders, maybe move the app.locals
 	let state = req.app.locals.state;
-	res.render("main.ejs", { loggedIn: false, state: state });
+	let mainPageData = req.app.locals.mainPageData;
+	res.render("main.ejs", { loggedIn: false, state: state, mainPageData: mainPageData });
 }
 
 module.exports.getSoldSoon = function (req, res) {
@@ -113,6 +114,13 @@ module.exports.getCartItemQuantity = function (req, res) {
 
 module.exports.updateMainState = function (req, res) {
 	let state = req.body.state;
+	let mainPageData = req.body.data;
+	if (state == "home") {
+		mainPageData = {};
+	}
+
 	req.app.locals.state = state;
+	req.app.locals.mainPageData = mainPageData;
+
 	res.send("updated");
 }
