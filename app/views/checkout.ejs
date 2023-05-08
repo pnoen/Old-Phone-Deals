@@ -56,11 +56,13 @@
                     <button>Remove</button>
                 </div>    
             <% } %>
+            <% if(cart.length > 0) {%>
             <div class="footer">
                 <label>Total price: $</label>
                 <button>Confirm</button>
                 <button>Back</button>
             </div>
+            <% } %>
         </div>
         </div>
         <script>
