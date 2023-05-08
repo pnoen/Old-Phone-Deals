@@ -116,6 +116,16 @@ module.exports.getCartItemQuantity = function (req, res) {
 	res.json(data);
 }
 
+module.exports.getHighestPrice = function (req, res) {
+	phonelisting.getHighestPrice(function (err, result) {
+		if (err) {
+			console.log("db error");
+		} else {
+			res.json(result);
+		}
+	  });
+}
+
 module.exports.updateMainState = function (req, res) {
 	let state = req.body.state;
 	let mainPageData = req.body.data;

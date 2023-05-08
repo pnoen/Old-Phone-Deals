@@ -22,7 +22,8 @@ header,
 div#navBarMenu,
 div#navBarSearchItems,
 div#navBarSearchStateItems,
-div#searchPriceFilterContainer {
+div#searchPriceFilterContainer,
+div#searchBrandFilterContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
