@@ -5,6 +5,7 @@ var router = express.Router();
 router.get('/', controller.showHome);
 
 router.post('/checkLoginCredentials', controller.checkLoginCredentials);
+router.post('/updateLoggedInState', controller.updateLoggedInState);
 router.get('/getUserById', controller.getUserById);
 
 module.exports = router;

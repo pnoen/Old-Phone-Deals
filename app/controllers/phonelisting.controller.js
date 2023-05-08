@@ -1,18 +1,17 @@
 var phonelisting = require("../models/phonelisting");
 
 module.exports.showHome = function (req, res) {
-	// TODO loggedIn is a placeholders, maybe move the app.locals
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
-	res.render("main.ejs", { loggedIn: false, state: state, mainPageData: mainPageData });
+	res.render("main.ejs", { loggedIn: req.app.locals.loggedIn, state: state, mainPageData: mainPageData });
 }
 
 module.exports.showSignIn = function(req, res) {
-  res.render("signin.ejs", { loggedIn: false });
+  res.render("signin.ejs", { loggedIn: req.app.locals.loggedIn });
 }
 
 module.exports.showCheckout = async function (req, res) {
-	res.render("checkout.ejs", { loggedIn: false, cart: req.app.locals.cart });
+	res.render("checkout.ejs", { loggedIn: req.app.locals.loggedIn, cart: req.app.locals.cart });
 }
 
 module.exports.getSoldSoon = function (req, res) {

@@ -18,6 +18,15 @@ module.exports.getUserById = async function (req, res) {
   });
 }
 
+
+// Updates the logged in state
+module.exports.updateLoggedInState = function(req, res) {
+	let state = req.body.state;
+	req.app.locals.loggedIn = state;
+	res.send("Updated");
+}
+
+
 // Checks the entered password against the real one
 module.exports.checkLoginCredentials = async function(req, res) {
   var email = req.body.email;
