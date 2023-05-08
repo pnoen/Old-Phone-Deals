@@ -215,6 +215,9 @@ async function addToCart(phone, quantity) {
     await $.post("/addToCart", params);
 }
 
+// TODO make hidden reviews a different colour
+// TODO reviews with more than 200 characters have a show more button
+// TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     // console.log(phone);
     let reviews = phone.reviews;
