@@ -130,6 +130,7 @@ async function getCartItemQuantity(title, seller) {
     return data;
 }
 
+// TODO implement add review implementation
 async function createItemListingElement(phone) {
     let user = await getUserById(phone.seller);
     let cartItem = await getCartItemQuantity(phone.title, phone.seller);
