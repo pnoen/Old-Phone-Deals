@@ -3,6 +3,8 @@ var controller = require('../controllers/userlist.controller');
 var router = express.Router();
 
 router.get('/', controller.showHome);
+
+router.post('/checkLoginCredentials', controller.checkLoginCredentials);
 router.get('/getUserById', controller.getUserById);
 
 module.exports = router;

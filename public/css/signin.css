@@ -47,3 +47,7 @@ html, body {
 #signin-button {
   margin-left: auto;
 }
+
+#incorrect-login-text {
+  color: lightcoral;
+}
