@@ -54,7 +54,7 @@ phonelistingSchema.statics.getPhones = function (searchTerm, brand, maxPrice, ca
     filteredSearch = searchTerm.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
 
     params = {
-        'title': { $regex: filteredSearch },
+        'title': { $regex: filteredSearch, $options: "i" },
         'disabled': { $exists: false }
     }
 
