@@ -13,5 +13,7 @@ router.get('/getCartItemQuantity', controller.getCartItemQuantity);
 router.get('/getHighestPrice', controller.getHighestPrice);
 router.post('/updateMainState', controller.updateMainState);
 router.get('/checkout', controller.showCheckout);
+router.post('/updateCart', controller.updateCart);
+router.get('/getCart', controller.getCart);
 
 module.exports = router;

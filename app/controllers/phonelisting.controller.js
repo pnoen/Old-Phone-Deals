@@ -72,6 +72,33 @@ module.exports.getBrandsList = function (req, res) {
     }
   });
 }
+module.exports.getCart = function (req, res) {
+	res.json(req.app.locals.cart);
+}
+module.exports.updateCart = function (req, res) {
+	let phone = req.body.phone;
+	let quantity = parseInt(req.body.quantity);
+
+	let newItem = {
+		phone: phone,
+		quantity: quantity
+	}
+
+	let exists = false;
+	for (let item of req.app.locals.cart) {
+		if (item.phone.title == newItem.phone.title && item.phone.seller == newItem.phone.seller) {
+			item.quantity = newItem.quantity;
+			exists = true;
+			break;
+		}
+	}
+
+	if (!exists) {
+		req.app.locals.cart.push(newItem);
+	}
+
+	res.send("Cart updated");
+}
 
 module.exports.addToCart = function (req, res) {
 	let phone = req.body.phone;

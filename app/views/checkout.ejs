@@ -48,19 +48,27 @@
         </header>
         <div id="checkoutContent">
             <h2> Checkout </h2>
+            <% var total = 0; %>
             <% for(var i=0; i < cart.length; i++) { %>
-                <div class="product-box">
-                    <p><%= cart[i].phone.title %></p>
+                <div class="product-box" id="<%= i %>">
+                    <% total += (cart[i].phone.price * cart[i].quantity) %>
+                    <p><%= cart[i].phone.title.substring(0,74) %>
+                        <% if(cart[i].phone.title.length > 75) {%> 
+                            ... 
+                        <% }%></p>
                     <p> $<%= cart[i].phone.price %></p>
-                    <input type="number" value="<%= cart[i].phone.quantity %>"/>
-                    <button>Remove</button>
+                    <span class="itemCartQuantity" title="<%= cart[i].phone.title %>"  seller="<%= cart[i].phone.seller %>"><%= cart[i].quantity %></span>
+                    <div>
+                        <button class="quantity" id="<%= i %>">Change quantity</button>
+                        <button class="quantity" id="<%= i %>">Remove</button>
+                    </div>
                 </div>    
             <% } %>
             <% if(cart.length > 0) {%>
             <div class="footer">
-                <label>Total price: $</label>
+                <label>Total price: $<%= total %></label>
                 <button>Confirm</button>
-                <button>Back</button>
+                <button class="back-button">Back</button>
             </div>
             <% } else{ %>
                 <h2>Nothing in cart</h2>
@@ -69,8 +77,10 @@
         </div>
         <script>
             var state = "<%= state %>";
+            var cart = <%- JSON.stringify(cart) %>;
         </script>
         <script src="js/main.js"></script>
         <script src="js/search.js"></script>
+        <script src="js/checkout.js"></script>
     </body>
 </html>
