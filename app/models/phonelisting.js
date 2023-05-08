@@ -69,6 +69,13 @@ phonelistingSchema.statics.getPhones = function (searchTerm, brand, maxPrice, ca
         .exec(callback)
 }
 
+phonelistingSchema.statics.getHighestPrice = function (callback) {
+    return this.find({'disabled': { $exists: false }})
+        .sort({ 'price': -1 })
+        .limit(1)
+        .exec(callback)
+}
+
 phonelistingSchema.statics.getListOfBrands = function (callback) {
   return this.distinct('brand').exec(callback);
 }

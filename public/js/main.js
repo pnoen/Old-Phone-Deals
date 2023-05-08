@@ -10,6 +10,7 @@ async function updateMainState(newState, data) {
 
 function changeToHomeState() {
     emptyContainer("#mainContent");
+    emptyContainer("#navBarSearchStateItems");
     updateMainState("home");
     createHomeContainers();
     getSoldSoon();
@@ -75,6 +76,7 @@ function emptyContainer(selector) {
 
 async function changeToItemState(phoneTitle, phoneSeller) {
     emptyContainer("#mainContent");
+    emptyContainer("#navBarSearchStateItems");
     reviewCounter = 0;
     let phone = await getPhone(phoneTitle, phoneSeller);
     let viewedItem = {
@@ -262,4 +264,6 @@ if (state == "home") {
 else if (state == "item") {
     changeToItemState(mainPageData.title, mainPageData.seller);
 }
-// TODO add the initial load for search state
+else if (state == "search") {
+    changeToSearchState(mainPageData.searchTerm, mainPageData.brand, mainPageData.maxPrice);
+}

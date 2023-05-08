@@ -10,6 +10,7 @@ router.get('/getPhones', controller.getPhones);
 router.get('/getBrandsList', controller.getBrandsList);
 router.post('/addToCart', controller.addToCart);
 router.get('/getCartItemQuantity', controller.getCartItemQuantity);
+router.get('/getHighestPrice', controller.getHighestPrice);
 router.post('/updateMainState', controller.updateMainState);
 
 module.exports = router;
