@@ -10,6 +10,7 @@ async function updateMainState(newState, data) {
 
 function changeToHomeState() {
     emptyContainer("#mainContent");
+    emptyContainer("#navBarSearchStateItems");
     updateMainState("home");
     createHomeContainers();
     getSoldSoon();
@@ -75,6 +76,7 @@ function emptyContainer(selector) {
 
 async function changeToItemState(phoneTitle, phoneSeller) {
     emptyContainer("#mainContent");
+    emptyContainer("#navBarSearchStateItems");
     reviewCounter = 0;
     let phone = await getPhone(phoneTitle, phoneSeller);
     let viewedItem = {
@@ -128,6 +130,7 @@ async function getCartItemQuantity(title, seller) {
     return data;
 }
 
+// TODO implement add review implementation
 async function createItemListingElement(phone) {
     let user = await getUserById(phone.seller);
     let cartItem = await getCartItemQuantity(phone.title, phone.seller);
@@ -213,6 +216,9 @@ async function addToCart(phone, quantity) {
     await $.post("/addToCart", params);
 }
 
+// TODO make hidden reviews a different colour
+// TODO reviews with more than 200 characters have a show more button
+// TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     // console.log(phone);
     let reviews = phone.reviews;
@@ -262,4 +268,6 @@ if (state == "home") {
 else if (state == "item") {
     changeToItemState(mainPageData.title, mainPageData.seller);
 }
-// TODO add the initial load for search state
+else if (state == "search") {
+    changeToSearchState(mainPageData.searchTerm, mainPageData.brand, mainPageData.maxPrice);
+}

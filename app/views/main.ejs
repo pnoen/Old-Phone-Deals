@@ -25,21 +25,7 @@
                 </nav>
             </div>
             <div id="navBarSearchItems">
-                <div id="navBarSearchStateItems">
-                    <% if (state == "search") { %>
-                    <div id="searchBrandFilterContainer">
-                        <select id="searchBrandFilter">
-                        </select>
-                    </div>
-
-                    <!-- TODO change the max to highest price and add value = max -->
-                    <div id="searchPriceFilterContainer">
-                        $min
-                        <input id="searchPriceFilter" type="range" min="0" max="100">
-                        $value
-                    </div>
-                    <% } %>
-                </div>
+                <div id="navBarSearchStateItems"></div>
                 <div id="navBarSearchBar">
                     <input id="searchBar" type="search">
                     <button id="navBarSearchBtn">Search</button>
@@ -53,7 +39,7 @@
             var state = "<%= state %>";
             var mainPageData = <%- JSON.stringify(mainPageData) %>;
         </script>
-        <script src="js/main.js"></script>
         <script src="js/search.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
