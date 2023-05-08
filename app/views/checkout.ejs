@@ -47,32 +47,7 @@
             </div>
         </header>
         <div id="checkoutContent">
-            <h2> Checkout </h2>
-            <% var total = 0; %>
-            <% for(var i=0; i < cart.length; i++) { %>
-                <div class="product-box" id="<%= i %>">
-                    <% total += (cart[i].phone.price * cart[i].quantity) %>
-                    <p><%= cart[i].phone.title.substring(0,74) %>
-                        <% if(cart[i].phone.title.length > 75) {%> 
-                            ... 
-                        <% }%></p>
-                    <p> $<%= cart[i].phone.price %></p>
-                    <span class="itemCartQuantity" title="<%= cart[i].phone.title %>"  seller="<%= cart[i].phone.seller %>"><%= cart[i].quantity %></span>
-                    <div>
-                        <button class="quantity" id="<%= i %>">Change quantity</button>
-                        <button class="quantity" id="<%= i %>">Remove</button>
-                    </div>
-                </div>    
-            <% } %>
-            <% if(cart.length > 0) {%>
-            <div class="footer">
-                <label>Total price: $<%= total %></label>
-                <button>Confirm</button>
-                <button class="back-button">Back</button>
-            </div>
-            <% } else{ %>
-                <h2>Nothing in cart</h2>
-            <% } %>
+            
         </div>
         </div>
         <script>

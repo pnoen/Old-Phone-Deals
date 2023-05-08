@@ -83,7 +83,15 @@ module.exports.updateCart = function (req, res) {
 		phone: phone,
 		quantity: quantity
 	}
-
+	if(quantity == 0){
+		for(var i = 0; i< req.app.locals.cart.length; i++){
+			if (req.app.locals.cart[i].phone.title == newItem.phone.title && req.app.locals.cart[i].phone.seller == newItem.phone.seller){
+				req.app.locals.cart.splice(i, 1);
+				res.send("Item Removed");
+				return;
+			}
+		}
+	}
 	let exists = false;
 	for (let item of req.app.locals.cart) {
 		if (item.phone.title == newItem.phone.title && item.phone.seller == newItem.phone.seller) {
