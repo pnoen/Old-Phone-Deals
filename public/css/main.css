@@ -3,7 +3,7 @@ html, body {
     padding: 0;
 
     font-family: "Helvetica";
-    background-image: linear-gradient(to bottom, white, ghostwhite, aliceblue);
+    background-image: linear-gradient(to bottom right, white, ghostwhite, lightskyblue);
 }
 
 button {
@@ -11,11 +11,21 @@ button {
   font-size: 75%;
   cursor: pointer;
   font-weight: 700;
+  text-transform: uppercase;
 
   border-radius: 2px;
   border: none;
   background-color: lightblue;
   padding: 10px;
+}
+
+button#navBarSearchBtn {
+  font-size: 65%;
+}
+
+#searchBar {
+  font-size: 70%;
+  padding: 8px;
 }
 
 header,
@@ -28,7 +38,7 @@ div#searchBrandFilterContainer {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 0 1em;
+    padding: 0.2em 1em;
 
     font-family: "Helvetica";
 }
@@ -84,7 +94,7 @@ div#mainContent h2 {
 h1.phoneListingHeading {
     text-align: center;
     font-size: 30px;
-    font-weight: 200;
+    font-weight: 50;
 }
 
 div.phoneListingContainer {

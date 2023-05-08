@@ -7,8 +7,12 @@ module.exports.showHome = function (req, res) {
 	res.render("main.ejs", { loggedIn: false, state: state, mainPageData: mainPageData });
 }
 
+module.exports.showSignIn = function(req, res) {
+  res.render("signin.ejs", { loggedIn: false });
+}
+
 module.exports.showCheckout = async function (req, res) {
-	res.render("checkout.ejs", {loggedIn: false, cart: req.app.locals.cart});
+	res.render("checkout.ejs", { loggedIn: false, cart: req.app.locals.cart });
 }
 
 module.exports.getSoldSoon = function (req, res) {

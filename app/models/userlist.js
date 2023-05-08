@@ -8,10 +8,10 @@ var userlistSchema = mongoose.Schema({
 })
 
 userlistSchema.statics.getUserById = function (id, callback) {
-    return this.find({
-        '_id': mongoose.Types.ObjectId(id)})
-        .limit(1)
-        .exec(callback)
+  return this.find({
+    '_id': mongoose.Types.ObjectId(id)})
+    .limit(1)
+    .exec(callback)
 }
 
 var Userlist = mongoose.model('Userlist', userlistSchema, 'userlist');
