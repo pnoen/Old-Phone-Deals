@@ -9,16 +9,6 @@ function clearLoginSelections() {
 }
 
 
-// Updates the logged in state
-async function updateLoggedInState(newState) {
-  loggedIn = newState;
-  let params = {
-    state: newState
-  }
-  await $.post("/user/updateLoggedInState", params);
-}
-
-
 // Sign the user in (check credentials and so on)
 document.getElementById("signin-button").addEventListener("click", signUserIn);
 

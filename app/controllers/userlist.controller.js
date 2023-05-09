@@ -21,8 +21,8 @@ module.exports.getUserById = async function (req, res) {
 
 // Updates the logged in state
 module.exports.updateLoggedInState = function(req, res) {
-	let state = req.body.state;
-	req.app.locals.loggedIn = state;
+	let loggedIn = req.body.loggedIn;
+	req.app.locals.loggedIn = loggedIn;
 	res.send("Updated");
 }
 

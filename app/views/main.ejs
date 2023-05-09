@@ -2,7 +2,8 @@
 <html>
 	<head>
     <title>OldPhoneDeals</title>
-		<link rel="stylesheet"href="css/main.css">
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/signout.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	</head>
     <body>
@@ -19,7 +20,7 @@
                             <li><a href="signin">Sign In</a></li>
                         <% } else { %>
                             <li><a href="#">Profile</a></li>
-                            <li><a href="#">Sign Out</a></li>
+                            <li id="sign-out-button"><a>Sign Out</a></li>
                         <% } %>
                     </ul>
                 </nav>
@@ -39,7 +40,9 @@
             var state = "<%= state %>";
             var mainPageData = <%- JSON.stringify(mainPageData) %>;
         </script>
+				<script src="js/shared.js"></script>
         <script src="js/search.js"></script>
         <script src="js/main.js"></script>
+				<script src="js/signout.js"></script>
     </body>
 </html>
