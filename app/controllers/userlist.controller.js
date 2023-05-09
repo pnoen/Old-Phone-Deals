@@ -22,7 +22,7 @@ module.exports.getUserById = async function (req, res) {
 // Updates the logged in state
 module.exports.updateLoggedInState = function(req, res) {
 	let loggedIn = req.body.loggedIn;
-	req.app.locals.loggedIn = loggedIn;
+	req.app.locals.loggedIn = (loggedIn === "true");
 	res.send("Updated");
 }
 

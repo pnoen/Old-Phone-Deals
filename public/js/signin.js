@@ -28,6 +28,7 @@ async function signUserIn() {
   if (data === false) {
     var incorrectText = document.getElementById("incorrect-login-text");
     incorrectText.innerHTML = "The email or password is incorrect."
+
   } else {
     // Sign the user in
     var incorrectText = document.getElementById("incorrect-login-text");
@@ -35,5 +36,7 @@ async function signUserIn() {
 
     loggedIn = true;
     await updateLoggedInState(loggedIn);
+
+    pageReload("signin");
   }
 }

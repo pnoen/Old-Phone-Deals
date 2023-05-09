@@ -1,5 +1,9 @@
 // Brings up the modal to sign the user out
-document.getElementById("sign-out-button").addEventListener("click", signOutModal);
+var signOutBtn = document.getElementById("sign-out-button");
+if (signOutBtn !== null) {
+  signOutBtn.addEventListener("click", signOutModal);
+}
+
 function signOutModal() {
   document.body.innerHTML += (`
   <div class="sign-out-modal">
@@ -28,6 +32,5 @@ async function signOutUser() {
   loggedIn = false;
   await updateLoggedInState(loggedIn);
   closeModal();
-
-  console.log(loggedIn);
+  pageReload("signout");
 }

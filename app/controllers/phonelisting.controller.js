@@ -1,17 +1,37 @@
 var phonelisting = require("../models/phonelisting");
 
 module.exports.showHome = function (req, res) {
+	let loggedIn = req.app.locals.loggedIn;
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
-	res.render("main.ejs", { loggedIn: req.app.locals.loggedIn, state: state, mainPageData: mainPageData });
+	res.render("main.ejs", {
+		loggedIn: loggedIn,
+		state: state,
+		mainPageData: mainPageData
+	});
 }
 
 module.exports.showSignIn = function(req, res) {
-  res.render("signin.ejs", { loggedIn: req.app.locals.loggedIn });
+	let loggedIn = req.app.locals.loggedIn;
+	let state = req.app.locals.state;
+	let mainPageData = req.app.locals.mainPageData;
+  res.render("signin.ejs", {
+		loggedIn: loggedIn,
+		state: state,
+		mainPageData: mainPageData
+	});
 }
 
 module.exports.showCheckout = async function (req, res) {
-	res.render("checkout.ejs", { loggedIn: req.app.locals.loggedIn, cart: req.app.locals.cart });
+	let loggedIn = req.app.locals.loggedIn;
+	let state = req.app.locals.state;
+	let mainPageData = req.app.locals.mainPageData;
+	res.render("checkout.ejs", {
+		loggedIn: loggedIn,
+		cart: req.app.locals.cart,
+		state: state,
+		mainPageData: mainPageData
+	});
 }
 
 module.exports.getSoldSoon = function (req, res) {
@@ -52,7 +72,6 @@ module.exports.getPhone = function (req, res) {
 
 module.exports.getPhones = function (req, res) {
 	let searchTerm = req.query.searchTerm;
-	// console.log(searchTerm);
 	let brand = req.query.brand;
 	let maxPrice = req.query.maxPrice;
 

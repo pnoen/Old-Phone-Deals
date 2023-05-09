@@ -1,6 +1,5 @@
 async function updateMainState(newState, data) {
     state = newState;
-    // console.log(state);
     let params = {
         state: newState,
         data: data
@@ -99,7 +98,6 @@ async function getPhone(title, seller) {
     await $.getJSON("/getPhone", params, function (res) {
         data = res;
     });
-    // console.log(data);
     return data[0];
 }
 
@@ -112,7 +110,6 @@ async function getUserById(id) {
     await $.getJSON("/user/getUserById", params, function (res) {
         data = res;
     });
-    // console.log(data);
     return data[0];
 }
 
@@ -126,7 +123,6 @@ async function getCartItemQuantity(title, seller) {
     await $.getJSON("/getCartItemQuantity", params, function (res) {
         data = res;
     });
-    // console.log(data);
     return data;
 }
 
@@ -211,8 +207,6 @@ async function addToCart(phone, quantity) {
         phone: phone,
         quantity: quantity
     }
-
-    // console.log(params);
     await $.post("/addToCart", params);
 }
 
@@ -220,7 +214,6 @@ async function addToCart(phone, quantity) {
 // TODO reviews with more than 200 characters have a show more button
 // TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
-    // console.log(phone);
     let reviews = phone.reviews;
     for (let i = reviewCounter; i < reviews.length; i++) {
         if (i == reviewCounter + 3) { // Displays reviews 3 at a time
@@ -228,7 +221,6 @@ async function createItemReviewsElement(phone) {
             break;
         }
         let review = reviews[i];
-        // console.log(review);
         let user = await getUserById(review.reviewer);
         let rating = "★".repeat(review.rating);
         let ratingEmpty = "★".repeat(5 - review.rating);
