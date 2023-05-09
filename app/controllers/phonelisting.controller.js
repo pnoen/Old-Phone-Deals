@@ -50,7 +50,14 @@ module.exports.getPhone = function (req, res) {
 module.exports.buyPhone = function (req, res) {
 	let cart = req.app.locals.cart;
 	for(item of cart){
-		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity);
+		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity, function (err, result) {
+			if (err) {
+				console.log("db error");
+			}
+			else {
+				console.log("bought "+ item.phone.title);
+			}
+		});
 	}
 	req.app.locals.cart = [];
 	res.json("Done");
