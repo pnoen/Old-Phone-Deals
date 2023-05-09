@@ -34,26 +34,9 @@
       </div>
     </header>
 
-    <% if (loginOrRegister === "login") { %>
-      <h1 class="phoneListingHeading">Sign In</h1>
-    <% } else { %>
-      <h1 class="phoneListingHeading">Sign Up</h1>
-    <% } %>
-
+    <h1 class="phoneListingHeading">Sign In</h1>
     <div class="login-box">
       <p id="incorrect-login-text">&nbsp;</p>
-
-      <% if (loginOrRegister === "register") { %>
-        <div class="login-input-field">
-          First name:
-          <input type="text" value="" />
-        </div>
-        <div class="login-input-field">
-          Last name:
-          <input type="text" value="" />
-        </div>
-      <% } %>
-
       <div class="login-input-field">
         Email:
         <input type="text" value="" />
@@ -65,26 +48,17 @@
 
       <div class="login-buttons">
         <button id="cancel-button">Cancel</button>
-        <% if (loginOrRegister === "login") { %>
-          <button id="signin-button">Sign In</button>
-        <% } else { %>
-          <button id="signup-button">Sign Up</button>
-        <% } %>
+        <button id="signin-button">Sign In</button>
       </div>
 
-      <% if (loginOrRegister === "login") { %>
-        <p>Click <a>here</a> to reset your password.</p>
-        <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
-      <% } else { %>
-        <p>Already have an account? <a class="toggle-login-btn">Sign in</a></p>
-      <% } %>
+      <p>Click <a>here</a> to reset your password.</p>
+      <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
     </div>
 
     <script>
       var state = "<%= state %>";
       var loggedIn = "<%= loggedIn %>";
       var mainPageData = <%- JSON.stringify(mainPageData) %>;
-      var loginOrRegister = "<%= loginOrRegister %>";
     </script>
     <script src="js/main.js"></script>
     <script src="js/shared.js"></script>

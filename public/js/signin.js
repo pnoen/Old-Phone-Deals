@@ -1,3 +1,78 @@
+// We start as login, but can toggle to register
+var loginOrRegister = "login";
+async function loginSignupSwitch() {
+  if (loginOrRegister === "login") {
+    loginOrRegister = "register";
+    displayRegisterForm();
+
+  } else if (loginOrRegister === "register") {
+    loginOrRegister = "login";
+    displayLoginForm();
+  }
+}
+
+
+// Displays the login form
+function displayLoginForm() {
+  document.querySelector(".phoneListingHeading").innerHTML = "Sign In";
+  document.querySelector(".login-box").innerHTML = `
+    <p id="incorrect-login-text">&nbsp;</p>
+    <div class="login-input-field">
+      Email:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Password:
+      <input type="password" value="" />
+    </div>
+
+    <div class="login-buttons">
+      <button id="cancel-button">Cancel</button>
+      <button id="signin-button">Sign In</button>
+    </div>
+
+    <p>Click <a>here</a> to reset your password.</p>
+    <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
+  `;
+
+  initialPageLoad();
+}
+
+
+// Displays the register form
+function displayRegisterForm() {
+  document.querySelector(".phoneListingHeading").innerHTML = "Sign Up";
+  document.querySelector(".login-box").innerHTML = `
+    <p id="incorrect-login-text">&nbsp;</p>
+    <div class="login-input-field">
+      First name:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Last name:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Email:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Password:
+      <input type="password" value="" />
+    </div>
+
+    <div class="login-buttons">
+      <button id="cancel-button">Cancel</button>
+      <button id="signup-button">Sign Up</button>
+    </div>
+
+    <p>Already have an account? <a class="toggle-login-btn">Sign in</a></p>
+  `;
+
+  initialPageLoad();
+}
+
+
 // Appends an error message
 function outputError(errorMessage) {
   var incorrectText = document.getElementById("incorrect-login-text");
@@ -16,11 +91,6 @@ function clearLoginSelections() {
 
 
 // Sign the user in (check credentials and so on)
-var signInBtn = document.getElementById("signin-button");
-if (signInBtn !== null) {
-  signInBtn.addEventListener("click", signUserIn);
-}
-
 async function signUserIn() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
   var params = {
@@ -47,25 +117,7 @@ async function signUserIn() {
 }
 
 
-// Switch between logging in a signing up
-var toggleBtns = document.querySelectorAll(".toggle-login-btn");
-for (var i = 0; i < toggleBtns.length; i++) {
-  toggleBtns[i].addEventListener("click", loginSignupSwitch);
-}
-
-async function loginSignupSwitch() {
-  let data;
-  await $.post("/user/toggleLoginRegister", null);
-  window.location.reload();
-}
-
-
 // Registers the new user
-var signUpBtn = document.getElementById("signup-button");
-if (signUpBtn !== null) {
-  signUpBtn.addEventListener("click", signUpUser);
-}
-
 async function signUpUser() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
   var params = {
@@ -89,3 +141,23 @@ function validateInput(params) {
 
   // TODO: Email regex
 }
+
+
+// Initial page load
+function initialPageLoad() {
+  var signInBtn = document.getElementById("signin-button");
+  if (signInBtn !== null) {
+    signInBtn.addEventListener("click", signUserIn);
+  }
+
+  var signUpBtn = document.getElementById("signup-button");
+  if (signUpBtn !== null) {
+    signUpBtn.addEventListener("click", signUpUser);
+  }
+
+  var toggleBtn = document.querySelector(".toggle-login-btn");
+  toggleBtn.addEventListener("click", loginSignupSwitch);
+}
+
+
+initialPageLoad();
