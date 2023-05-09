@@ -19,6 +19,18 @@ module.exports.getUserById = async function (req, res) {
 }
 
 
+// Toggles between logging in and registering a new account
+module.exports.toggleLoginRegister = function(req, res) {
+	let loginState = req.app.locals.loginOrRegister;
+  if (loginState === "login") {
+    req.app.locals.loginOrRegister = "register";
+  } else if (loginState === "register") {
+    req.app.locals.loginOrRegister = "login";
+  }
+  res.send("Updated");
+}
+
+
 // Updates the logged in state
 module.exports.updateLoggedInState = function(req, res) {
 	let loggedIn = req.body.loggedIn;

@@ -1,6 +1,12 @@
-// Clear the log in input
-document.getElementById("cancel-button").addEventListener("click", clearLoginSelections);
+// Appends an error message
+function outputError(errorMessage) {
+  var incorrectText = document.getElementById("incorrect-login-text");
+  incorrectText.innerHTML = errorMessage;
+}
 
+
+// Clear the log in input on cancel
+document.getElementById("cancel-button").addEventListener("click", clearLoginSelections);
 function clearLoginSelections() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
   for (var i = 0; i < inputBoxes.length; i++) {
@@ -10,7 +16,10 @@ function clearLoginSelections() {
 
 
 // Sign the user in (check credentials and so on)
-document.getElementById("signin-button").addEventListener("click", signUserIn);
+var signInBtn = document.getElementById("signin-button");
+if (signInBtn !== null) {
+  signInBtn.addEventListener("click", signUserIn);
+}
 
 async function signUserIn() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
@@ -26,17 +35,57 @@ async function signUserIn() {
   });
 
   if (data === false) {
-    var incorrectText = document.getElementById("incorrect-login-text");
-    incorrectText.innerHTML = "The email or password is incorrect."
+    outputError("The email or password is incorrect.");
 
   } else {
     // Sign the user in
-    var incorrectText = document.getElementById("incorrect-login-text");
-    incorrectText.innerHTML = "&nbsp;";
-
+    outputError("&nbsp;");
     loggedIn = true;
     await updateLoggedInState(loggedIn);
-
     pageReload("signin");
   }
+}
+
+
+// Switch between logging in a signing up
+var toggleBtns = document.querySelectorAll(".toggle-login-btn");
+for (var i = 0; i < toggleBtns.length; i++) {
+  toggleBtns[i].addEventListener("click", loginSignupSwitch);
+}
+
+async function loginSignupSwitch() {
+  let data;
+  await $.post("/user/toggleLoginRegister", null);
+  window.location.reload();
+}
+
+
+// Registers the new user
+var signUpBtn = document.getElementById("signup-button");
+if (signUpBtn !== null) {
+  signUpBtn.addEventListener("click", signUpUser);
+}
+
+async function signUpUser() {
+  var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
+  var params = {
+    firstname: inputBoxes[0].value,
+    lastname: inputBoxes[1].value,
+    email: inputBoxes[2].value,
+    password: inputBoxes[3].value
+  }
+
+  validateInput(params);
+  // TODO: Post to backend
+}
+
+// Validates the input for creating an account
+function validateInput(params) {
+  if (params.firstname === "" || params.lastname === ""
+      || params.email === "" || params.password === "") {
+    outputError("All fields are mandatory.");
+    return;
+  }
+
+  // TODO: Email regex
 }

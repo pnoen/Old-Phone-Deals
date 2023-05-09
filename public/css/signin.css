@@ -4,7 +4,7 @@ html, body {
 
 .login-box {
   width: 70%;
-  height: 60%;
+  height: 70%;
 
   margin-left: auto;
   margin-right: auto;
@@ -16,7 +16,7 @@ html, body {
 
   background-color: white;
   box-shadow: 0px 5px 10px 0px rgba(97, 97, 105, 0.3);
-  padding: 2%;
+  padding: 1%;
 }
 
 .login-input-field {
@@ -44,10 +44,16 @@ html, body {
   background-color: lightcoral;
 }
 
-#signin-button {
+#signin-button, #signup-button {
   margin-left: auto;
 }
 
 #incorrect-login-text {
   color: lightcoral;
+}
+
+.toggle-login-btn {
+  text-decoration: underline;
+  color: lightblue;
+  cursor: pointer;
 }

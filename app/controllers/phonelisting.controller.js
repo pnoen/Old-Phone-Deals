@@ -15,10 +15,12 @@ module.exports.showSignIn = function(req, res) {
 	let loggedIn = req.app.locals.loggedIn;
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
+	let loginOrRegister = req.app.locals.loginOrRegister;
   res.render("signin.ejs", {
 		loggedIn: loggedIn,
 		state: state,
-		mainPageData: mainPageData
+		mainPageData: mainPageData,
+		loginOrRegister: loginOrRegister
 	});
 }
 
