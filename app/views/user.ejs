@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OldPhoneDeals</title>
+  	<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div id="navBarMenu">
+        <div id="navBarTitle">
+            OldPhoneDeals
+        </div>
+        <nav>
+          <ul id="navBarLinks">
+            <li><a href="/">Home</a></li>
+            <li><a href="checkout">Checkout</a></li>
+            <% if (!loggedIn) { %>
+                <li><a href="signin">Sign In</a></li>
+            <% } else { %>
+                <li><a>Profile</a></li>
+                <li id="sign-out-button"><a>Sign Out</a></li>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+      <div id="navBarSearchItems">
+        <div id="navBarSearchStateItems"></div>
+        <div id="navBarSearchBar">
+          <input id="searchBar" type="search">
+          <button id="navBarSearchBtn">Search</button>
+        </div>
+      </div>
+    </header>
+
+    <h1 class="phoneListingHeading">Profile</h1>
+    <div class="profile-box">
+      <p class="profile-field">First Name: </p>
+      <p class="profile-field">Last Name: </p>
+      <p class="profile-field">Email: </p>
+    </div>
+
+    <script>
+      var state = "<%= state %>";
+      var loggedIn = "<%= loggedIn %>";
+      var mainPageData = <%- JSON.stringify(mainPageData) %>;
+      var currentUser = "<%= currentUser %>";
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/signout.js"></script>
+    <script src="js/user.js"></script>
+  </body>
+</html>

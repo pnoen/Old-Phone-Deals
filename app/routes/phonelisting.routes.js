@@ -6,6 +6,7 @@ var router = express.Router();
 router.get('/', controller.showHome);
 router.get('/signin', controller.showSignIn);
 router.get('/checkout', controller.showCheckout);
+router.get('/profile', controller.showProfile);
 
 router.get('/getSoldSoon', controller.getSoldSoon);
 router.get('/getBestSeller', controller.getBestSeller);

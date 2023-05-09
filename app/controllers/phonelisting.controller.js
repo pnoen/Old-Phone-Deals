@@ -4,10 +4,12 @@ module.exports.showHome = function (req, res) {
 	let loggedIn = req.app.locals.loggedIn;
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
+	let currentUser = req.app.locals.currentUser;
 	res.render("main.ejs", {
 		loggedIn: loggedIn,
 		state: state,
-		mainPageData: mainPageData
+		mainPageData: mainPageData,
+		currentUser: currentUser
 	});
 }
 
@@ -15,10 +17,25 @@ module.exports.showSignIn = function(req, res) {
 	let loggedIn = req.app.locals.loggedIn;
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
+	let currentUser = req.app.locals.currentUser;
   res.render("signin.ejs", {
 		loggedIn: loggedIn,
 		state: state,
-		mainPageData: mainPageData
+		mainPageData: mainPageData,
+		currentUser: currentUser
+	});
+}
+
+module.exports.showProfile = function(req, res) {
+	let loggedIn = req.app.locals.loggedIn;
+	let state = req.app.locals.state;
+	let mainPageData = req.app.locals.mainPageData;
+	let currentUser = req.app.locals.currentUser;
+  res.render("user.ejs", {
+		loggedIn: loggedIn,
+		state: state,
+		mainPageData: mainPageData,
+		currentUser: currentUser
 	});
 }
 
@@ -26,11 +43,13 @@ module.exports.showCheckout = async function (req, res) {
 	let loggedIn = req.app.locals.loggedIn;
 	let state = req.app.locals.state;
 	let mainPageData = req.app.locals.mainPageData;
+	let currentUser = req.app.locals.currentUser;
 	res.render("checkout.ejs", {
 		loggedIn: loggedIn,
 		cart: req.app.locals.cart,
 		state: state,
-		mainPageData: mainPageData
+		mainPageData: mainPageData,
+		currentUser: currentUser
 	});
 }
 

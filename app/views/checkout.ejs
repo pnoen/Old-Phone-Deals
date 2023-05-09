@@ -2,36 +2,37 @@
 <html>
 	<head>
     <title>OldPhoneDeals</title>
+		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/checkout.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	</head>
     <body>
-				<header>
-            <div id="navBarMenu">
-                <div id="navBarTitle">
-                    OldPhoneDeals
-                </div>
-                <nav>
-                    <ul id="navBarLinks">
-                        <li><a href="/">Home</a></li>
-                        <li><a>Checkout</a></li>
-                        <% if (!loggedIn) { %>
-                            <li><a href="signin">Sign In</a></li>
-                        <% } else { %>
-                            <li><a href="#">Profile</a></li>
-                            <li id="sign-out-button"><a>Sign Out</a></li>
-                        <% } %>
-                    </ul>
-                </nav>
-            </div>
-            <div id="navBarSearchItems">
-                <div id="navBarSearchStateItems"></div>
-                <div id="navBarSearchBar">
-                    <input id="searchBar" type="search">
-                    <button id="navBarSearchBtn">Search</button>
-                </div>
-            </div>
-        </header>
+			<header>
+				<div id="navBarMenu">
+					<div id="navBarTitle">
+							OldPhoneDeals
+					</div>
+					<nav>
+						<ul id="navBarLinks">
+							<li><a href="/">Home</a></li>
+							<li><a>Checkout</a></li>
+							<% if (!loggedIn) { %>
+									<li><a href="signin">Sign In</a></li>
+							<% } else { %>
+									<li><a href="profile">Profile</a></li>
+									<li id="sign-out-button"><a>Sign Out</a></li>
+							<% } %>
+						</ul>
+					</nav>
+				</div>
+				<div id="navBarSearchItems">
+					<div id="navBarSearchStateItems"></div>
+					<div id="navBarSearchBar">
+						<input id="searchBar" type="search">
+						<button id="navBarSearchBtn">Search</button>
+					</div>
+				</div>
+			</header>
 
         <div id="checkoutContent">
             <h2> Checkout </h2>

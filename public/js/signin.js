@@ -112,8 +112,21 @@ async function signUserIn() {
     outputError("&nbsp;");
     loggedIn = true;
     await updateLoggedInState(loggedIn);
+    await getCurrentUser(params.email);
     pageReload("signin");
   }
+}
+
+
+// Changes the user id state to be the user who is logged in
+async function getCurrentUser(email) {
+  let data;
+  let params = {
+    email: email
+  }
+  await $.getJSON("/user/getCurrentUser", params, function(res) {
+    data = res;
+  });
 }
 
 
@@ -156,7 +169,9 @@ function initialPageLoad() {
   }
 
   var toggleBtn = document.querySelector(".toggle-login-btn");
-  toggleBtn.addEventListener("click", loginSignupSwitch);
+  if (toggleBtn !== null) {
+    toggleBtn.addEventListener("click", loginSignupSwitch);
+  }
 }
 
 

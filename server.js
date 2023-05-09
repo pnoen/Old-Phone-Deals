@@ -10,6 +10,7 @@ app.locals.state = "home";
 app.locals.cart = [];
 app.locals.mainPageData = {};
 app.locals.loggedIn = false;
+app.locals.currentUser = "";
 
 app.set('views', path.join(__dirname,'/app/views'));
 

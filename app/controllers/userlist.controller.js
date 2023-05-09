@@ -19,6 +19,21 @@ module.exports.getUserById = async function (req, res) {
 }
 
 
+// Gets the id of the current user based on their email
+module.exports.getCurrentUser = async function(req, res) {
+  let email = req.query.email;
+
+  userlist.getUserByEmail(email, function(err, result) {
+  	if (err) {
+  		console.log("Could not get the current user with email " + email);
+  	} else {
+  		res.json(result);
+      req.app.locals.currentUser = result[0]._id;
+  	}
+  });
+}
+
+
 // Updates the logged in state
 module.exports.updateLoggedInState = function(req, res) {
 	let loggedIn = req.body.loggedIn;
@@ -51,5 +66,19 @@ module.exports.checkLoginCredentials = async function(req, res) {
         res.json(result2);
       });
     }
+  });
+}
+
+
+// Gets the user data for the profile page
+module.exports.getUserData = async function(req, res) {
+  let id = req.query.id;
+
+  userlist.getUserData(id, function(err, result) {
+  	if (err) {
+  		console.log("Could not get the user data with id " + id);
+  	} else {
+  		res.json(result);
+  	}
   });
 }

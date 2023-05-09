@@ -3,25 +3,25 @@
   <head>
     <title>OldPhoneDeals</title>
   	<link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/signin.css">
+    <link rel="stylesheet" href="css/signin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
   <body>
     <header>
       <div id="navBarMenu">
         <div id="navBarTitle">
-          OldPhoneDeals
+            OldPhoneDeals
         </div>
         <nav>
           <ul id="navBarLinks">
-              <li><a href="/">Home</a></li>
-              <li><a href="checkout">Checkout</a></li>
-              <% if (!loggedIn) { %>
+            <li><a>Home</a></li>
+            <li><a href="checkout">Checkout</a></li>
+            <% if (!loggedIn) { %>
                 <li><a>Sign In</a></li>
-              <% } else { %>
-                <li><a href="#">Profile</a></li>
-                <li><a>Sign Out</a></li>
-              <% } %>
+            <% } else { %>
+                <li><a href="profile">Profile</a></li>
+                <li id="sign-out-button"><a>Sign Out</a></li>
+            <% } %>
           </ul>
         </nav>
       </div>
@@ -59,6 +59,7 @@
       var state = "<%= state %>";
       var loggedIn = "<%= loggedIn %>";
       var mainPageData = <%- JSON.stringify(mainPageData) %>;
+      var currentUser = "<%= currentUser %>";
     </script>
     <script src="js/main.js"></script>
     <script src="js/shared.js"></script>
