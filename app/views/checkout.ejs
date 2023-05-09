@@ -35,6 +35,7 @@
 			</header>
 
         <div id="checkoutContent">
+<<<<<<< HEAD
             <h2> Checkout </h2>
             <% for(var i=0; i < cart.length; i++) { %>
                 <div class="product-box">
@@ -49,14 +50,22 @@
                 <button>Confirm</button>
                 <button>Back</button>
             </div>
+=======
+            
+>>>>>>> main
         </div>
         </div>
         <script>
             var state = "<%= state %>";
+            var cart = <%- JSON.stringify(cart) %>;
         </script>
 				<script src="js/shared.js"></script>
         <script src="js/main.js"></script>
         <script src="js/search.js"></script>
+<<<<<<< HEAD
 				<script src="js/signout.js"></script>
+=======
+        <script src="js/checkout.js"></script>
+>>>>>>> main
     </body>
 </html>

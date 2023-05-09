@@ -54,7 +54,7 @@ phonelistingSchema.statics.getPhones = function (searchTerm, brand, maxPrice, ca
     filteredSearch = searchTerm.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
 
     params = {
-        'title': { $regex: filteredSearch },
+        'title': { $regex: filteredSearch, $options: "i" },
         'disabled': { $exists: false }
     }
 
@@ -78,6 +78,14 @@ phonelistingSchema.statics.getHighestPrice = function (callback) {
 
 phonelistingSchema.statics.getListOfBrands = function (callback) {
   return this.distinct('brand').exec(callback);
+}
+
+phonelistingSchema.statics.buyPhone = function (title, seller, quantity, callback) {
+    this.updateOne(
+        {
+        'title': title,
+        'seller': seller},
+        {$inc: {'stock': -quantity}}).exec(callback);
 }
 
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');

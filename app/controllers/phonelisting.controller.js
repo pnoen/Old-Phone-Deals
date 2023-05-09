@@ -89,6 +89,22 @@ module.exports.getPhone = function (req, res) {
 	});
 }
 
+module.exports.buyPhone = function (req, res) {
+	let cart = req.app.locals.cart;
+	for(item of cart){
+		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity, function (err, result) {
+			if (err) {
+				console.log("db error");
+			}
+			else {
+				console.log("bought "+ item.phone.title);
+			}
+		});
+	}
+	req.app.locals.cart = [];
+	res.json("Done");
+}
+
 module.exports.getPhones = function (req, res) {
 	let searchTerm = req.query.searchTerm;
 	let brand = req.query.brand;
@@ -112,6 +128,41 @@ module.exports.getBrandsList = function (req, res) {
     	res.json(result);
     }
   });
+}
+module.exports.getCart = function (req, res) {
+	res.json(req.app.locals.cart);
+}
+module.exports.updateCart = function (req, res) {
+	let phone = req.body.phone;
+	let quantity = parseInt(req.body.quantity);
+
+	let newItem = {
+		phone: phone,
+		quantity: quantity
+	}
+	if(quantity == 0){
+		for(var i = 0; i< req.app.locals.cart.length; i++){
+			if (req.app.locals.cart[i].phone.title == newItem.phone.title && req.app.locals.cart[i].phone.seller == newItem.phone.seller){
+				req.app.locals.cart.splice(i, 1);
+				res.send("Item Removed");
+				return;
+			}
+		}
+	}
+	let exists = false;
+	for (let item of req.app.locals.cart) {
+		if (item.phone.title == newItem.phone.title && item.phone.seller == newItem.phone.seller) {
+			item.quantity = newItem.quantity;
+			exists = true;
+			break;
+		}
+	}
+
+	if (!exists) {
+		req.app.locals.cart.push(newItem);
+	}
+
+	res.send("Cart updated");
 }
 
 module.exports.addToCart = function (req, res) {
