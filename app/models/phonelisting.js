@@ -80,6 +80,14 @@ phonelistingSchema.statics.getListOfBrands = function (callback) {
   return this.distinct('brand').exec(callback);
 }
 
+phonelistingSchema.statics.buyPhone = function (title, seller, quantity) {
+    this.updateOne(
+        {
+        'title': title,
+        'seller': seller},
+        {$inc: {'stock': -quantity}});
+}
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

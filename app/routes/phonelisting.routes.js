@@ -15,5 +15,6 @@ router.post('/updateMainState', controller.updateMainState);
 router.get('/checkout', controller.showCheckout);
 router.post('/updateCart', controller.updateCart);
 router.get('/getCart', controller.getCart);
+router.post('/buyPhone', controller.buyPhone);
 
 module.exports = router;

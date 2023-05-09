@@ -9,7 +9,7 @@ async function build(){
     for(var i = 0; i<data.length; i++){
         content+=`<div class='product-box' id=${i}>
         <p>${data[i].phone.title}</p>
-        <p>${data[i].phone.price}</p>
+        <p>$${data[i].phone.price}</p>
         <span class="itemCartQuantity" title=${data[i].phone.title} seller=${data[i].phone.seller}> ${data[i].quantity} </span>
         <div>
         <button class="quantity" id=${i}>Change quantity</button>
@@ -21,7 +21,7 @@ async function build(){
     if(data.length > 0){
         content+=`<div class="footer">
         <label>Total price: $${total_price.toFixed(2)}</label>
-        <button>Confirm</button>
+        <button class="confirm-button">Confirm</button>
         <button class="back-button">Back</button>
     </div>`
     }
@@ -38,11 +38,11 @@ async function build(){
                 if (
                     quantity && // if exists
                     !isNaN(quantity) && // if is a number
-                    quantity >= 1 &&
+                    quantity >= 0 &&
                     quantity <= remainingStock &&
                     quantity.indexOf(".") == -1 // if not a decimal
                 ) {
-                    alert("The item has been added to the cart");
+                    alert("The cart has been updated");
                 }
                 else {
                     alert("You have entered an invalid quantity");
@@ -50,7 +50,7 @@ async function build(){
                 }
             }
             else {
-                alert("You cannot add more of this item");
+                alert("Quantity exceeds current stock");
                 return;
             }
         updateCart(cart[e.target.id].phone, quantity);
@@ -59,6 +59,18 @@ async function build(){
     $(".product-box button.remove").click(async function (e){
         updateCart(cart[e.target.id].phone, 0);
         await build();
+    });
+    $(".footer button.back-button").click(async function (e){
+        history.back();
+    });
+    $(".footer button.confirm-button").click(async function (e){
+        let params = {
+            state: "home",
+            data: data
+        }
+        await $.post("/buyPhone");
+        await $.post("/updateMainState", params);
+        window.location.href = "/";
     });
 }
 

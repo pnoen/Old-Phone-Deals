@@ -47,6 +47,15 @@ module.exports.getPhone = function (req, res) {
 	});
 }
 
+module.exports.buyPhone = function (req, res) {
+	let cart = req.app.locals.cart;
+	for(item of cart){
+		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity);
+	}
+	req.app.locals.cart = [];
+	res.json("Done");
+}
+
 module.exports.getPhones = function (req, res) {
 	let searchTerm = req.query.searchTerm;
 	// console.log(searchTerm);
