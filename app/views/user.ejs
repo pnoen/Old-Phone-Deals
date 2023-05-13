@@ -4,6 +4,7 @@
     <title>OldPhoneDeals</title>
   	<link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/signin.css">
+    <link rel="stylesheet" href="css/signout.css">
     <link rel="stylesheet" href="css/profile.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
@@ -37,7 +38,7 @@
 
     <h1 class="phoneListingHeading">Profile</h1>
     <div class="profile-box">
-      <p id="incorrect-login-text">&nbsp;</p>
+      <p id="top-message-text">&nbsp;</p>
 
       <table id="profile-info-table">
         <tr>
@@ -57,8 +58,28 @@
         </tr>
       </table>
 
-      <div class="login-buttons">
+      <table id="change-password-table">
+        <tr>
+          <td>
+            Current Password:
+          </td>
+          <td>
+            <input type="password" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            New Password:
+          </td>
+          <td>
+            <input type="password" />
+          </td>
+        </tr>
+      </table>
+
+      <div class="profile-buttons">
         <button id="edit-profile-btn">Edit Profile</button>
+        <button id="change-password-btn">Change Password</button>
       </div>
     </div>
 

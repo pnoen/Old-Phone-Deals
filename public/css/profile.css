@@ -15,11 +15,29 @@
 }
 
 
-#profile-info-table {
+.profile-box table {
   width: 50%;
 }
 
 
-#profile-info-table td {
+.profile-box table td {
   padding: 1%;
+}
+
+
+#change-password-table {
+  position: absolute;
+  visibility: hidden;
+}
+
+
+.profile-buttons {
+  margin-top: 2%;
+  width: 50%;
+  display: flex;
+}
+
+
+.profile-buttons button {
+  margin: 1%;
 }

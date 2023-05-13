@@ -70,6 +70,34 @@ module.exports.checkLoginCredentials = async function(req, res) {
 }
 
 
+// Checks the entered password against the real one
+module.exports.checkPasswordById = async function(req, res) {
+  var id = req.body.id;
+  var password = req.body.password;
+
+  await userlist.getLoginPasswordById(id, password, async function(err, result) {
+    if (err) {
+      console.log("DB error: Could not get login password by ID.");
+
+    } else {
+      realPassword = result;
+
+      // Occurs when the id does not exist
+      if (result.length === 0) {
+        res.json(false);
+        return;
+      }
+
+      // Compare the real and entered passwords
+      var realPassword = result[0].password;
+      await bcrypt.compare(password, realPassword, function(err2, result2) {
+        res.json(result2);
+      });
+    }
+  });
+}
+
+
 // Gets the user data for the profile page
 module.exports.getUserData = async function(req, res) {
   let id = req.query.id;
@@ -99,6 +127,24 @@ module.exports.updateProfile = async function(req, res) {
 
     } else {
       res.send("Updated");
+    }
+  });
+}
+
+
+// Changes the user's password
+module.exports.changePasswordById = async function(req, res) {
+  var id = req.body.id;
+  var password = req.body.password;
+  var saltRounds = 5;
+
+  let hashedPass = await bcrypt.hash(password, saltRounds);
+
+  await userlist.changePasswordById(id, hashedPass, async function(err, result) {
+    if (err) {
+      console.log("DB error: Could not change password.");
+    } else {
+      res.send("Updated password.");
     }
   });
 }

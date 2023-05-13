@@ -28,6 +28,12 @@ userlistSchema.statics.getLoginPassword = function(email, password, callback) {
 }
 
 
+// Get the real password for this email for checking login
+userlistSchema.statics.getLoginPasswordById = function(id, password, callback) {
+  return this.find({ '_id': id }, { password: 1 }).exec(callback);
+}
+
+
 // Gets the user data for the profile page
 userlistSchema.statics.getUserData = function (id, callback) {
   return this.find({ _id: id }, { firstname: 1, lastname: 1, email: 1 }).exec(callback);
@@ -41,6 +47,18 @@ userlistSchema.statics.updateProfile = function (id, firstname, lastname, email,
     { $set:
       {
         firstname: firstname, lastname: lastname, email: email
+      }
+    }).exec(callback);
+}
+
+
+// Updates the user's profile by id
+userlistSchema.statics.changePasswordById = function (id, password, callback) {
+  return this.updateOne(
+    { _id: id },
+    { $set:
+      {
+        password: password
       }
     }).exec(callback);
 }
