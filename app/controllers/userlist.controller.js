@@ -82,3 +82,23 @@ module.exports.getUserData = async function(req, res) {
   	}
   });
 }
+
+
+// Updates the user profile
+module.exports.updateProfile = async function(req, res) {
+  var id = req.body.id;
+  var firstname = req.body.firstname;
+  var lastname = req.body.lastname;
+  var email = req.body.email;
+
+  await userlist.updateProfile(id, firstname, lastname, email,
+    async function(err, result) {
+
+    if(err) {
+      console.log("DB error: Could not update profile.");
+
+    } else {
+      res.send("Updated");
+    }
+  });
+}

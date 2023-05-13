@@ -6,6 +6,7 @@ router.get('/', controller.showHome);
 
 router.post('/checkLoginCredentials', controller.checkLoginCredentials);
 router.post('/updateLoggedInState', controller.updateLoggedInState);
+router.post('/updateProfile', controller.updateProfile);
 router.get('/getUserById', controller.getUserById);
 router.get('/getCurrentUser', controller.getCurrentUser);
 router.get('/getUserData', controller.getUserData);

@@ -34,6 +34,18 @@ userlistSchema.statics.getUserData = function (id, callback) {
 }
 
 
+// Updates the user's profile by id
+userlistSchema.statics.updateProfile = function (id, firstname, lastname, email, callback) {
+  return this.updateOne(
+    { _id: id },
+    { $set:
+      {
+        firstname: firstname, lastname: lastname, email: email
+      }
+    }).exec(callback);
+}
+
+
 var Userlist = mongoose.model('Userlist', userlistSchema, 'userlist');
 
 module.exports = Userlist;
