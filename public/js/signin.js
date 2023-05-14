@@ -74,9 +74,10 @@ function displayRegisterForm() {
 
 
 // Appends an error message
-function outputError(errorMessage) {
+function outputError(errorMessage, colour) {
   var incorrectText = document.getElementById("incorrect-login-text");
   incorrectText.innerHTML = errorMessage;
+  incorrectText.style.color = colour;
 }
 
 
@@ -105,11 +106,11 @@ async function signUserIn() {
   });
 
   if (data === false) {
-    outputError("The email or password is incorrect.");
+    outputError("The email or password is incorrect.", "indianred");
 
   } else {
     // Sign the user in
-    outputError("&nbsp;");
+    outputError("&nbsp;", "indianred");
     loggedIn = true;
     await updateLoggedInState(loggedIn);
     await getCurrentUser(params.email);
@@ -140,19 +141,30 @@ async function signUpUser() {
     password: inputBoxes[3].value
   }
 
-  validateInput(params);
-  // TODO: Post to backend
+  var validated = validateInput(params);
+
+  if (validated === true) {
+    var data;
+    await $.post("/user/registerNewUser", params, function(res) {
+      data = res;
+    });
+
+    // TODO: Send verification email before can sign in
+    outputError("Successfully registered. A verification email has been sent.", "green");
+  }
 }
 
 // Validates the input for creating an account
 function validateInput(params) {
   if (params.firstname === "" || params.lastname === ""
       || params.email === "" || params.password === "") {
-    outputError("All fields are mandatory.");
-    return;
+    outputError("All fields are mandatory.", "indianred");
+    return false;
   }
 
   // TODO: Email regex
+
+  return true;
 }
 
 
