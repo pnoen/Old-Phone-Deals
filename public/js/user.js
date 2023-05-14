@@ -1,5 +1,8 @@
 buttons = [document.getElementById("edit-profile-btn"),
-  document.getElementById("change-password-btn")];
+  document.getElementById("change-password-btn"),
+  document.getElementById("manage-listings-btn"),
+  document.getElementById("view-comments-btn")
+];
 
 tables = [document.getElementById("profile-info-table"),
   document.getElementById("change-password-table")];
@@ -94,6 +97,12 @@ async function initialProfileLoad() {
 
   var changePasswordBtn = document.getElementById("change-password-btn");
   changePasswordBtn.addEventListener("click", changePasswordPage);
+
+  var manageListingsBtn = document.getElementById("manage-listings-btn");
+  //manageListingsBtn.addEventListener("click", manageListingsPage);
+
+  var viewCommentsBtn = document.getElementById("view-comments-btn");
+  //viewCommentsBtn.addEventListener("click", viewCommentsBtn);
 }
 
 initialProfileLoad();
