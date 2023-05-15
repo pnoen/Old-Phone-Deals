@@ -144,13 +144,10 @@ async function signUpUser() {
   var validated = validateInput(params);
 
   if (validated === true) {
-    var data;
-    await $.post("/user/registerNewUser", params, function(res) {
-      data = res;
-    });
+    await $.post("/user/registerNewUser", params);
 
     // TODO: Send verification email before can sign in
-    outputError("Successfully registered. A verification email has been sent.", "green");
+    outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
   }
 }
 

@@ -230,3 +230,33 @@ module.exports.updateMainState = function (req, res) {
 
 	res.send("updated");
 }
+
+
+// Adds the new listing
+module.exports.addNewListing = async function(req, res) {
+  var title = req.body.title;
+  var brand = req.body.brand;
+  var image = req.body.image;
+  var stock = req.body.stock;
+  var seller = req.body.seller;
+	var price = req.body.price;
+	var reviews = [];
+
+  await phonelisting.addNewListing(title, brand, image, stock, seller, price, reviews);
+  res.send("New listing added");
+}
+
+
+// Gets all the listings for the current user
+module.exports.getListingsByUser = function (req, res) {
+	var id = req.query.id;
+
+	phonelisting.getListingsByUser(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not get the listings for the current user.");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}

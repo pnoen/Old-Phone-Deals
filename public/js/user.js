@@ -5,7 +5,9 @@ buttons = [document.getElementById("edit-profile-btn"),
 ];
 
 tables = [document.getElementById("profile-info-table"),
-  document.getElementById("change-password-table")];
+  document.getElementById("change-password-table"),
+  document.getElementById("manage-listings-table")
+];
 
 
 // Outputs an error message
@@ -35,7 +37,7 @@ function createConfirmBackBtns(btnId, text) {
   buttonSect.innerHTML = "";
 
   buttonSect.innerHTML = `
-    <button id="cancel-button">Cancel</button>
+    <button id="cancel-button">Back</button>
     <button id="` + btnId + `">` + text + `</button>
   `
 
@@ -44,8 +46,13 @@ function createConfirmBackBtns(btnId, text) {
 }
 
 
+/*
+ * PROFILE
+*/
 // Goes back to the initial profile page
 function goBackToProfile() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "Profile";
   setUpPage("profile-info-table");
 }
 
@@ -64,6 +71,10 @@ function bringOgBtnsBack() {
 
 // Sets up the page
 function setUpPage(tableId) {
+  if (tableId !== "manage-listings-tables") {
+    document.getElementById("my-listings").innerHTML = "";
+  }
+
   bringOgBtnsBack();
 
   if (tableId === "profile-info-table") {
@@ -82,6 +93,8 @@ function setUpPage(tableId) {
 
 // The initial page tasks
 async function initialProfileLoad() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "Profile";
 
   // Prefill the data
   var data = await getCurrentUser();
@@ -99,7 +112,7 @@ async function initialProfileLoad() {
   changePasswordBtn.addEventListener("click", changePasswordPage);
 
   var manageListingsBtn = document.getElementById("manage-listings-btn");
-  //manageListingsBtn.addEventListener("click", manageListingsPage);
+  manageListingsBtn.addEventListener("click", manageListingsPage);
 
   var viewCommentsBtn = document.getElementById("view-comments-btn");
   //viewCommentsBtn.addEventListener("click", viewCommentsBtn);
@@ -175,8 +188,14 @@ function profileTableText() {
 }
 
 
+/*
+ * CHANGE PASSWORD
+*/
 // Opens the change password page
 function changePasswordPage() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "Change Password";
+
   setUpPage("change-password-table");
   outputMessage("&nbsp;", "");
   createConfirmBackBtns("save-password-btn", "Update Password");
@@ -197,7 +216,7 @@ async function savePassword() {
   if (passCorrect === true) {
     var newPassword = table.rows[1].querySelectorAll("td")[1].querySelector("input").value;
     await changePassword(newPassword);
-    outputMessage("Your password has been changed", "green");
+    outputMessage("Your password has been changed", "lightseagreen");
     setUpPage("profile-info-table");
 
   } else {
@@ -237,4 +256,123 @@ async function changePassword(newPassword) {
   await $.post("/user/changePasswordById", params, function(res) {
     data = res;
   });
+}
+
+
+/*
+ * MANAGE LISTINGS
+*/
+// Sets up the page for managing listings
+function manageListingsPage() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "Manage Listings";
+
+  setUpPage("manage-listings-table");
+  outputMessage("&nbsp;", "");
+  createConfirmBackBtns("save-listing-btn", "Add Listing");
+
+  var addListingBtn = document.getElementById("save-listing-btn");
+  addListingBtn.addEventListener("click", addListing);
+
+  document.getElementById("my-listings").innerHTML = `
+    <h1 class="phoneListingHeading">My Listings</h1>
+  `;
+  displayListings();
+}
+
+
+// Adds the new listing by the user
+async function addListing() {
+  var table = document.getElementById("manage-listings-table");
+
+  // TODO: Validations
+  var valid = true;
+  for (var i = 0; i < table.rows.length; i++) {
+    if (table.rows[i].querySelectorAll("td")[1].querySelector("input").value === "") {
+      valid = false;
+      outputMessage("All fields are mandatory.", "indianred");
+    }
+  }
+
+  if (valid === true) {
+    outputMessage("&nbsp;", "");
+    var params = {
+      title: table.rows[0].querySelectorAll("td")[1].querySelector("input").value,
+      brand: table.rows[1].querySelectorAll("td")[1].querySelector("input").value,
+      image: table.rows[4].querySelectorAll("td")[1].querySelector("input").value,
+      stock: table.rows[2].querySelectorAll("td")[1].querySelector("input").value,
+      seller: currentUser,
+      price: table.rows[3].querySelectorAll("td")[1].querySelector("input").value
+    }
+
+    await $.post("/addNewListing", params);
+    outputMessage("Your listing has been added.", "lightseagreen");
+
+    displaySingleListing(params);
+  }
+}
+
+
+// Gets the listings and displays them
+async function displayListings() {
+  var data = await getListingsByUser();
+  for (var i = 0; i < data.length; i++) {
+    displaySingleListing(data[i]);
+  }
+}
+
+
+// Gets the listings from the user from the backend
+async function getListingsByUser() {
+  let data;
+  let params = {
+    id: currentUser
+  }
+  await $.getJSON("/getListingsByUser", params, function(res) {
+    data = res;
+  });
+
+  return data;
+}
+
+
+// Displays a single listing
+function displaySingleListing(listing) {
+  var listings = document.getElementById("my-listings");
+
+  listings.innerHTML += (`
+    <div class='single-listing'>
+      <img src='` + listing.image + `' />
+      <table>
+        <tr>
+          <th>
+            Title
+          </th>
+          <th>
+            Brand
+          </th>
+          <th>
+            Price
+          </th>
+          <th>
+            Stock
+          </th>
+        </tr>
+        <tr>
+          <td>
+            ` + listing.title + `
+          </td>
+          <td>
+            ` + listing.brand + `
+          </td>
+          <td>
+            ` + listing.price + `
+          </td>
+          <td>
+            ` + listing.stock + `
+          </td>
+        </tr>
+      </table>
+    </div>
+    `);
 }

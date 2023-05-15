@@ -88,6 +88,27 @@ phonelistingSchema.statics.buyPhone = function (title, seller, quantity, callbac
         {$inc: {'stock': -quantity}}).exec(callback);
 }
 
+
+// Adds the new phone listing
+phonelistingSchema.statics.addNewListing = function (title, brand, image, stock, seller, price, reviews) {
+  return this.create({
+    title: title,
+    brand: brand,
+    image: image,
+    stock: stock,
+    seller: seller,
+    price: price,
+    reviews: reviews
+  });
+}
+
+
+// Gets the listings for the current user
+phonelistingSchema.statics.getListingsByUser = function (id, callback) {
+  return this.find({seller: id}).exec(callback);
+}
+
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

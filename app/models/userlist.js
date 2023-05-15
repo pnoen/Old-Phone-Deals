@@ -65,7 +65,7 @@ userlistSchema.statics.changePasswordById = function (id, password, callback) {
 
 
 // Registers the new user
-userlistSchema.statics.registerNewUser = function (firstname, lastname, email, hashedPass, callback) {
+userlistSchema.statics.registerNewUser = function (firstname, lastname, email, hashedPass) {
   return this.create({
     firstname: firstname,
     lastname: lastname,
