@@ -50,8 +50,8 @@ async function build(){
     else{
         content += `<h2>Nothing in cart</h2>
         <div class="footer">
-        <button class="confirm-button">Confirm</button>
-        <button class="back-button">Back</button>`
+        <button class="back-button">Back</button>
+        </div>`
     }
     $("#checkoutContent").append(content);
     $(".prod-box button.quantity").click(async function (e){
