@@ -162,6 +162,18 @@ phonelistingSchema.statics.removeListing = function (id, callback) {
   ).exec(callback);
 }
 
+phonelistingSchema.statics.addReview = function (id, reviewer, rating, comment, callback) {
+  return this.updateOne(
+    { _id: id },
+    { $push: {
+      "reviews": {
+        "reviewer": reviewer,
+        "rating": rating,
+        "comment": comment
+      }}})
+    .exec(callback);
+}
+
 
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 

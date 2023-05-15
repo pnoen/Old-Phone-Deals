@@ -170,40 +170,62 @@ async function createItemListingElement(phone) {
     </div>
     `
     $("#mainContent").append(element);
+    
+    // add to cart button
     $(".quantityCartSection button").click(function (e) {
         if (loggedIn == "false") { // not logged in
             window.location.href = "/signin"
+            return;
         }
-        else {
-            let remainingStock = phone.stock - cartItem.quantity;
-            if (remainingStock > 0) {
-                let quantity = prompt("Please enter the quantity");
-                if (
-                    quantity && // if exists
-                    !isNaN(quantity) && // if is a number
-                    quantity >= 1 &&
-                    quantity <= remainingStock &&
-                    quantity.indexOf(".") == -1 // if not a decimal
-                ) {
-                    // quantity = parseInt(quantity);
-                    addToCart(phone, quantity);
-                    alert("The item has been added to the cart");
-                    changeToItemState(phone.title, phone.seller);
-                }
-                else {
-                    alert("You have entered an invalid quantity");
-                }
+
+        let remainingStock = phone.stock - cartItem.quantity;
+        if (remainingStock > 0) {
+            let quantity = prompt("Please enter the quantity");
+            if (
+                quantity && // if exists
+                !isNaN(quantity) && // if is a number
+                quantity >= 1 &&
+                quantity <= remainingStock &&
+                quantity.indexOf(".") == -1 // if not a decimal
+            ) {
+                // quantity = parseInt(quantity);
+                addToCart(phone, quantity);
+                alert("The item has been added to the cart");
+                changeToItemState(phone.title, phone.seller);
             }
             else {
-                alert("You cannot add more of this item");
+                alert("You have entered an invalid quantity");
             }
+        }
+        else {
+            alert("You cannot add more of this item");
         }
         
     })
-    // $("#mainContent").append(createItemReviewsContainerElement());
+    
+    // show more reviews button
     $(".itemAllReviews button:last").click(async function (e) {
         let updatedPhone = await getPhone(phone.title, phone.seller);
         createItemReviewsElement(updatedPhone);
+    });
+
+    // add review button
+    $(".itemAddReviewRatingContainer button").click(async function (e) {
+        if (loggedIn == "false") { // not logged in
+            window.location.href = "/signin"
+            return;
+        }
+
+        let comment = $("#itemAddReviewComment").val() // textarea element
+        let rating = $("#itemAddReviewRating").val() // dropdown element
+        
+        if (comment.trim().length == 0) {
+            alert("Comment is empty")
+            return;
+        }
+        
+        await addReview(phone._id, rating, comment);
+        alert("Review added")
     });
 }
 
@@ -222,6 +244,15 @@ async function getCurrentUserId() {
         data = res;
     });
     return data.currentUser;
+}
+
+async function addReview(phoneId, rating, comment) {
+    let params = {
+        phoneId: phoneId,
+        rating: rating,
+        comment: comment
+    }
+    await $.post("/addReview", params);
 }
 
 async function createItemReviewsElement(phone) {
@@ -259,9 +290,9 @@ async function createItemReviewsElement(phone) {
             <p class="itemReviewComment">${review.comment}</p>
         </div>
         `;
-        $(".itemAllReviews button").last().before(element);
+        $(".itemAllReviews button").last().before(element); // add before show more reviews button
 
-        if (review.hidden == "") {
+        if (review.hidden == "") { // if hidden, add hiddenReview class
             $(".itemReview").last().toggleClass("hiddenReview");
         }
 

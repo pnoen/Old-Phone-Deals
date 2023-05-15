@@ -29,6 +29,7 @@ router.get('/getUsersComments', controller.getUsersComments);
 router.post('/disableListing', controller.disableListing);
 router.post('/enableListing', controller.enableListing);
 router.post('/removeListing', controller.removeListing);
+router.post('/addReview', controller.addReview);
 
 
 module.exports = router;

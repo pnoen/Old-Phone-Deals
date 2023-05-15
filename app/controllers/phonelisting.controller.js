@@ -420,3 +420,24 @@ module.exports.removeListing = function (req, res) {
 		}
 	});
 }
+
+module.exports.addReview = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let phoneId = req.body.phoneId;
+	let currentUser = sess.currentUser;
+	let rating = req.body.rating;
+	let comment = req.body.comment;
+
+	phonelisting.addReview(phoneId, currentUser, rating, comment, function (err, result) {
+		if (err) {
+			console.log("db error");
+		}
+		else {
+			res.send("added");
+		}
+	});
+}
