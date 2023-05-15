@@ -203,12 +203,14 @@ module.exports.registerNewUser = async function(req, res) {
 module.exports.sendVerifyEmail = async function(req, res) {
   var email = req.query.email;
   let emailTemplate;
-  ejs.renderFile("/home/lalemany/Lab05-Wed-Group05/app/views/verify.ejs",
+  console.log(path.join(__dirname, "../views/verify.ejs"));
+  ejs.renderFile(path.join(__dirname, "../views/verify.ejs"),
   {
     confirm_link:"localhost:3000/verifyEmail="+email
   })
   .then(result => {
     emailTemplate = result;
+    console.log(emailTemplate);
     res.send(emailTemplate);
   })
   .catch(err => {
