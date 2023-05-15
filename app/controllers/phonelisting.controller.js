@@ -18,10 +18,6 @@ module.exports.showHome = function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	// let loggedIn = req.app.locals.loggedIn;
-	// let state = req.app.locals.state;
-	// let mainPageData = req.app.locals.mainPageData;
-	// let currentUser = req.app.locals.currentUser;
 	res.render("main.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -40,10 +36,6 @@ module.exports.showSignIn = function(req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	// let loggedIn = req.app.locals.loggedIn;
-	// let state = req.app.locals.state;
-	// let mainPageData = req.app.locals.mainPageData;
-	// let currentUser = req.app.locals.currentUser;
   res.render("signin.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -62,10 +54,6 @@ module.exports.showProfile = function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	// let loggedIn = req.app.locals.loggedIn;
-	// let state = req.app.locals.state;
-	// let mainPageData = req.app.locals.mainPageData;
-	// let currentUser = req.app.locals.currentUser;
   res.render("user.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -85,10 +73,6 @@ module.exports.showCheckout = async function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	// let loggedIn = req.app.locals.loggedIn;
-	// let state = req.app.locals.state;
-	// let mainPageData = req.app.locals.mainPageData;
-	// let currentUser = req.app.locals.currentUser;
 	res.render("checkout.ejs", {
 		loggedIn: loggedIn,
 		cart: cart,
@@ -142,7 +126,6 @@ module.exports.buyPhone = function (req, res) {
 
 	let cart = sess.cart;
 	
-	// let cart = req.app.locals.cart;
 	for(item of cart){
 		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity, function (err, result) {
 			if (err) {
@@ -154,7 +137,6 @@ module.exports.buyPhone = function (req, res) {
 		});
 	}
 	sess.cart = [];
-	// req.app.locals.cart = [];
 	res.json("Done");
 }
 
@@ -190,7 +172,6 @@ module.exports.getCart = function (req, res) {
 
 	let cart = sess.cart;
 	res.json(cart);
-	// res.json(req.app.locals.cart);
 }
 module.exports.updateCart = function (req, res) {
 	let sess = req.session;

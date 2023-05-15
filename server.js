@@ -8,11 +8,6 @@ var userlistRoutes = require("./app/routes/userlist.routes");
 var phonelistingRoutes = require("./app/routes/phonelisting.routes");
 
 var app = express();
-// app.locals.state = "home";
-// app.locals.cart = [];
-// app.locals.mainPageData = {};
-// app.locals.loggedIn = false;
-// app.locals.currentUser = "";
 
 app.set('views', path.join(__dirname,'/app/views'));
 

@@ -9,15 +9,6 @@ function initialiseSessionVars(sess) {
 	sess.currentUser = "";
 }
 
-// module.exports.showHome = function (req, res) {
-//   let sess = req.session;
-// 	if (!(sess && "state" in sess)) {
-// 		initialiseSessionVars(sess)
-//   }
-  
-//   res.render("user.ejs");
-// }
-
 module.exports.getUserById = async function (req, res) {
   let id = req.query.id;
 
