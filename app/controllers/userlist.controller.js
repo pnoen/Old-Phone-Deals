@@ -1,8 +1,12 @@
 var userlist = require("../models/userlist");
 var bcrypt = require('bcrypt');
 
-module.exports.showHome = function (req, res) {
-  res.render("user.ejs");
+function initialiseSessionVars(sess) {
+	sess.state = "home";
+	sess.cart = [];
+	sess.mainPageData = [];
+	sess.loggedIn = false;
+	sess.currentUser = "";
 }
 
 module.exports.getUserById = async function (req, res) {
@@ -20,24 +24,34 @@ module.exports.getUserById = async function (req, res) {
 
 
 // Gets the id of the current user based on their email
-module.exports.getCurrentUser = async function(req, res) {
+module.exports.getCurrentUser = async function (req, res) {
+  let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
   let email = req.query.email;
 
   userlist.getUserByEmail(email, function(err, result) {
   	if (err) {
   		console.log("Could not get the current user with email " + email);
-  	} else {
+    } else {
+      sess.currentUser = result[0]._id;
   		res.json(result);
-      req.app.locals.currentUser = result[0]._id;
   	}
   });
 }
 
 
 // Updates the logged in state
-module.exports.updateLoggedInState = function(req, res) {
+module.exports.updateLoggedInState = function (req, res) {
+  let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
 	let loggedIn = req.body.loggedIn;
-	req.app.locals.loggedIn = (loggedIn === "true");
+	sess.loggedIn = (loggedIn === "true");
 	res.send("Updated");
 }
 
@@ -167,6 +181,17 @@ module.exports.registerNewUser = async function(req, res) {
 }
 
 
+module.exports.getCurrentUserId = async function (req, res) {
+  let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+  let data = {
+    currentUser: sess.currentUser
+  }
+  res.json(data);
+}
 // Checks if the current email is in use already
 module.exports.checkEmailInUse = async function(req, res) {
   let email = req.query.email;

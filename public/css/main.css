@@ -223,7 +223,7 @@ div.itemReviewTop p {
   font-weight: 600;
 }
 
-div.ratingStars {
+div.ratingStars, div.visibilityBtn {
   margin-left: auto;
 }
 
@@ -243,6 +243,10 @@ p.itemReviewComment {
 
 div.itemAllReviews button {
   margin-top: 1.5em;
+}
+
+div.hiddenReview {
+  background-color: #eeeeee;
 }
 
 div.itemAddReviewContainer h4 {

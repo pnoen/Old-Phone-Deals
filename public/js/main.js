@@ -210,17 +210,37 @@ async function addToCart(phone, quantity) {
     await $.post("/addToCart", params);
 }
 
+async function getCurrentUserId() {
+    let data;
+
+    await $.getJSON("/user/getCurrentUserId", null, function (res) {
+        data = res;
+    });
+    return data.currentUser;
+}
+
 // TODO make hidden reviews a different colour
-// TODO reviews with more than 200 characters have a show more button
 // TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     let reviews = phone.reviews;
+    let reviewThreshold = 3;
     for (let i = reviewCounter; i < reviews.length; i++) {
-        if (i == reviewCounter + 3) { // Displays reviews 3 at a time
+        if (i == reviewCounter + reviewThreshold) { // Displays reviews 3 at a time
             reviewCounter = i;
             break;
         }
         let review = reviews[i];
+
+        let currentUser = await getCurrentUserId();
+        if ( // if hidden and the logged in user is not either seller or author of review
+            review.hidden == "" &&
+            !(currentUser == phone.seller ||
+                currentUser == review.reviewer)
+        ) {
+            reviewThreshold += 1; // increment threshold since it is skipping a review
+            continue;
+        }
+
         let user = await getUserById(review.reviewer);
         let rating = "★".repeat(review.rating);
         let ratingEmpty = "★".repeat(5 - review.rating);
@@ -230,14 +250,48 @@ async function createItemReviewsElement(phone) {
                 ${user.firstname} ${user.lastname}
               </p>
               <div class="ratingStars">
-                <span class="itemReviewRating">${rating}</span>
-                <span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+                <span class="itemReviewRating">${rating}</span><span class="itemReviewRatingEmpty">${ratingEmpty}</span>
               </div>
             </div>
             <p class="itemReviewComment">${review.comment}</p>
         </div>
-        `
-        $(".itemAllReviews button").before(element);
+        `;
+        $(".itemAllReviews button").last().before(element);
+
+        if (review.hidden == "") {
+            $(".itemReview").last().toggleClass("hiddenReview");
+        }
+
+        // Show and hide review button for author and reviewer
+        if (currentUser == phone.seller || currentUser == review.reviewer) {
+            let visibilityBtnElement = `<div class="visibilityBtn">
+                <button>Show/Hide</button>
+            </div>`
+            $(".ratingStars").last().before(visibilityBtnElement);
+
+            let lastReview = $(".itemReview").last();
+            $(".itemReviewTop button").last().click(function (e) {
+                lastReview.toggleClass("hiddenReview");
+                // TODO change db
+            });
+        }
+
+        // Show more button for comments that are more than 200 chars
+        if (review.comment.length > 200) {
+            let shortComment = review.comment.match(/.{1,200}/)[0]; // match any characters of length 1-200
+            let commentElement = $(".itemReviewComment").last();
+            commentElement.html(shortComment + "...");
+            let btnElement = `<div class="commentShowMore">
+                <button>Show more</button>
+            </div>`;
+            commentElement.after(btnElement);
+
+            let showMoreBtn = $(".itemReview button").last();
+            showMoreBtn.click(function (e) {
+                commentElement.html(review.comment);
+                showMoreBtn.remove();
+            })
+        }
         if (i == reviews.length - 1) {
             reviewCounter = reviews.length;
         }
@@ -261,5 +315,6 @@ else if (state == "item") {
     changeToItemState(mainPageData.title, mainPageData.seller);
 }
 else if (state == "search") {
+    console.log(mainPageData);
     changeToSearchState(mainPageData.searchTerm, mainPageData.brand, mainPageData.maxPrice);
 }
