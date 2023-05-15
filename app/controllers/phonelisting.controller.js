@@ -285,12 +285,12 @@ module.exports.getHighestPrice = function (req, res) {
 	  });
 }
 
-module.exports.setHiddenReview = function (req, res) {
+module.exports.setHiddenReviewByTitleAndSeller = function (req, res) {
 	let title = req.body.title;
 	let seller = req.body.seller;
 	let reviewIndex = req.body.reviewIndex;
 
-	phonelisting.setHiddenReview(title, seller, reviewIndex, function (err, result) {
+	phonelisting.setHiddenReviewByTitleAndSeller(title, seller, reviewIndex, function (err, result) {
 		if (err) {
 			console.log("db error");
 		} else {
@@ -300,11 +300,11 @@ module.exports.setHiddenReview = function (req, res) {
 	})
 }
 
-module.exports.unsetHiddenReview = function (req, res) {
+module.exports.unsetHiddenReviewByTitleAndSeller = function (req, res) {
 	let title = req.body.title;
 	let seller = req.body.seller;
 	let reviewIndex = req.body.reviewIndex;
-	phonelisting.unsetHiddenReview(title, seller, reviewIndex, function (err, result) {
+	phonelisting.unsetHiddenReviewByTitleAndSeller(title, seller, reviewIndex, function (err, result) {
 		if (err) {
 			console.log("db error");
 		} else {

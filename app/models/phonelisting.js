@@ -88,7 +88,7 @@ phonelistingSchema.statics.buyPhone = function (title, seller, quantity, callbac
         {$inc: {'stock': -quantity}}).exec(callback);
 }
 
-phonelistingSchema.statics.setHiddenReview = function (title, seller, reviewIndex, callback) {
+phonelistingSchema.statics.setHiddenReviewByTitleAndSeller = function (title, seller, reviewIndex, callback) {
     let reviewField = "reviews." + reviewIndex + ".hidden";
     return this.updateOne(
         {
@@ -99,7 +99,7 @@ phonelistingSchema.statics.setHiddenReview = function (title, seller, reviewInde
         .exec(callback);
 }
 
-phonelistingSchema.statics.unsetHiddenReview = function (title, seller, reviewIndex, callback) {
+phonelistingSchema.statics.unsetHiddenReviewByTitleAndSeller = function (title, seller, reviewIndex, callback) {
     let reviewField = "reviews." + reviewIndex + ".hidden";
     return this.updateOne(
         {

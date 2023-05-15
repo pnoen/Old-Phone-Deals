@@ -276,10 +276,10 @@ async function createItemReviewsElement(phone) {
             $(".itemReviewTop button").last().click(async function (e) {
                 lastReview.toggleClass("hiddenReview");
                 if (lastReview.hasClass("hiddenReview")) { // if changed to hidden
-                    await setHiddenReview(phone.title, phone.seller, i);
+                    await setHiddenReviewByTitleAndSeller(phone.title, phone.seller, i);
                 }
                 else {
-                    await unsetHiddenReview(phone.title, phone.seller, i);
+                    await unsetHiddenReviewByTitleAndSeller(phone.title, phone.seller, i);
                 }
             });
         }
@@ -306,22 +306,22 @@ async function createItemReviewsElement(phone) {
     }
 }
 
-async function setHiddenReview(title, seller, reviewIndex) {
+async function setHiddenReviewByTitleAndSeller(title, seller, reviewIndex) {
     let params = {
         title: title,
         seller: seller,
         reviewIndex: reviewIndex
     }
-    await $.post("/setHiddenReview", params);
+    await $.post("/setHiddenReviewByTitleAndSeller", params);
 }
 
-async function unsetHiddenReview(title, seller, reviewIndex) {
+async function unsetHiddenReviewByTitleAndSeller(title, seller, reviewIndex) {
     let params = {
         title: title,
         seller: seller,
         reviewIndex: reviewIndex
     }
-    await $.post("/unsetHiddenReview", params);
+    await $.post("/unsetHiddenReviewByTitleAndSeller", params);
 }
 
 function updateHomeAnchor() {
