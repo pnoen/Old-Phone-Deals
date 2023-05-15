@@ -275,3 +275,48 @@ module.exports.getUsersComments = function (req, res) {
 		}
 	});
 }
+
+
+// Disables listing by id
+module.exports.disableListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.disableListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not disable the listing.");
+		}
+		else {
+			res.send("Disabled");
+		}
+	});
+}
+
+
+// Enables listing by id
+module.exports.enableListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.enableListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not enable the listing.");
+		}
+		else {
+			res.send("Enabled");
+		}
+	});
+}
+
+
+// Removes listing by id
+module.exports.removeListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.removeListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not remove the listing.");
+		}
+		else {
+			res.send("Removed");
+		}
+	});
+}

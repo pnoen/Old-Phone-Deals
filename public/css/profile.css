@@ -59,7 +59,7 @@
 
 
 #sign-out-btn {
-  background-color: indianred;
+  background-color: lightcoral;
 }
 
 
@@ -88,6 +88,7 @@
 
   background-color: white;
   padding: 2%;
+  box-shadow: 0px 5px 10px 0px rgba(97, 97, 105, 0.3);
 }
 
 .single-listing table {
@@ -108,4 +109,5 @@
   background-color: white;
   padding: 2%;
   width: 80%;
+  box-shadow: 0px 5px 10px 0px rgba(97, 97, 105, 0.3);
 }

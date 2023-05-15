@@ -332,7 +332,28 @@ async function addListing() {
     await $.post("/addNewListing", params);
     outputMessage("Your listing has been added.", "lightseagreen");
 
+    // TODO: Return new id and add to params
+
     displaySingleListing("#my-listings", params);
+    makeListingButtons();
+  }
+}
+
+
+// Adds event listeners to the listing buttons
+function makeListingButtons() {
+  var enableBtns = document.querySelectorAll(".Enable-listing-btn");
+  var disableBtns = document.querySelectorAll(".Disable-listing-btn");
+  var removeBtns = document.querySelectorAll(".remove-listing-btn");
+
+  for (var i = 0; i < enableBtns.length; i++) {
+    enableBtns[i].addEventListener("click", enableListing);
+  }
+  for (var i = 0; i < disableBtns.length; i++) {
+    disableBtns[i].addEventListener("click", disableListing);
+  }
+  for (var i = 0; i < removeBtns.length; i++) {
+    removeBtns[i].addEventListener("click", removeListing);
   }
 }
 
@@ -343,6 +364,8 @@ async function displayListings() {
   for (var i = 0; i < data.length; i++) {
     displaySingleListing("#my-listings", data[i]);
   }
+
+  makeListingButtons();
 }
 
 
@@ -364,8 +387,13 @@ async function getListingsByUser() {
 function displaySingleListing(container, listing) {
   var listings = document.querySelector(container);
 
+  var enabledDisabled = "Disable";
+  if (listing.disabled !== undefined) {
+    enabledDisabled = "Enable"
+  }
+
   listings.innerHTML += (`
-    <div class='single-listing'>
+    <div class='single-listing' id=` + listing._id + `>
       <img src='` + listing.image + `' />
       <table>
         <tr>
@@ -397,8 +425,66 @@ function displaySingleListing(container, listing) {
           </td>
         </tr>
       </table>
+      <div class='listing-btn-group'>
+        <button class='` + enabledDisabled + `-listing-btn'>` + enabledDisabled + `</button>
+        <button class='remove-listing-btn'>Remove</button>
+      </div>
     </div>
     `);
+}
+
+
+// Enables a listing
+async function enableListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/enableListing", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Disable-listing-button";
+  event.target.innerHTML = "Disable";
+  event.target.removeEventListener("click", enableListing);
+  event.target.addEventListener("click", disableListing);
+}
+
+
+// Disables a listing
+async function disableListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/disableListing", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Enable-listing-button";
+  event.target.innerHTML = "Enable";
+  event.target.removeEventListener("click", disableListing);
+  event.target.addEventListener("click", enableListing);
+}
+
+
+// Removes a listing
+async function removeListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/removeListing", params, function(res) {
+    data = res;
+  });
+
+  document.getElementById(id).remove();
 }
 
 
