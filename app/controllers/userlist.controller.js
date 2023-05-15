@@ -1,5 +1,7 @@
 var userlist = require("../models/userlist");
 var bcrypt = require('bcrypt');
+var ejs = require("ejs");
+var path = require("path");
 
 function initialiseSessionVars(sess) {
 	sess.state = "home";
@@ -198,6 +200,24 @@ module.exports.registerNewUser = async function(req, res) {
   res.send("New user registered");
 }
 
+module.exports.sendVerifyEmail = async function(req, res) {
+  var email = req.query.email;
+  let emailTemplate;
+  ejs.renderFile("/home/lalemany/Lab05-Wed-Group05/app/views/verify.ejs",
+  {
+    confirm_link:"localhost:3000/verifyEmail="+email
+  })
+  .then(result => {
+    emailTemplate = result;
+    res.send(emailTemplate);
+  })
+  .catch(err => {
+    res.status(400).json({
+      message: "Error rendering template",
+      error: err
+    });
+  });
+}
 
 module.exports.getCurrentUserId = async function (req, res) {
   let sess = req.session;

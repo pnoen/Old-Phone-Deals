@@ -76,7 +76,7 @@ async function changePassword() {
 
   // TODO: Send change password email
 
-  // TODO: Change the password, could use "changePasswordByEmail"
+  // TODO: Change the password
 
   outputError("A reset password email has been sent.", "lightseagreen");
 }
@@ -229,7 +229,8 @@ async function signUpUser() {
   outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
 
   // TODO: Send verification email
-
+  
+  await $.get("/user/sendVerifyEmail", params);
   // TODO: Use the verifyEmail function to set the email as verified
 }
 
