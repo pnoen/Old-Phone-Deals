@@ -27,6 +27,8 @@ router.get('/getUsersComments', controller.getUsersComments);
 router.post('/disableListing', controller.disableListing);
 router.post('/enableListing', controller.enableListing);
 router.post('/removeListing', controller.removeListing);
+router.post('/hideComment', controller.hideComment);
+router.post('/showComment', controller.showComment);
 
 
 module.exports = router;

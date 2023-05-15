@@ -76,7 +76,7 @@ async function changePassword() {
 
   // TODO: Send change password email
 
-  // TODO: Change the password
+  // TODO: Change the password, could use "changePasswordByEmail"
 
   outputError("A reset password email has been sent.", "lightseagreen");
 }
