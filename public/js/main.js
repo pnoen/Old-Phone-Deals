@@ -276,5 +276,6 @@ else if (state == "item") {
     changeToItemState(mainPageData.title, mainPageData.seller);
 }
 else if (state == "search") {
+    console.log(mainPageData);
     changeToSearchState(mainPageData.searchTerm, mainPageData.brand, mainPageData.maxPrice);
 }

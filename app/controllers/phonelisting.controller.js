@@ -1,10 +1,27 @@
 var phonelisting = require("../models/phonelisting");
 
+function initialiseSessionVars(sess) {
+	sess.state = "home";
+	sess.cart = [];
+	sess.mainPageData = {};
+	sess.loggedIn = false;
+	sess.currentUser = "";
+}
+
 module.exports.showHome = function (req, res) {
-	let loggedIn = req.app.locals.loggedIn;
-	let state = req.app.locals.state;
-	let mainPageData = req.app.locals.mainPageData;
-	let currentUser = req.app.locals.currentUser;
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let loggedIn = sess.loggedIn;
+	let state = sess.state;
+	let mainPageData = sess.mainPageData;
+	let currentUser = sess.currentUser;
+	// let loggedIn = req.app.locals.loggedIn;
+	// let state = req.app.locals.state;
+	// let mainPageData = req.app.locals.mainPageData;
+	// let currentUser = req.app.locals.currentUser;
 	res.render("main.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -14,10 +31,19 @@ module.exports.showHome = function (req, res) {
 }
 
 module.exports.showSignIn = function(req, res) {
-	let loggedIn = req.app.locals.loggedIn;
-	let state = req.app.locals.state;
-	let mainPageData = req.app.locals.mainPageData;
-	let currentUser = req.app.locals.currentUser;
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let loggedIn = sess.loggedIn;
+	let state = sess.state;
+	let mainPageData = sess.mainPageData;
+	let currentUser = sess.currentUser;
+	// let loggedIn = req.app.locals.loggedIn;
+	// let state = req.app.locals.state;
+	// let mainPageData = req.app.locals.mainPageData;
+	// let currentUser = req.app.locals.currentUser;
   res.render("signin.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -26,11 +52,20 @@ module.exports.showSignIn = function(req, res) {
 	});
 }
 
-module.exports.showProfile = function(req, res) {
-	let loggedIn = req.app.locals.loggedIn;
-	let state = req.app.locals.state;
-	let mainPageData = req.app.locals.mainPageData;
-	let currentUser = req.app.locals.currentUser;
+module.exports.showProfile = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let loggedIn = sess.loggedIn;
+	let state = sess.state;
+	let mainPageData = sess.mainPageData;
+	let currentUser = sess.currentUser;
+	// let loggedIn = req.app.locals.loggedIn;
+	// let state = req.app.locals.state;
+	// let mainPageData = req.app.locals.mainPageData;
+	// let currentUser = req.app.locals.currentUser;
   res.render("user.ejs", {
 		loggedIn: loggedIn,
 		state: state,
@@ -40,13 +75,23 @@ module.exports.showProfile = function(req, res) {
 }
 
 module.exports.showCheckout = async function (req, res) {
-	let loggedIn = req.app.locals.loggedIn;
-	let state = req.app.locals.state;
-	let mainPageData = req.app.locals.mainPageData;
-	let currentUser = req.app.locals.currentUser;
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let loggedIn = sess.loggedIn;
+	let cart = sess.cart;
+	let state = sess.state;
+	let mainPageData = sess.mainPageData;
+	let currentUser = sess.currentUser;
+	// let loggedIn = req.app.locals.loggedIn;
+	// let state = req.app.locals.state;
+	// let mainPageData = req.app.locals.mainPageData;
+	// let currentUser = req.app.locals.currentUser;
 	res.render("checkout.ejs", {
 		loggedIn: loggedIn,
-		cart: req.app.locals.cart,
+		cart: cart,
 		state: state,
 		mainPageData: mainPageData,
 		currentUser: currentUser
@@ -90,7 +135,14 @@ module.exports.getPhone = function (req, res) {
 }
 
 module.exports.buyPhone = function (req, res) {
-	let cart = req.app.locals.cart;
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let cart = sess.cart;
+	
+	// let cart = req.app.locals.cart;
 	for(item of cart){
 		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity, function (err, result) {
 			if (err) {
@@ -101,7 +153,8 @@ module.exports.buyPhone = function (req, res) {
 			}
 		});
 	}
-	req.app.locals.cart = [];
+	sess.cart = [];
+	// req.app.locals.cart = [];
 	res.json("Done");
 }
 
@@ -130,9 +183,21 @@ module.exports.getBrandsList = function (req, res) {
   });
 }
 module.exports.getCart = function (req, res) {
-	res.json(req.app.locals.cart);
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let cart = sess.cart;
+	res.json(cart);
+	// res.json(req.app.locals.cart);
 }
 module.exports.updateCart = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
 	let phone = req.body.phone;
 	let quantity = parseInt(req.body.quantity);
 
@@ -141,16 +206,16 @@ module.exports.updateCart = function (req, res) {
 		quantity: quantity
 	}
 	if(quantity == 0){
-		for(var i = 0; i< req.app.locals.cart.length; i++){
-			if (req.app.locals.cart[i].phone.title == newItem.phone.title && req.app.locals.cart[i].phone.seller == newItem.phone.seller){
-				req.app.locals.cart.splice(i, 1);
+		for(var i = 0; i< sess.cart.length; i++){
+			if (sess.cart[i].phone.title == newItem.phone.title && sess.cart[i].phone.seller == newItem.phone.seller){
+				sess.cart.splice(i, 1);
 				res.send("Item Removed");
 				return;
 			}
 		}
 	}
 	let exists = false;
-	for (let item of req.app.locals.cart) {
+	for (let item of sess.cart) {
 		if (item.phone.title == newItem.phone.title && item.phone.seller == newItem.phone.seller) {
 			item.quantity = newItem.quantity;
 			exists = true;
@@ -159,13 +224,18 @@ module.exports.updateCart = function (req, res) {
 	}
 
 	if (!exists) {
-		req.app.locals.cart.push(newItem);
+		sess.cart.push(newItem);
 	}
 
 	res.send("Cart updated");
 }
 
 module.exports.addToCart = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
 	let phone = req.body.phone;
 	let quantity = parseInt(req.body.quantity);
 
@@ -175,7 +245,7 @@ module.exports.addToCart = function (req, res) {
 	}
 
 	let exists = false;
-	for (let item of req.app.locals.cart) {
+	for (let item of sess.cart) {
 		if (item.phone.title == newItem.phone.title && item.phone.seller == newItem.phone.seller) {
 			item.quantity += newItem.quantity;
 			exists = true;
@@ -184,13 +254,18 @@ module.exports.addToCart = function (req, res) {
 	}
 
 	if (!exists) {
-		req.app.locals.cart.push(newItem);
+		sess.cart.push(newItem);
 	}
 
 	res.send("Added to cart");
 }
 
 module.exports.getCartItemQuantity = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
 	let title = req.query.title;
 	let seller = req.query.seller;
 
@@ -198,7 +273,7 @@ module.exports.getCartItemQuantity = function (req, res) {
 		quantity: 0
 	};
 
-	for (let item of req.app.locals.cart) {
+	for (let item of sess.cart) {
 		if (item.phone.title == title && item.phone.seller == seller) {
 			data.quantity = item.quantity;
 			break;
@@ -219,14 +294,19 @@ module.exports.getHighestPrice = function (req, res) {
 }
 
 module.exports.updateMainState = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
 	let state = req.body.state;
 	let mainPageData = req.body.data;
 	if (state == "home") {
 		mainPageData = {};
 	}
 
-	req.app.locals.state = state;
-	req.app.locals.mainPageData = mainPageData;
+	sess.state = state;
+	sess.mainPageData = mainPageData;
 
 	res.send("updated");
 }
