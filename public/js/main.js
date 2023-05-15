@@ -263,6 +263,9 @@ async function createItemReviewsElement(phone) {
             reviewCounter = i;
             break;
         }
+        if (i == reviews.length - 1) { // if on the last iteration
+            reviewCounter = reviews.length;
+        }
         let review = reviews[i];
 
         let currentUser = await getCurrentUserId();
@@ -330,9 +333,6 @@ async function createItemReviewsElement(phone) {
                 commentElement.html(review.comment);
                 showMoreBtn.remove();
             })
-        }
-        if (i == reviews.length - 1) {
-            reviewCounter = reviews.length;
         }
     }
 }
