@@ -260,3 +260,18 @@ module.exports.getListingsByUser = function (req, res) {
 		}
 	});
 }
+
+
+// Gets all the comments for listings by a certain user
+module.exports.getUsersComments = function (req, res) {
+	var id = req.query.id;
+
+	phonelisting.getUsersComments(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not get the comments for the user.");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}

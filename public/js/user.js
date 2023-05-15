@@ -36,10 +36,16 @@ function createConfirmBackBtns(btnId, text) {
   var buttonSect = document.querySelector(".profile-buttons");
   buttonSect.innerHTML = "";
 
-  buttonSect.innerHTML = `
-    <button id="cancel-button">Back</button>
-    <button id="` + btnId + `">` + text + `</button>
-  `
+  if (text !== "") {
+    buttonSect.innerHTML = `
+      <button id="cancel-button">Back</button>
+      <button id="` + btnId + `">` + text + `</button>
+    `;
+  } else {
+    buttonSect.innerHTML = `
+      <button id="cancel-button">Back</button>
+    `;
+  }
 
   var cancelBtn = document.getElementById("cancel-button");
   cancelBtn.addEventListener("click", goBackToProfile);
@@ -51,8 +57,14 @@ function createConfirmBackBtns(btnId, text) {
 */
 // Goes back to the initial profile page
 function goBackToProfile() {
+  document.querySelector(".comments-box").innerHTML = "";
+
   var heading = document.querySelector(".phoneListingHeading");
   heading.innerHTML = "Profile";
+
+  document.querySelector(".comments-box").style.visibility = "hidden";
+  document.querySelector(".profile-box").style.visibility = "visible";
+
   setUpPage("profile-info-table");
 }
 
@@ -115,7 +127,7 @@ async function initialProfileLoad() {
   manageListingsBtn.addEventListener("click", manageListingsPage);
 
   var viewCommentsBtn = document.getElementById("view-comments-btn");
-  //viewCommentsBtn.addEventListener("click", viewCommentsBtn);
+  viewCommentsBtn.addEventListener("click", viewCommentsPage);
 }
 
 initialProfileLoad();
@@ -308,7 +320,7 @@ async function addListing() {
     await $.post("/addNewListing", params);
     outputMessage("Your listing has been added.", "lightseagreen");
 
-    displaySingleListing(params);
+    displaySingleListing("#my-listings", params);
   }
 }
 
@@ -317,7 +329,7 @@ async function addListing() {
 async function displayListings() {
   var data = await getListingsByUser();
   for (var i = 0; i < data.length; i++) {
-    displaySingleListing(data[i]);
+    displaySingleListing("#my-listings", data[i]);
   }
 }
 
@@ -337,8 +349,8 @@ async function getListingsByUser() {
 
 
 // Displays a single listing
-function displaySingleListing(listing) {
-  var listings = document.getElementById("my-listings");
+function displaySingleListing(container, listing) {
+  var listings = document.querySelector(container);
 
   listings.innerHTML += (`
     <div class='single-listing'>
@@ -375,4 +387,78 @@ function displaySingleListing(listing) {
       </table>
     </div>
     `);
+}
+
+
+/*
+ * VIEW COMMENTS
+*/
+// Sets up the view comments page
+function viewCommentsPage() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "View Comments";
+
+  setUpPage("view-comments-table");
+  outputMessage("&nbsp;", "");
+  var buttonSect = document.querySelector(".profile-buttons");
+  buttonSect.innerHTML = "";
+
+  displayComments();
+}
+
+
+// Gets the comments for this user
+async function displayComments() {
+  document.querySelector(".comments-box").style.visibility = "visible";
+  document.querySelector(".profile-box").style.visibility = "hidden";
+
+  var data = await getUsersComments();
+  for (var i = 0; i < data.length; i++) {
+    displaySingleListing(".comments-box", data[i]);
+    for (var j = 0; j < data[i].reviews.length; j++) {
+      await displaySingleComment(data[i].reviews[j]);
+    }
+  }
+
+  document.querySelector(".comments-box").innerHTML += `
+    <button id="cancel-button">Back</button>
+  `;
+  var cancelBtn = document.getElementById("cancel-button");
+  cancelBtn.addEventListener("click", goBackToProfile);
+}
+
+
+// Gets the comments for a particular user
+async function getUsersComments() {
+  let data;
+  let params = {
+    id: currentUser
+  }
+  await $.getJSON("/getUsersComments", params, function(res) {
+    data = res;
+  });
+
+  return data;
+}
+
+
+async function displaySingleComment(review) {
+  let user = await getUserById(review.reviewer);
+  let rating = "★".repeat(review.rating);
+  let ratingEmpty = "★".repeat(5 - review.rating);
+  let element = `<div class="item-review">
+    <div class="itemReviewTop">
+      <p>
+        ${user.firstname} ${user.lastname}
+      </p>
+      <div class="ratingStars">
+        <span class="itemReviewRating">${rating}</span>
+        <span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+      </div>
+    </div>
+    <p class="itemReviewComment">${review.comment}</p>
+  </div>
+  `;
+
+  document.querySelector(".comments-box").innerHTML += element;
 }

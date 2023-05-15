@@ -109,6 +109,12 @@ phonelistingSchema.statics.getListingsByUser = function (id, callback) {
 }
 
 
+// Gets the comments for this user
+phonelistingSchema.statics.getUsersComments = function (id, callback) {
+  return this.find({seller: id}).exec(callback);
+}
+
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

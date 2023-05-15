@@ -23,5 +23,7 @@ router.get('/getCart', controller.getCart);
 router.post('/buyPhone', controller.buyPhone);
 router.post('/addNewListing', controller.addNewListing);
 router.get('/getListingsByUser', controller.getListingsByUser);
+router.get('/getUsersComments', controller.getUsersComments);
+
 
 module.exports = router;
