@@ -32,7 +32,7 @@ function pageReload(action) {
 }
 
 
-// Verifies an email as being valid
+// Verifies an email as being valid (characters only)
 function verifyEmail(email) {
   var hasAt = email.includes('@');
   if (hasAt === false) {
@@ -84,7 +84,7 @@ function validatePassword(password) {
       requirements[3] = true;
     }
   }
-  
+
   for (var i = 0; i < requirements.length; i++) {
     if (requirements[i] === false) {
       return "Password must contain a capital, lowercase, number and punctuation.";
@@ -92,4 +92,21 @@ function validatePassword(password) {
   }
 
   return "valid";
+}
+
+
+// Checks if an email has been verified
+async function checkEmailVerified(email) {
+  let data;
+  let params = {
+    email: email
+  }
+  await $.getJSON("/user/checkEmailVerified", params, function(res) {
+    data = res;
+  });
+  if (data[0].isvalid === "") {
+    return true;
+  }
+
+  return false;
 }

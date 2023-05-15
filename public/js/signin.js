@@ -30,23 +30,6 @@ function clearLoginSelections() {
 }
 
 
-// Checks the email is verified
-async function checkEmailVerified(email) {
-  // TODO
-  /*
-  var params = {
-    email: email
-  }
-  let data;
-  await $.getJSON("/user/checkEmailVerified", params, function(res) {
-    data = res;
-  });
-
-  return data;
-  */
-}
-
-
 /*
  * FORGOT PASSWORD
 */
@@ -84,7 +67,12 @@ async function changePassword() {
     return false;
   }
 
-  // TODO: Check email is verified
+  // Check email is verified
+  var verified = await checkEmailVerified(email);
+  if (verified === false) {
+    outputError("The email has not been verified.", "indianred");
+    return false;
+  }
 
   // TODO: Send change password email
 
@@ -130,7 +118,12 @@ async function signUserIn() {
     password: inputBoxes[1].value
   }
 
-  // TODO: Check the email is verified, if not then DO NOT log in (return false)
+  // Check the email is verified, if not then DO NOT log in (return false)
+  var verified = await checkEmailVerified(params.email);
+  if (verified === false) {
+    outputError("The email has not been verified.", "indianred");
+    return false;
+  }
 
   // Check the email and password combo
   var data;
@@ -226,13 +219,14 @@ async function signUpUser() {
   }
 
   var validated = validateInput(params);
-
-  if (validated === true) {
-    await $.post("/user/registerNewUser", params);
-    outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
-
-    // TODO: Send verification email
+  if (validated === false) {
+    return false;
   }
+
+  await $.post("/user/registerNewUser", params);
+  outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
+
+  // TODO: Send verification email
 }
 
 

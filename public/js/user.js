@@ -334,8 +334,10 @@ async function addListing() {
 
     // TODO: Return new id and add to params
 
-    displaySingleListing("#my-listings", params);
-    makeListingButtons();
+    document.getElementById("my-listings").innerHTML = `
+      <h1 class="phoneListingHeading">My Listings</h1>
+    `;
+    displayListings();
   }
 }
 

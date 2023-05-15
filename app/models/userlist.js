@@ -81,6 +81,12 @@ userlistSchema.statics.checkEmailInUse = function(email, callback) {
 }
 
 
+// Checks the email is valid
+userlistSchema.statics.checkEmailVerified = function(email, callback) {
+  return this.find({ email: email }, { isvalid: 1 }).exec(callback);
+}
+
+
 var Userlist = mongoose.model('Userlist', userlistSchema, 'userlist');
 
 module.exports = Userlist;

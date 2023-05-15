@@ -183,3 +183,17 @@ module.exports.checkEmailInUse = async function(req, res) {
   	}
   });
 }
+
+
+// Gets all the comments for listings by a certain user
+module.exports.checkEmailVerified = function (req, res) {
+	var email = req.query.email;
+
+	userlist.checkEmailVerified(email, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not check email is valid.");
+		} else {
+      res.json(result);
+		}
+	});
+}
