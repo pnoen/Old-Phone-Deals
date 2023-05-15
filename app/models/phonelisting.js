@@ -88,6 +88,28 @@ phonelistingSchema.statics.buyPhone = function (title, seller, quantity, callbac
         {$inc: {'stock': -quantity}}).exec(callback);
 }
 
+phonelistingSchema.statics.setHiddenReview = function (title, seller, reviewIndex, callback) {
+    let reviewField = "reviews." + reviewIndex + ".hidden";
+    return this.updateOne(
+        {
+            "title": title,
+            "seller": seller
+        },
+        { $set: { [reviewField]: "" } })
+        .exec(callback);
+}
+
+phonelistingSchema.statics.unsetHiddenReview = function (title, seller, reviewIndex, callback) {
+    let reviewField = "reviews." + reviewIndex + ".hidden";
+    return this.updateOne(
+        {
+            "title": title,
+            "seller": seller
+        },
+        { $unset: { [reviewField]: "" } })
+        .exec(callback);
+}
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

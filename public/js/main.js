@@ -219,8 +219,6 @@ async function getCurrentUserId() {
     return data.currentUser;
 }
 
-// TODO make hidden reviews a different colour
-// TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     let reviews = phone.reviews;
     let reviewThreshold = 3;
@@ -270,9 +268,14 @@ async function createItemReviewsElement(phone) {
             $(".ratingStars").last().before(visibilityBtnElement);
 
             let lastReview = $(".itemReview").last();
-            $(".itemReviewTop button").last().click(function (e) {
+            $(".itemReviewTop button").last().click(async function (e) {
                 lastReview.toggleClass("hiddenReview");
-                // TODO change db
+                if (lastReview.hasClass("hiddenReview")) { // if changed to hidden
+                    await setHiddenReview(phone.title, phone.seller, i);
+                }
+                else {
+                    await unsetHiddenReview(phone.title, phone.seller, i);
+                }
             });
         }
 
@@ -296,6 +299,24 @@ async function createItemReviewsElement(phone) {
             reviewCounter = reviews.length;
         }
     }
+}
+
+async function setHiddenReview(title, seller, reviewIndex) {
+    let params = {
+        title: title,
+        seller: seller,
+        reviewIndex: reviewIndex
+    }
+    await $.post("/setHiddenReview", params);
+}
+
+async function unsetHiddenReview(title, seller, reviewIndex) {
+    let params = {
+        title: title,
+        seller: seller,
+        reviewIndex: reviewIndex
+    }
+    await $.post("/unsetHiddenReview", params);
 }
 
 function updateHomeAnchor() {

@@ -274,6 +274,35 @@ module.exports.getHighestPrice = function (req, res) {
 	  });
 }
 
+module.exports.setHiddenReview = function (req, res) {
+	let title = req.body.title;
+	let seller = req.body.seller;
+	let reviewIndex = req.body.reviewIndex;
+
+	phonelisting.setHiddenReview(title, seller, reviewIndex, function (err, result) {
+		if (err) {
+			console.log("db error");
+		} else {
+			console.log(result);
+			
+		}
+	})
+	res.send("hidden status set");
+}
+
+module.exports.unsetHiddenReview = function (req, res) {
+	let title = req.body.title;
+	let seller = req.body.seller;
+	let reviewIndex = req.body.reviewIndex;
+	phonelisting.unsetHiddenReview(title, seller, reviewIndex, function (err, result) {
+		if (err) {
+			console.log("db error");
+		} else {
+			res.send("hidden status set");
+		}
+	})
+}
+
 module.exports.updateMainState = function (req, res) {
 	let sess = req.session;
 	if (!(sess && "state" in sess)) {
