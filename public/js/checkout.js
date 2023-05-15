@@ -4,10 +4,21 @@ async function build(){
     await $.getJSON("/getCart", null, function(res){
         data = res;
     });
-    let content = "<h2>Checkout</h2>";
+    let content = `<h2>Checkout</h2>`
+    
     let total_price = 0;
+    if (data.length > 0){
+        content+=`<table class='prod-box'> 
+        <tr>
+        <th>Phone</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th></th>
+        </tr>
+        `;
+    }
     for(var i = 0; i<data.length; i++){
-        content+=`<div class='product-box' id=${i}>
+        /*content+=`<div class='product-box' id=${i}>
         <p>${data[i].phone.title}</p>
         <p>$${data[i].phone.price}</p>
         <span class="itemCartQuantity" title=${data[i].phone.title} seller=${data[i].phone.seller}> ${data[i].quantity} </span>
@@ -15,21 +26,34 @@ async function build(){
         <button class="quantity" id=${i}>Change quantity</button>
         <button class="remove" id=${i}>Remove</button>
         </div>
-        </div>`
+        </div>`*/
+        content+=`<tr>
+        <td>${data[i].phone.title}</td>
+        <td>$${data[i].phone.price}</td>
+        <td><span class="itemCartQuantity" title=${data[i].phone.title} seller=${data[i].phone.seller}> ${data[i].quantity} </span></td>
+        <td><div>
+        <button class="quantity" id=${i}>Change quantity</button>
+        <button class="remove" id=${i}>Remove</button>
+        </div></td>
+        </tr>`
         total_price += (data[i].quantity * data[i].phone.price);
     }
     if(data.length > 0){
-        content+=`<div class="footer">
+        content+=`</table>
+        <div class="footer">
         <label>Total price: $${total_price.toFixed(2)}</label>
         <button class="confirm-button">Confirm</button>
         <button class="back-button">Back</button>
     </div>`
     }
     else{
-        content += `<h2>Nothing in cart</h2>`
+        content += `<h2>Nothing in cart</h2>
+        <div class="footer">
+        <button class="confirm-button">Confirm</button>
+        <button class="back-button">Back</button>`
     }
     $("#checkoutContent").append(content);
-    $(".product-box button.quantity").click(async function (e){
+    $(".prod-box button.quantity").click(async function (e){
         var item = cart[e.target.id];
         let remainingStock = item.phone.stock;
         let quantity = 0;
@@ -56,7 +80,7 @@ async function build(){
         updateCart(cart[e.target.id].phone, quantity);
         await build();
     });
-    $(".product-box button.remove").click(async function (e){
+    $(".prod-box button.remove").click(async function (e){
         updateCart(cart[e.target.id].phone, 0);
         await build();
     });
