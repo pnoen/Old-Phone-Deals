@@ -192,6 +192,8 @@ module.exports.getCurrentUserId = async function (req, res) {
   }
   res.json(data);
 }
+
+
 // Checks if the current email is in use already
 module.exports.checkEmailInUse = async function(req, res) {
   let email = req.query.email;
@@ -219,6 +221,20 @@ module.exports.checkEmailVerified = function (req, res) {
 			console.log("DB Error: Could not check email is valid.");
 		} else {
       res.json(result);
+		}
+	});
+}
+
+
+// Verifies an email
+module.exports.verifyEmail = function (req, res) {
+	var email = req.body.email;
+
+	userlist.verifyEmail(email, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not verify the email.");
+		} else {
+			res.send("Verified");
 		}
 	});
 }
