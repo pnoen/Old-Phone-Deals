@@ -364,7 +364,7 @@ function makeListingButtons() {
 async function displayListings() {
   var data = await getListingsByUser();
   for (var i = 0; i < data.length; i++) {
-    displaySingleListing("#my-listings", data[i]);
+    displaySingleListing("#my-listings", data[i], true);
   }
 
   makeListingButtons();
@@ -386,12 +386,22 @@ async function getListingsByUser() {
 
 
 // Displays a single listing
-function displaySingleListing(container, listing) {
+function displaySingleListing(container, listing, showBtns) {
   var listings = document.querySelector(container);
 
   var enabledDisabled = "Disable";
   if (listing.disabled !== undefined) {
     enabledDisabled = "Enable"
+  }
+
+  var buttons = "";
+  if (showBtns === true) {
+    buttons = `
+    <div class='listing-btn-group'>
+      <button class='` + enabledDisabled + `-listing-btn'>` + enabledDisabled + `</button>
+      <button class='remove-listing-btn'>Remove</button>
+    </div>
+    `;
   }
 
   listings.innerHTML += (`
@@ -427,10 +437,7 @@ function displaySingleListing(container, listing) {
           </td>
         </tr>
       </table>
-      <div class='listing-btn-group'>
-        <button class='` + enabledDisabled + `-listing-btn'>` + enabledDisabled + `</button>
-        <button class='remove-listing-btn'>Remove</button>
-      </div>
+      ` + buttons + `
     </div>
     `);
 }
@@ -494,7 +501,7 @@ async function removeListing(event) {
  * VIEW COMMENTS
 */
 // Sets up the view comments page
-function viewCommentsPage() {
+async function viewCommentsPage() {
   var heading = document.querySelector(".phoneListingHeading");
   heading.innerHTML = "View Comments";
 
@@ -503,7 +510,17 @@ function viewCommentsPage() {
   var buttonSect = document.querySelector(".profile-buttons");
   buttonSect.innerHTML = "";
 
-  displayComments();
+  await displayComments();
+
+  var hideBtns = document.querySelectorAll(".Hide-comment-btn");
+  for (var i = 0; i < hideBtns.length; i++) {
+    hideBtns[i].addEventListener("click", hideComment);
+  }
+
+  var showBtns = document.querySelectorAll(".Show-comment-btn");
+  for (var i = 0; i < showBtns.length; i++) {
+    showBtns[i].addEventListener("click", showComment);
+  }
 }
 
 
@@ -514,9 +531,9 @@ async function displayComments() {
 
   var data = await getUsersComments();
   for (var i = 0; i < data.length; i++) {
-    displaySingleListing(".comments-box", data[i]);
+    displaySingleListing(".comments-box", data[i], false);
     for (var j = 0; j < data[i].reviews.length; j++) {
-      await displaySingleComment(data[i].reviews[j]);
+      await displaySingleComment(data[i].reviews[j], j, data[i]._id);
     }
   }
 
@@ -542,11 +559,21 @@ async function getUsersComments() {
 }
 
 
-async function displaySingleComment(review) {
+// Displays a single comment with the buttons
+async function displaySingleComment(review, index, listingId) {
+  var showHide = "Hide";
+  if (review.hidden !== undefined) {
+    showHide = "Show";
+  }
+
+  var buttons = `
+    <button class='` + showHide + `-comment-btn'>` + showHide + `</button>
+  `;
+
   let user = await getUserById(review.reviewer);
   let rating = "★".repeat(review.rating);
   let ratingEmpty = "★".repeat(5 - review.rating);
-  let element = `<div class="item-review">
+  let element = `<div class="item-review" id=`+ listingId + `-` + index +`>
     <div class="itemReviewTop">
       <p>
         ${user.firstname} ${user.lastname}
@@ -557,8 +584,51 @@ async function displaySingleComment(review) {
       </div>
     </div>
     <p class="itemReviewComment">${review.comment}</p>
+    ` + buttons + `
   </div>
   `;
 
   document.querySelector(".comments-box").innerHTML += element;
+}
+
+
+// Hides a comment
+async function hideComment(event) {
+  var paramsString = event.target.parentElement.id;
+  var paramsArray = paramsString.split("-");
+
+  let data;
+  let params = {
+    id: paramsArray[0],
+    index: paramsArray[1]
+  }
+  await $.post("/hideComment", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Show-comment-btn";
+  event.target.innerHTML = "Show";
+  event.target.removeEventListener("click", hideComment);
+  event.target.addEventListener("click", showComment);
+}
+
+
+// Shows a comment
+async function showComment(event) {
+  var paramsString = event.target.parentElement.id;
+  var paramsArray = paramsString.split("-");
+
+  let data;
+  let params = {
+    id: paramsArray[0],
+    index: paramsArray[1]
+  }
+  await $.post("/showComment", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Hide-comment-btn";
+  event.target.innerHTML = "Hide";
+  event.target.removeEventListener("click", showComment);
+  event.target.addEventListener("click", hideComment);
 }

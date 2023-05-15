@@ -141,6 +141,28 @@ phonelistingSchema.statics.removeListing = function (id, callback) {
 }
 
 
+// Hides a comment
+phonelistingSchema.statics.hideComment = function (id, index, callback) {
+  var selector = {};
+  selector["reviews." + index + ".hidden"] = "";
+  return this.updateOne(
+    {_id: id},
+    { $set: selector }
+  ).exec(callback);
+}
+
+
+// Removes this listing
+phonelistingSchema.statics.showComment = function (id, index, callback) {
+  var selector = {};
+  selector["reviews." + index + ".hidden"] = 1;
+  return this.updateOne(
+    {_id: id},
+    { $unset: selector }
+  ).exec(callback);
+}
+
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;
