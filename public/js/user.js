@@ -1,7 +1,8 @@
 buttons = [document.getElementById("edit-profile-btn"),
   document.getElementById("change-password-btn"),
   document.getElementById("manage-listings-btn"),
-  document.getElementById("view-comments-btn")
+  document.getElementById("view-comments-btn"),
+  document.getElementById("sign-out-btn")
 ];
 
 tables = [document.getElementById("profile-info-table"),
@@ -14,6 +15,14 @@ tables = [document.getElementById("profile-info-table"),
 function outputMessage(text, colour) {
   document.querySelector("#top-message-text").innerHTML = text;
   document.querySelector("#top-message-text").style.color = colour;
+}
+
+
+// Signs out the user
+async function signOutGoHome() {
+  loggedIn = false;
+  await updateLoggedInState(loggedIn);
+  pageReload("signout");
 }
 
 
@@ -36,10 +45,16 @@ function createConfirmBackBtns(btnId, text) {
   var buttonSect = document.querySelector(".profile-buttons");
   buttonSect.innerHTML = "";
 
-  buttonSect.innerHTML = `
-    <button id="cancel-button">Back</button>
-    <button id="` + btnId + `">` + text + `</button>
-  `
+  if (text !== "") {
+    buttonSect.innerHTML = `
+      <button id="cancel-button">Back</button>
+      <button id="` + btnId + `">` + text + `</button>
+    `;
+  } else {
+    buttonSect.innerHTML = `
+      <button id="cancel-button">Back</button>
+    `;
+  }
 
   var cancelBtn = document.getElementById("cancel-button");
   cancelBtn.addEventListener("click", goBackToProfile);
@@ -51,8 +66,14 @@ function createConfirmBackBtns(btnId, text) {
 */
 // Goes back to the initial profile page
 function goBackToProfile() {
+  document.querySelector(".comments-box").innerHTML = "";
+
   var heading = document.querySelector(".phoneListingHeading");
   heading.innerHTML = "Profile";
+
+  document.querySelector(".comments-box").style.visibility = "hidden";
+  document.querySelector(".profile-box").style.visibility = "visible";
+
   setUpPage("profile-info-table");
 }
 
@@ -115,7 +136,10 @@ async function initialProfileLoad() {
   manageListingsBtn.addEventListener("click", manageListingsPage);
 
   var viewCommentsBtn = document.getElementById("view-comments-btn");
-  //viewCommentsBtn.addEventListener("click", viewCommentsBtn);
+  viewCommentsBtn.addEventListener("click", viewCommentsPage);
+
+  var signOutBtn = document.getElementById("sign-out-btn");
+  signOutBtn.addEventListener("click", signOutGoHome);
 }
 
 initialProfileLoad();
@@ -308,7 +332,28 @@ async function addListing() {
     await $.post("/addNewListing", params);
     outputMessage("Your listing has been added.", "lightseagreen");
 
-    displaySingleListing(params);
+    // TODO: Return new id and add to params
+
+    displaySingleListing("#my-listings", params);
+    makeListingButtons();
+  }
+}
+
+
+// Adds event listeners to the listing buttons
+function makeListingButtons() {
+  var enableBtns = document.querySelectorAll(".Enable-listing-btn");
+  var disableBtns = document.querySelectorAll(".Disable-listing-btn");
+  var removeBtns = document.querySelectorAll(".remove-listing-btn");
+
+  for (var i = 0; i < enableBtns.length; i++) {
+    enableBtns[i].addEventListener("click", enableListing);
+  }
+  for (var i = 0; i < disableBtns.length; i++) {
+    disableBtns[i].addEventListener("click", disableListing);
+  }
+  for (var i = 0; i < removeBtns.length; i++) {
+    removeBtns[i].addEventListener("click", removeListing);
   }
 }
 
@@ -317,8 +362,10 @@ async function addListing() {
 async function displayListings() {
   var data = await getListingsByUser();
   for (var i = 0; i < data.length; i++) {
-    displaySingleListing(data[i]);
+    displaySingleListing("#my-listings", data[i]);
   }
+
+  makeListingButtons();
 }
 
 
@@ -337,11 +384,16 @@ async function getListingsByUser() {
 
 
 // Displays a single listing
-function displaySingleListing(listing) {
-  var listings = document.getElementById("my-listings");
+function displaySingleListing(container, listing) {
+  var listings = document.querySelector(container);
+
+  var enabledDisabled = "Disable";
+  if (listing.disabled !== undefined) {
+    enabledDisabled = "Enable"
+  }
 
   listings.innerHTML += (`
-    <div class='single-listing'>
+    <div class='single-listing' id=` + listing._id + `>
       <img src='` + listing.image + `' />
       <table>
         <tr>
@@ -373,6 +425,138 @@ function displaySingleListing(listing) {
           </td>
         </tr>
       </table>
+      <div class='listing-btn-group'>
+        <button class='` + enabledDisabled + `-listing-btn'>` + enabledDisabled + `</button>
+        <button class='remove-listing-btn'>Remove</button>
+      </div>
     </div>
     `);
+}
+
+
+// Enables a listing
+async function enableListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/enableListing", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Disable-listing-button";
+  event.target.innerHTML = "Disable";
+  event.target.removeEventListener("click", enableListing);
+  event.target.addEventListener("click", disableListing);
+}
+
+
+// Disables a listing
+async function disableListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/disableListing", params, function(res) {
+    data = res;
+  });
+
+  event.target.class = "Enable-listing-button";
+  event.target.innerHTML = "Enable";
+  event.target.removeEventListener("click", disableListing);
+  event.target.addEventListener("click", enableListing);
+}
+
+
+// Removes a listing
+async function removeListing(event) {
+  var id = event.target.parentElement.parentElement.id;
+
+  let data;
+  let params = {
+    id: id
+  }
+  await $.post("/removeListing", params, function(res) {
+    data = res;
+  });
+
+  document.getElementById(id).remove();
+}
+
+
+/*
+ * VIEW COMMENTS
+*/
+// Sets up the view comments page
+function viewCommentsPage() {
+  var heading = document.querySelector(".phoneListingHeading");
+  heading.innerHTML = "View Comments";
+
+  setUpPage("view-comments-table");
+  outputMessage("&nbsp;", "");
+  var buttonSect = document.querySelector(".profile-buttons");
+  buttonSect.innerHTML = "";
+
+  displayComments();
+}
+
+
+// Gets the comments for this user
+async function displayComments() {
+  document.querySelector(".comments-box").style.visibility = "visible";
+  document.querySelector(".profile-box").style.visibility = "hidden";
+
+  var data = await getUsersComments();
+  for (var i = 0; i < data.length; i++) {
+    displaySingleListing(".comments-box", data[i]);
+    for (var j = 0; j < data[i].reviews.length; j++) {
+      await displaySingleComment(data[i].reviews[j]);
+    }
+  }
+
+  document.querySelector(".comments-box").innerHTML += `
+    <button id="cancel-button">Back</button>
+  `;
+  var cancelBtn = document.getElementById("cancel-button");
+  cancelBtn.addEventListener("click", goBackToProfile);
+}
+
+
+// Gets the comments for a particular user
+async function getUsersComments() {
+  let data;
+  let params = {
+    id: currentUser
+  }
+  await $.getJSON("/getUsersComments", params, function(res) {
+    data = res;
+  });
+
+  return data;
+}
+
+
+async function displaySingleComment(review) {
+  let user = await getUserById(review.reviewer);
+  let rating = "★".repeat(review.rating);
+  let ratingEmpty = "★".repeat(5 - review.rating);
+  let element = `<div class="item-review">
+    <div class="itemReviewTop">
+      <p>
+        ${user.firstname} ${user.lastname}
+      </p>
+      <div class="ratingStars">
+        <span class="itemReviewRating">${rating}</span>
+        <span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+      </div>
+    </div>
+    <p class="itemReviewComment">${review.comment}</p>
+  </div>
+  `;
+
+  document.querySelector(".comments-box").innerHTML += element;
 }

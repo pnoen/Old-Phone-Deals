@@ -109,6 +109,38 @@ phonelistingSchema.statics.getListingsByUser = function (id, callback) {
 }
 
 
+// Gets the comments for this user
+phonelistingSchema.statics.getUsersComments = function (id, callback) {
+  return this.find({seller: id}).exec(callback);
+}
+
+
+// Disables this listing
+phonelistingSchema.statics.disableListing = function (id, callback) {
+  return this.updateOne(
+    {_id: id},
+    { $set: {"disabled": ""} }
+  ).exec(callback);
+}
+
+
+// Enables this listing
+phonelistingSchema.statics.enableListing = function (id, callback) {
+  return this.updateOne(
+    {_id: id},
+    { $unset: {"disabled": 1} }
+  ).exec(callback);
+}
+
+
+// Removes this listing
+phonelistingSchema.statics.removeListing = function (id, callback) {
+  return this.deleteOne(
+    {_id: id}
+  ).exec(callback);
+}
+
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

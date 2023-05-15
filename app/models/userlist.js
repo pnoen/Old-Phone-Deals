@@ -75,6 +75,12 @@ userlistSchema.statics.registerNewUser = function (firstname, lastname, email, h
 }
 
 
+// Checks the email is in use
+userlistSchema.statics.checkEmailInUse = function(email, callback) {
+  return this.find({ email: email }, { _id: 1 }).exec(callback);
+}
+
+
 var Userlist = mongoose.model('Userlist', userlistSchema, 'userlist');
 
 module.exports = Userlist;

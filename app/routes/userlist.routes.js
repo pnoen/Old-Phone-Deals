@@ -12,5 +12,6 @@ router.get('/getUserById', controller.getUserById);
 router.get('/getCurrentUser', controller.getCurrentUser);
 router.get('/getUserData', controller.getUserData);
 router.get('/getCurrentUserId', controller.getCurrentUserId);
+router.get('/checkEmailInUse', controller.checkEmailInUse);
 
 module.exports = router;
