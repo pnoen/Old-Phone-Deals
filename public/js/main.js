@@ -211,7 +211,6 @@ async function addToCart(phone, quantity) {
 }
 
 // TODO make hidden reviews a different colour
-// TODO reviews with more than 200 characters have a show more button
 // TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     let reviews = phone.reviews;
@@ -230,14 +229,30 @@ async function createItemReviewsElement(phone) {
                 ${user.firstname} ${user.lastname}
               </p>
               <div class="ratingStars">
-                <span class="itemReviewRating">${rating}</span>
-                <span class="itemReviewRatingEmpty">${ratingEmpty}</span>
+                <span class="itemReviewRating">${rating}</span><span class="itemReviewRatingEmpty">${ratingEmpty}</span>
               </div>
             </div>
             <p class="itemReviewComment">${review.comment}</p>
         </div>
-        `
-        $(".itemAllReviews button").before(element);
+        `;
+        $(".itemAllReviews button").last().before(element);
+
+        // Show more button for comments that are more than 200 chars
+        if (review.comment.length > 200) {
+            let shortComment = review.comment.match(/.{1,200}/)[0]; // match any characters of length 1-200
+            let commentElement = $(".itemReviewComment").last();
+            commentElement.html(shortComment + "...");
+            let btnElement = `<div class="commentShowMore">
+                <button>Show more</button>
+            </div>`;
+            commentElement.after(btnElement);
+
+            let showMoreBtn = $(".itemReview button").last();
+            showMoreBtn.click(function (e) {
+                commentElement.html(review.comment);
+                showMoreBtn.remove();
+            })
+        }
         if (i == reviews.length - 1) {
             reviewCounter = reviews.length;
         }
