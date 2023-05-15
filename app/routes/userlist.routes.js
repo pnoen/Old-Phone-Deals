@@ -11,5 +11,6 @@ router.post('/registerNewUser', controller.registerNewUser);
 router.get('/getUserById', controller.getUserById);
 router.get('/getCurrentUser', controller.getCurrentUser);
 router.get('/getUserData', controller.getUserData);
+router.get('/getCurrentUserId', controller.getCurrentUserId);
 
 module.exports = router;
