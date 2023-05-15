@@ -164,6 +164,24 @@ module.exports.changePasswordById = async function(req, res) {
 }
 
 
+// Changes the user's password
+module.exports.changePasswordByEmail = async function(req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+  var saltRounds = 5;
+
+  let hashedPass = await bcrypt.hash(password, saltRounds);
+
+  await userlist.changePasswordByEmail(email, hashedPass, async function(err, result) {
+    if (err) {
+      console.log("DB error: Could not change password.");
+    } else {
+      res.send("Updated password.");
+    }
+  });
+}
+
+
 // Registers the new user
 module.exports.registerNewUser = async function(req, res) {
   var firstname = req.body.firstname;

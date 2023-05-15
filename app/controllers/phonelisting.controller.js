@@ -136,7 +136,7 @@ module.exports.buyPhone = function (req, res) {
 	}
 
 	let cart = sess.cart;
-	
+
 	for(item of cart){
 		phonelisting.buyPhone(item.phone.title, item.phone.seller, item.quantity, function (err, result) {
 			if (err) {
@@ -441,3 +441,34 @@ module.exports.addReview = function (req, res) {
 		}
 	});
 }
+
+// Hides a comment
+module.exports.hideComment = function (req, res) {
+	var id = req.body.id;
+	var index = req.body.index;
+
+	phonelisting.hideComment(id, index, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not hide the comment.");
+		}
+		else {
+			res.send("Hidden");
+		}
+	});
+}
+
+
+// Shows a comment
+module.exports.showComment = function (req, res) {
+	var id = req.body.id;
+	var index = req.body.index;
+
+	phonelisting.showComment(id, index, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not show the comment.");
+		} else {
+			res.send("Showed");
+		}
+	});
+}
+

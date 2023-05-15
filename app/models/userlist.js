@@ -52,10 +52,22 @@ userlistSchema.statics.updateProfile = function (id, firstname, lastname, email,
 }
 
 
-// Updates the user's profile by id
+// Updates the user's password by id
 userlistSchema.statics.changePasswordById = function (id, password, callback) {
   return this.updateOne(
     { _id: id },
+    { $set:
+      {
+        password: password
+      }
+    }).exec(callback);
+}
+
+
+// Updates the user's password by email
+userlistSchema.statics.changePasswordByEmail = function (email, password, callback) {
+  return this.updateOne(
+    { email: email },
     { $set:
       {
         password: password
