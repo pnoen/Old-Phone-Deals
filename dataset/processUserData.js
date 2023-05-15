@@ -14,7 +14,6 @@ fs.readFile("userlist.json", async function (err, val) {
             for (let user of val) {
                 let hashedPass = await bcrypt.hash(plainPass, saltRounds);
                 user.password = hashedPass;
-                user.isvalid = 1;
             }
             fs.writeFileSync('userlist_processed1.json', JSON.stringify(val, null, 4))
         }
