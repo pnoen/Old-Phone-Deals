@@ -170,30 +170,35 @@ async function createItemListingElement(phone) {
     </div>
     `
     $("#mainContent").append(element);
-    // TODO need to check if its logged in before letting them add to cart
     $(".quantityCartSection button").click(function (e) {
-        let remainingStock = phone.stock - cartItem.quantity;
-        if (remainingStock > 0) {
-            let quantity = prompt("Please enter the quantity");
-            if (
-                quantity && // if exists
-                !isNaN(quantity) && // if is a number
-                quantity >= 1 &&
-                quantity <= remainingStock &&
-                quantity.indexOf(".") == -1 // if not a decimal
-            ) {
-                // quantity = parseInt(quantity);
-                addToCart(phone, quantity);
-                alert("The item has been added to the cart");
-                changeToItemState(phone.title, phone.seller);
-            }
-            else {
-                alert("You have entered an invalid quantity");
-            }
+        if (loggedIn == "false") { // not logged in
+            window.location.href = "/signin"
         }
         else {
-            alert("You cannot add more of this item");
+            let remainingStock = phone.stock - cartItem.quantity;
+            if (remainingStock > 0) {
+                let quantity = prompt("Please enter the quantity");
+                if (
+                    quantity && // if exists
+                    !isNaN(quantity) && // if is a number
+                    quantity >= 1 &&
+                    quantity <= remainingStock &&
+                    quantity.indexOf(".") == -1 // if not a decimal
+                ) {
+                    // quantity = parseInt(quantity);
+                    addToCart(phone, quantity);
+                    alert("The item has been added to the cart");
+                    changeToItemState(phone.title, phone.seller);
+                }
+                else {
+                    alert("You have entered an invalid quantity");
+                }
+            }
+            else {
+                alert("You cannot add more of this item");
+            }
         }
+        
     })
     // $("#mainContent").append(createItemReviewsContainerElement());
     $(".itemAllReviews button:last").click(async function (e) {

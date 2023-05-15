@@ -54,12 +54,17 @@ module.exports.showProfile = function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-  res.render("user.ejs", {
-		loggedIn: loggedIn,
-		state: state,
-		mainPageData: mainPageData,
-		currentUser: currentUser
-	});
+	if (loggedIn == false) {
+		res.redirect("/signin");
+	}
+	else {
+		res.render("user.ejs", {
+			loggedIn: loggedIn,
+			state: state,
+			mainPageData: mainPageData,
+			currentUser: currentUser
+		});
+	}
 }
 
 module.exports.showCheckout = async function (req, res) {
@@ -73,13 +78,19 @@ module.exports.showCheckout = async function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	res.render("checkout.ejs", {
-		loggedIn: loggedIn,
-		cart: cart,
-		state: state,
-		mainPageData: mainPageData,
-		currentUser: currentUser
-	});
+	if (loggedIn == false) {
+		res.redirect("/signin");
+	}
+	else {
+		res.render("checkout.ejs", {
+			loggedIn: loggedIn,
+			cart: cart,
+			state: state,
+			mainPageData: mainPageData,
+			currentUser: currentUser
+		});
+	}
+	
 }
 
 module.exports.getSoldSoon = function (req, res) {
