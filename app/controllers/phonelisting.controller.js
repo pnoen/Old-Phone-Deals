@@ -47,8 +47,6 @@ module.exports.showCheckout = async function (req, res) {
 	res.render("checkout.ejs", {
 		loggedIn: loggedIn,
 		cart: req.app.locals.cart,
-		state: state,
-		mainPageData: mainPageData,
 		currentUser: currentUser
 	});
 }

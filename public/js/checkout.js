@@ -4,6 +4,7 @@ async function build(){
     await $.getJSON("/getCart", null, function(res){
         data = res;
     });
+    cart = data;
     let content = `<h2>Checkout</h2>`
     
     let total_price = 0;
