@@ -191,9 +191,7 @@ module.exports.registerNewUser = async function(req, res) {
   var saltRounds = 5;
 
   let hashedPass = await bcrypt.hash(password, saltRounds);
-
-  // TODO: Check email does not exist yet
-
+	
   await userlist.registerNewUser(firstname, lastname, email, hashedPass);
   res.send("New user registered");
 }

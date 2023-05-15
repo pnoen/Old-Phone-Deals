@@ -311,7 +311,7 @@ async function addListing() {
 
   // TODO: Validations
   var valid = true;
-  for (var i = 0; i < table.rows.length; i++) {
+  for (var i = 0; i < table.rows.length-1; i++) {
     if (table.rows[i].querySelectorAll("td")[1].querySelector("input").value === "") {
       valid = false;
       outputMessage("All fields are mandatory.", "indianred");
@@ -323,7 +323,7 @@ async function addListing() {
     var params = {
       title: table.rows[0].querySelectorAll("td")[1].querySelector("input").value,
       brand: table.rows[1].querySelectorAll("td")[1].querySelector("input").value,
-      image: table.rows[4].querySelectorAll("td")[1].querySelector("input").value,
+      image: document.querySelector("#image-dropdown").value,
       stock: table.rows[2].querySelectorAll("td")[1].querySelector("input").value,
       seller: currentUser,
       price: table.rows[3].querySelectorAll("td")[1].querySelector("input").value

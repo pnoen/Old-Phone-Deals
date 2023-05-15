@@ -120,6 +120,12 @@ async function signUserIn() {
     password: inputBoxes[1].value
   }
 
+  var emailInUse = await checkEmailInUse(params.email);
+  if (emailInUse === true) {
+    outputError("This email does not exist.", "indianred");
+    return false;
+  }
+
   // Check the email is verified, if not then DO NOT log in (return false)
   var verified = await checkEmailVerified(params.email);
   if (verified === false) {
