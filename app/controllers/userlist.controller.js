@@ -179,3 +179,16 @@ module.exports.registerNewUser = async function(req, res) {
   await userlist.registerNewUser(firstname, lastname, email, hashedPass);
   res.send("New user registered");
 }
+
+
+module.exports.getCurrentUserId = async function (req, res) {
+  let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+  let data = {
+    currentUser: sess.currentUser
+  }
+  res.json(data);
+}

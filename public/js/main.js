@@ -210,16 +210,37 @@ async function addToCart(phone, quantity) {
     await $.post("/addToCart", params);
 }
 
+async function getCurrentUserId() {
+    let data;
+
+    await $.getJSON("/user/getCurrentUserId", null, function (res) {
+        data = res;
+    });
+    return data.currentUser;
+}
+
 // TODO make hidden reviews a different colour
 // TODO add a hide/show button for the author of the review and the seller
 async function createItemReviewsElement(phone) {
     let reviews = phone.reviews;
+    let reviewThreshold = 3;
     for (let i = reviewCounter; i < reviews.length; i++) {
-        if (i == reviewCounter + 3) { // Displays reviews 3 at a time
+        if (i == reviewCounter + reviewThreshold) { // Displays reviews 3 at a time
             reviewCounter = i;
             break;
         }
         let review = reviews[i];
+
+        let currentUser = await getCurrentUserId();
+        if ( // if hidden and the logged in user is not either seller or author of review
+            review.hidden == "" &&
+            !(currentUser == phone.seller ||
+                currentUser == review.reviewer)
+        ) {
+            reviewThreshold += 1; // increment threshold since it is skipping a review
+            continue;
+        }
+
         let user = await getUserById(review.reviewer);
         let rating = "★".repeat(review.rating);
         let ratingEmpty = "★".repeat(5 - review.rating);
@@ -236,6 +257,24 @@ async function createItemReviewsElement(phone) {
         </div>
         `;
         $(".itemAllReviews button").last().before(element);
+
+        if (review.hidden == "") {
+            $(".itemReview").last().toggleClass("hiddenReview");
+        }
+
+        // Show and hide review button for author and reviewer
+        if (currentUser == phone.seller || currentUser == review.reviewer) {
+            let visibilityBtnElement = `<div class="visibilityBtn">
+                <button>Show/Hide</button>
+            </div>`
+            $(".ratingStars").last().before(visibilityBtnElement);
+
+            let lastReview = $(".itemReview").last();
+            $(".itemReviewTop button").last().click(function (e) {
+                lastReview.toggleClass("hiddenReview");
+                // TODO change db
+            });
+        }
 
         // Show more button for comments that are more than 200 chars
         if (review.comment.length > 200) {
