@@ -170,8 +170,14 @@ async function createItemListingElement(phone) {
     </div>
     `
     $("#mainContent").append(element);
-    // TODO need to check if its logged in before letting them add to cart
+    
+    // add to cart button
     $(".quantityCartSection button").click(function (e) {
+        if (loggedIn == "false") { // not logged in
+            window.location.href = "/signin"
+            return;
+        }
+
         let remainingStock = phone.stock - cartItem.quantity;
         if (remainingStock > 0) {
             let quantity = prompt("Please enter the quantity");
@@ -194,11 +200,32 @@ async function createItemListingElement(phone) {
         else {
             alert("You cannot add more of this item");
         }
+        
     })
-    // $("#mainContent").append(createItemReviewsContainerElement());
+    
+    // show more reviews button
     $(".itemAllReviews button:last").click(async function (e) {
         let updatedPhone = await getPhone(phone.title, phone.seller);
         createItemReviewsElement(updatedPhone);
+    });
+
+    // add review button
+    $(".itemAddReviewRatingContainer button").click(async function (e) {
+        if (loggedIn == "false") { // not logged in
+            window.location.href = "/signin"
+            return;
+        }
+
+        let comment = $("#itemAddReviewComment").val() // textarea element
+        let rating = $("#itemAddReviewRating").val() // dropdown element
+        
+        if (comment.trim().length == 0) {
+            alert("Comment is empty")
+            return;
+        }
+        
+        await addReview(phone._id, rating, comment);
+        alert("Review added")
     });
 }
 
@@ -219,8 +246,15 @@ async function getCurrentUserId() {
     return data.currentUser;
 }
 
-// TODO make hidden reviews a different colour
-// TODO add a hide/show button for the author of the review and the seller
+async function addReview(phoneId, rating, comment) {
+    let params = {
+        phoneId: phoneId,
+        rating: rating,
+        comment: comment
+    }
+    await $.post("/addReview", params);
+}
+
 async function createItemReviewsElement(phone) {
     let reviews = phone.reviews;
     let reviewThreshold = 3;
@@ -256,9 +290,9 @@ async function createItemReviewsElement(phone) {
             <p class="itemReviewComment">${review.comment}</p>
         </div>
         `;
-        $(".itemAllReviews button").last().before(element);
+        $(".itemAllReviews button").last().before(element); // add before show more reviews button
 
-        if (review.hidden == "") {
+        if (review.hidden == "") { // if hidden, add hiddenReview class
             $(".itemReview").last().toggleClass("hiddenReview");
         }
 
@@ -270,9 +304,14 @@ async function createItemReviewsElement(phone) {
             $(".ratingStars").last().before(visibilityBtnElement);
 
             let lastReview = $(".itemReview").last();
-            $(".itemReviewTop button").last().click(function (e) {
+            $(".itemReviewTop button").last().click(async function (e) {
                 lastReview.toggleClass("hiddenReview");
-                // TODO change db
+                if (lastReview.hasClass("hiddenReview")) { // if changed to hidden
+                    await setHiddenReviewByTitleAndSeller(phone.title, phone.seller, i);
+                }
+                else {
+                    await unsetHiddenReviewByTitleAndSeller(phone.title, phone.seller, i);
+                }
             });
         }
 
@@ -296,6 +335,24 @@ async function createItemReviewsElement(phone) {
             reviewCounter = reviews.length;
         }
     }
+}
+
+async function setHiddenReviewByTitleAndSeller(title, seller, reviewIndex) {
+    let params = {
+        title: title,
+        seller: seller,
+        reviewIndex: reviewIndex
+    }
+    await $.post("/setHiddenReviewByTitleAndSeller", params);
+}
+
+async function unsetHiddenReviewByTitleAndSeller(title, seller, reviewIndex) {
+    let params = {
+        title: title,
+        seller: seller,
+        reviewIndex: reviewIndex
+    }
+    await $.post("/unsetHiddenReviewByTitleAndSeller", params);
 }
 
 function updateHomeAnchor() {

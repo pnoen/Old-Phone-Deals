@@ -54,12 +54,17 @@ module.exports.showProfile = function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-  res.render("user.ejs", {
-		loggedIn: loggedIn,
-		state: state,
-		mainPageData: mainPageData,
-		currentUser: currentUser
-	});
+	if (loggedIn == false) {
+		res.redirect("/signin");
+	}
+	else {
+		res.render("user.ejs", {
+			loggedIn: loggedIn,
+			state: state,
+			mainPageData: mainPageData,
+			currentUser: currentUser
+		});
+	}
 }
 
 module.exports.showCheckout = async function (req, res) {
@@ -73,13 +78,19 @@ module.exports.showCheckout = async function (req, res) {
 	let state = sess.state;
 	let mainPageData = sess.mainPageData;
 	let currentUser = sess.currentUser;
-	res.render("checkout.ejs", {
-		loggedIn: loggedIn,
-		cart: cart,
-		state: state,
-		mainPageData: mainPageData,
-		currentUser: currentUser
-	});
+	if (loggedIn == false) {
+		res.redirect("/signin");
+	}
+	else {
+		res.render("checkout.ejs", {
+			loggedIn: loggedIn,
+			cart: cart,
+			state: state,
+			mainPageData: mainPageData,
+			currentUser: currentUser
+		});
+	}
+	
 }
 
 module.exports.getSoldSoon = function (req, res) {
@@ -274,6 +285,34 @@ module.exports.getHighestPrice = function (req, res) {
 	  });
 }
 
+module.exports.setHiddenReviewByTitleAndSeller = function (req, res) {
+	let title = req.body.title;
+	let seller = req.body.seller;
+	let reviewIndex = req.body.reviewIndex;
+
+	phonelisting.setHiddenReviewByTitleAndSeller(title, seller, reviewIndex, function (err, result) {
+		if (err) {
+			console.log("db error");
+		} else {
+			res.send("hidden status set");
+			
+		}
+	})
+}
+
+module.exports.unsetHiddenReviewByTitleAndSeller = function (req, res) {
+	let title = req.body.title;
+	let seller = req.body.seller;
+	let reviewIndex = req.body.reviewIndex;
+	phonelisting.unsetHiddenReviewByTitleAndSeller(title, seller, reviewIndex, function (err, result) {
+		if (err) {
+			console.log("db error");
+		} else {
+			res.send("hidden status unset");
+		}
+	})
+}
+
 module.exports.updateMainState = function (req, res) {
 	let sess = req.session;
 	if (!(sess && "state" in sess)) {
@@ -382,6 +421,26 @@ module.exports.removeListing = function (req, res) {
 	});
 }
 
+module.exports.addReview = function (req, res) {
+	let sess = req.session;
+	if (!(sess && "state" in sess)) {
+		initialiseSessionVars(sess)
+	}
+
+	let phoneId = req.body.phoneId;
+	let currentUser = sess.currentUser;
+	let rating = req.body.rating;
+	let comment = req.body.comment;
+
+	phonelisting.addReview(phoneId, currentUser, rating, comment, function (err, result) {
+		if (err) {
+			console.log("db error");
+		}
+		else {
+			res.send("added");
+		}
+	});
+}
 
 // Hides a comment
 module.exports.hideComment = function (req, res) {
@@ -412,3 +471,4 @@ module.exports.showComment = function (req, res) {
 		}
 	});
 }
+

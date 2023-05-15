@@ -21,12 +21,15 @@ router.get('/checkout', controller.showCheckout);
 router.post('/updateCart', controller.updateCart);
 router.get('/getCart', controller.getCart);
 router.post('/buyPhone', controller.buyPhone);
+router.post('/setHiddenReviewByTitleAndSeller', controller.setHiddenReviewByTitleAndSeller);
+router.post('/unsetHiddenReviewByTitleAndSeller', controller.unsetHiddenReviewByTitleAndSeller);
 router.post('/addNewListing', controller.addNewListing);
 router.get('/getListingsByUser', controller.getListingsByUser);
 router.get('/getUsersComments', controller.getUsersComments);
 router.post('/disableListing', controller.disableListing);
 router.post('/enableListing', controller.enableListing);
 router.post('/removeListing', controller.removeListing);
+router.post('/addReview', controller.addReview);
 router.post('/hideComment', controller.hideComment);
 router.post('/showComment', controller.showComment);
 

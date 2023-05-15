@@ -88,6 +88,28 @@ phonelistingSchema.statics.buyPhone = function (title, seller, quantity, callbac
         {$inc: {'stock': -quantity}}).exec(callback);
 }
 
+phonelistingSchema.statics.setHiddenReviewByTitleAndSeller = function (title, seller, reviewIndex, callback) {
+    let reviewField = "reviews." + reviewIndex + ".hidden";
+    return this.updateOne(
+        {
+            "title": title,
+            "seller": seller
+        },
+        { $set: { [reviewField]: "" } })
+        .exec(callback);
+}
+
+phonelistingSchema.statics.unsetHiddenReviewByTitleAndSeller = function (title, seller, reviewIndex, callback) {
+    let reviewField = "reviews." + reviewIndex + ".hidden";
+    return this.updateOne(
+        {
+            "title": title,
+            "seller": seller
+        },
+        { $unset: { [reviewField]: "" } })
+        .exec(callback);
+}
+
 
 // Adds the new phone listing
 phonelistingSchema.statics.addNewListing = function (title, brand, image, stock, seller, price, reviews) {
@@ -138,6 +160,18 @@ phonelistingSchema.statics.removeListing = function (id, callback) {
   return this.deleteOne(
     {_id: id}
   ).exec(callback);
+}
+
+phonelistingSchema.statics.addReview = function (id, reviewer, rating, comment, callback) {
+  return this.updateOne(
+    { _id: id },
+    { $push: {
+      "reviews": {
+        "reviewer": reviewer,
+        "rating": rating,
+        "comment": comment
+      }}})
+    .exec(callback);
 }
 
 
