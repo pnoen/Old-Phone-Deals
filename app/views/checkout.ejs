@@ -13,24 +13,10 @@
 							OldPhoneDeals
 					</div>
 					<nav>
-						<ul id="navBarLinks">
-							<li><a href="/">Home</a></li>
-							<li><a>Checkout</a></li>
-							<% if (!loggedIn) { %>
-									<li><a href="signin">Sign In</a></li>
-							<% } else { %>
-									<li><a href="profile">Profile</a></li>
-									<li id="sign-out-button"><a>Sign Out</a></li>
-							<% } %>
-						</ul>
+                        <ul id="navBarLinks">
+                            <li><a href="/">Home</a></li>
+                        </ul>	
 					</nav>
-				</div>
-				<div id="navBarSearchItems">
-					<div id="navBarSearchStateItems"></div>
-					<div id="navBarSearchBar">
-						<input id="searchBar" type="search">
-						<button id="navBarSearchBtn">Search</button>
-					</div>
 				</div>
 			</header>
 
@@ -52,13 +38,15 @@
         </div>
         </div>
         <script>
-            var state = "<%= state %>";
+			var state = "<%= state %>";
             var cart = <%- JSON.stringify(cart) %>;
+			var mainPageData = <%- JSON.stringify(mainPageData) %>;
         </script>
+				<!-- <script src="js/shared.js"></script> -->
 		<script src="js/search.js"></script>
         <script src="js/main.js"></script>
-        <script src="js/shared.js"></script>
-		<script src="js/signout.js"></script>
+        
+				<!-- <script src="js/signout.js"></script> -->
         <script src="js/checkout.js"></script>
     </body>
 </html>

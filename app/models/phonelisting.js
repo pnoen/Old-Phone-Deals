@@ -110,6 +110,59 @@ phonelistingSchema.statics.unsetHiddenReview = function (title, seller, reviewIn
         .exec(callback);
 }
 
+
+// Adds the new phone listing
+phonelistingSchema.statics.addNewListing = function (title, brand, image, stock, seller, price, reviews) {
+  return this.create({
+    title: title,
+    brand: brand,
+    image: image,
+    stock: stock,
+    seller: seller,
+    price: price,
+    reviews: reviews
+  });
+}
+
+
+// Gets the listings for the current user
+phonelistingSchema.statics.getListingsByUser = function (id, callback) {
+  return this.find({seller: id}).exec(callback);
+}
+
+
+// Gets the comments for this user
+phonelistingSchema.statics.getUsersComments = function (id, callback) {
+  return this.find({seller: id}).exec(callback);
+}
+
+
+// Disables this listing
+phonelistingSchema.statics.disableListing = function (id, callback) {
+  return this.updateOne(
+    {_id: id},
+    { $set: {"disabled": ""} }
+  ).exec(callback);
+}
+
+
+// Enables this listing
+phonelistingSchema.statics.enableListing = function (id, callback) {
+  return this.updateOne(
+    {_id: id},
+    { $unset: {"disabled": 1} }
+  ).exec(callback);
+}
+
+
+// Removes this listing
+phonelistingSchema.statics.removeListing = function (id, callback) {
+  return this.deleteOne(
+    {_id: id}
+  ).exec(callback);
+}
+
+
 var Phonelisting = mongoose.model('Phonelisting', phonelistingSchema, 'phonelisting');
 
 module.exports = Phonelisting;

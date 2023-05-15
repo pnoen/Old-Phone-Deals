@@ -17,26 +17,16 @@
         <nav>
           <ul id="navBarLinks">
             <li><a href="/">Home</a></li>
-            <li><a href="checkout">Checkout</a></li>
-            <% if (!loggedIn) { %>
-                <li><a href="signin">Sign In</a></li>
-            <% } else { %>
-                <li><a>Profile</a></li>
-                <li id="sign-out-button"><a>Sign Out</a></li>
-            <% } %>
           </ul>
         </nav>
-      </div>
-      <div id="navBarSearchItems">
-        <div id="navBarSearchStateItems"></div>
-        <div id="navBarSearchBar">
-          <input id="searchBar" type="search">
-          <button id="navBarSearchBtn">Search</button>
-        </div>
       </div>
     </header>
 
     <h1 class="phoneListingHeading">Profile</h1>
+
+    <div class="comments-box">
+    </div>
+
     <div class="profile-box">
       <p id="top-message-text">&nbsp;</p>
 
@@ -77,12 +67,59 @@
         </tr>
       </table>
 
+      <table id="manage-listings-table">
+        <tr>
+          <td>
+            Title:
+          </td>
+          <td>
+            <input type="text" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Brand:
+          </td>
+          <td>
+            <input type="text" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Stock:
+          </td>
+          <td>
+            <input type="number" min="1" step="1" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Price:
+          </td>
+          <td>
+            <input type="number" min="0" step="0.01" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Image:
+          </td>
+          <td>
+            <input type="file" />
+          </td>
+        </tr>
+      </table>
+
       <div class="profile-buttons">
         <button id="edit-profile-btn">Edit Profile</button>
         <button id="change-password-btn">Change Password</button>
         <button id="manage-listings-btn">Manage Listings</button>
         <button id="view-comments-btn">View Comments</button>
+        <button id="sign-out-btn">Sign Out</button>
       </div>
+    </div>
+
+    <div id="my-listings">
     </div>
 
     <script>

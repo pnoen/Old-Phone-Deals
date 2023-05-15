@@ -14,23 +14,9 @@
         </div>
         <nav>
           <ul id="navBarLinks">
-            <li><a>Home</a></li>
-            <li><a href="checkout">Checkout</a></li>
-            <% if (!loggedIn) { %>
-                <li><a>Sign In</a></li>
-            <% } else { %>
-                <li><a href="profile">Profile</a></li>
-                <li id="sign-out-button"><a>Sign Out</a></li>
-            <% } %>
+            <li><a href="/">Home</a></li>
           </ul>
         </nav>
-      </div>
-      <div id="navBarSearchItems">
-        <div id="navBarSearchStateItems"></div>
-        <div id="navBarSearchBar">
-          <input id="searchBar" type="search">
-          <button id="navBarSearchBtn">Search</button>
-        </div>
       </div>
     </header>
 
@@ -47,11 +33,11 @@
       </div>
 
       <div class="login-buttons">
-        <button id="cancel-button">Cancel</button>
+        <button id="cancel-button">Clear</button>
         <button id="signin-button">Sign In</button>
       </div>
 
-      <p>Click <a>here</a> to reset your password.</p>
+      <p>Click <a class="reset-password-btn">here</a> to reset your password.</p>
       <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
     </div>
 

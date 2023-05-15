@@ -3,7 +3,7 @@ html, body {
     padding: 0;
 
     font-family: "Helvetica";
-    background-image: linear-gradient(to bottom right, white, ghostwhite, lightskyblue);
+    background-color: aliceblue;
 }
 
 button {

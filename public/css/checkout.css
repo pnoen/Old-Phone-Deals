@@ -6,6 +6,19 @@ html, body {
     background-image: linear-gradient(to bottom, white, ghostwhite, aliceblue);
 }
 
+table, td, th {
+  border: 1px solid #4a80e0;
+  border-collapse: collapse;
+  text-align: center;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+th {
+  background-color: silver;
+}
+
 button {
   font-family: "Helvetica";
   font-size: 75%;

@@ -283,11 +283,10 @@ module.exports.setHiddenReview = function (req, res) {
 		if (err) {
 			console.log("db error");
 		} else {
-			console.log(result);
+			res.send("hidden status set");
 			
 		}
 	})
-	res.send("hidden status set");
 }
 
 module.exports.unsetHiddenReview = function (req, res) {
@@ -298,7 +297,7 @@ module.exports.unsetHiddenReview = function (req, res) {
 		if (err) {
 			console.log("db error");
 		} else {
-			res.send("hidden status set");
+			res.send("hidden status unset");
 		}
 	})
 }
@@ -319,4 +318,94 @@ module.exports.updateMainState = function (req, res) {
 	sess.mainPageData = mainPageData;
 
 	res.send("updated");
+}
+
+
+// Adds the new listing
+module.exports.addNewListing = async function(req, res) {
+  var title = req.body.title;
+  var brand = req.body.brand;
+  var image = req.body.image;
+  var stock = req.body.stock;
+  var seller = req.body.seller;
+	var price = req.body.price;
+	var reviews = [];
+
+  await phonelisting.addNewListing(title, brand, image, stock, seller, price, reviews);
+  res.send("New listing added");
+}
+
+
+// Gets all the listings for the current user
+module.exports.getListingsByUser = function (req, res) {
+	var id = req.query.id;
+
+	phonelisting.getListingsByUser(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not get the listings for the current user.");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}
+
+
+// Gets all the comments for listings by a certain user
+module.exports.getUsersComments = function (req, res) {
+	var id = req.query.id;
+
+	phonelisting.getUsersComments(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not get the comments for the user.");
+		}
+		else {
+			res.json(result);
+		}
+	});
+}
+
+
+// Disables listing by id
+module.exports.disableListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.disableListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not disable the listing.");
+		}
+		else {
+			res.send("Disabled");
+		}
+	});
+}
+
+
+// Enables listing by id
+module.exports.enableListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.enableListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not enable the listing.");
+		}
+		else {
+			res.send("Enabled");
+		}
+	});
+}
+
+
+// Removes listing by id
+module.exports.removeListing = function (req, res) {
+	var id = req.body.id;
+
+	phonelisting.removeListing(id, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not remove the listing.");
+		}
+		else {
+			res.send("Removed");
+		}
+	});
 }

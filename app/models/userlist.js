@@ -65,13 +65,34 @@ userlistSchema.statics.changePasswordById = function (id, password, callback) {
 
 
 // Registers the new user
-userlistSchema.statics.registerNewUser = function (firstname, lastname, email, hashedPass, callback) {
+userlistSchema.statics.registerNewUser = function (firstname, lastname, email, hashedPass) {
   return this.create({
     firstname: firstname,
     lastname: lastname,
     email: email,
     password: hashedPass
   });
+}
+
+
+// Checks the email is in use
+userlistSchema.statics.checkEmailInUse = function(email, callback) {
+  return this.find({ email: email }, { _id: 1 }).exec(callback);
+}
+
+
+// Checks the email is valid
+userlistSchema.statics.checkEmailVerified = function(email, callback) {
+  return this.find({ email: email }, { isvalid: 1 }).exec(callback);
+}
+
+
+// Verifies an email
+userlistSchema.statics.verifyEmail = function (email, callback) {
+  return this.updateOne(
+    { email: email },
+    { $set: {"isvalid": ""} }
+  ).exec(callback);
 }
 
 

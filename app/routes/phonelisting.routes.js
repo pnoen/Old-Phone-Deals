@@ -23,5 +23,12 @@ router.get('/getCart', controller.getCart);
 router.post('/buyPhone', controller.buyPhone);
 router.post('/setHiddenReview', controller.setHiddenReview);
 router.post('/unsetHiddenReview', controller.unsetHiddenReview);
+router.post('/addNewListing', controller.addNewListing);
+router.get('/getListingsByUser', controller.getListingsByUser);
+router.get('/getUsersComments', controller.getUsersComments);
+router.post('/disableListing', controller.disableListing);
+router.post('/enableListing', controller.enableListing);
+router.post('/removeListing', controller.removeListing);
+
 
 module.exports = router;

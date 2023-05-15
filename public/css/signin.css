@@ -43,7 +43,7 @@ html, body {
   background-color: lightcoral;
 }
 
-#signin-button, #signup-button {
+#signin-button, #signup-button, #password-button {
   margin-left: auto;
 }
 
@@ -51,7 +51,7 @@ html, body {
   color: lightcoral;
 }
 
-.toggle-login-btn {
+.login-box a {
   text-decoration: underline;
   color: lightblue;
   cursor: pointer;

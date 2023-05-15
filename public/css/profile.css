@@ -1,5 +1,6 @@
 .profile-box {
   width: 80%;
+  height: 60%;
 
   margin-left: auto;
   margin-right: auto;
@@ -26,18 +27,87 @@
 
 
 #change-password-table {
+  width: 50%;
   position: absolute;
   visibility: hidden;
 }
 
 
-.profile-buttons {
-  margin-top: 2%;
+#manage-listings-table {
   width: 50%;
+  position: absolute;
+  visibility: hidden;
+}
+
+
+.comments-box {
+  width: 100%;
+  position: absolute;
+  visibility: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.profile-buttons {
+  margin-top: 10%;
+  width: 70%;
   display: flex;
 }
 
 
+#sign-out-btn {
+  background-color: lightcoral;
+}
+
+
 .profile-buttons button {
-  margin: 1%;
+  margin-right: 2%;
+}
+
+
+.profile-buttons button:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+
+.single-listing {
+  width: 80%;
+  height: 60%;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background-color: white;
+  padding: 2%;
+  box-shadow: 0px 5px 10px 0px rgba(97, 97, 105, 0.3);
+}
+
+.single-listing table {
+  width: 70%;
+}
+
+.single-listing table tr td {
+  text-align: center;
+}
+
+.single-listing img {
+  width: 12%;
+}
+
+
+.item-review {
+  border-top: none;
+  background-color: white;
+  padding: 2%;
+  width: 80%;
+  box-shadow: 0px 5px 10px 0px rgba(97, 97, 105, 0.3);
 }
