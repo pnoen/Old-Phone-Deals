@@ -12,67 +12,6 @@ async function loginSignupSwitch() {
 }
 
 
-// Displays the login form
-function displayLoginForm() {
-  document.querySelector(".phoneListingHeading").innerHTML = "Sign In";
-  document.querySelector(".login-box").innerHTML = `
-    <p id="incorrect-login-text">&nbsp;</p>
-    <div class="login-input-field">
-      Email:
-      <input type="text" value="" />
-    </div>
-    <div class="login-input-field">
-      Password:
-      <input type="password" value="" />
-    </div>
-
-    <div class="login-buttons">
-      <button id="cancel-button">Cancel</button>
-      <button id="signin-button">Sign In</button>
-    </div>
-
-    <p>Click <a>here</a> to reset your password.</p>
-    <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
-  `;
-
-  initialPageLoad();
-}
-
-
-// Displays the register form
-function displayRegisterForm() {
-  document.querySelector(".phoneListingHeading").innerHTML = "Sign Up";
-  document.querySelector(".login-box").innerHTML = `
-    <p id="incorrect-login-text">&nbsp;</p>
-    <div class="login-input-field">
-      First name:
-      <input type="text" value="" />
-    </div>
-    <div class="login-input-field">
-      Last name:
-      <input type="text" value="" />
-    </div>
-    <div class="login-input-field">
-      Email:
-      <input type="text" value="" />
-    </div>
-    <div class="login-input-field">
-      Password:
-      <input type="password" value="" />
-    </div>
-
-    <div class="login-buttons">
-      <button id="cancel-button">Cancel</button>
-      <button id="signup-button">Sign Up</button>
-    </div>
-
-    <p>Already have an account? <a class="toggle-login-btn">Sign in</a></p>
-  `;
-
-  initialPageLoad();
-}
-
-
 // Appends an error message
 function outputError(errorMessage, colour) {
   var incorrectText = document.getElementById("incorrect-login-text");
@@ -91,6 +30,98 @@ function clearLoginSelections() {
 }
 
 
+// Checks the email is verified
+async function checkEmailVerified(email) {
+  // TODO
+  /*
+  var params = {
+    email: email
+  }
+  let data;
+  await $.getJSON("/user/checkEmailVerified", params, function(res) {
+    data = res;
+  });
+
+  return data;
+  */
+}
+
+
+/*
+ * FORGOT PASSWORD
+*/
+// Displays the forgot password form
+function displayForgotPassword() {
+  loginOrRegister = "register";
+
+  document.querySelector(".phoneListingHeading").innerHTML = "Forgot Password";
+  document.querySelector(".login-box").innerHTML = `
+    <p id="incorrect-login-text">&nbsp;</p>
+    <div class="login-input-field">
+      Email:
+      <input type="text" value="" />
+    </div>
+
+    <div class="login-buttons">
+      <button id="cancel-button">Clear</button>
+      <button id="password-button">Change Password</button>
+    </div>
+
+    <p>Click here to return to sign in: <a class="toggle-login-btn">Sign in</a></p>
+  `;
+
+  initialPageLoad();
+}
+
+
+async function changePassword() {
+  var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
+  var email = inputBoxes[0].value;
+
+  var emailInUse = await checkEmailInUse(email);
+  if (emailInUse === true) {
+    outputError("This email does not exist.", "indianred");
+    return false;
+  }
+
+  // TODO: Check email is verified
+
+  // TODO: Send change password email
+
+  outputError("A reset password email has been sent.", "lightseagreen");
+}
+
+
+/*
+ * LOGIN
+*/
+// Displays the login form
+function displayLoginForm() {
+  document.querySelector(".phoneListingHeading").innerHTML = "Sign In";
+  document.querySelector(".login-box").innerHTML = `
+    <p id="incorrect-login-text">&nbsp;</p>
+    <div class="login-input-field">
+      Email:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Password:
+      <input type="password" value="" />
+    </div>
+
+    <div class="login-buttons">
+      <button id="cancel-button">Clear</button>
+      <button id="signin-button">Sign In</button>
+    </div>
+
+    <p>Click <a class="reset-password-btn">here</a> to reset your password.</p>
+    <p>Don't have an account yet? <a class="toggle-login-btn">Sign up</a></p>
+  `;
+
+  initialPageLoad();
+}
+
+
 // Sign the user in (check credentials and so on)
 async function signUserIn() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
@@ -98,6 +129,8 @@ async function signUserIn() {
     email: inputBoxes[0].value,
     password: inputBoxes[1].value
   }
+
+  // TODO: Check the email is verified, if not then DO NOT log in (return false)
 
   // Check the email and password combo
   var data;
@@ -131,6 +164,43 @@ async function getCurrentUser(email) {
 }
 
 
+/*
+ * REGISTER
+*/
+// Displays the register form
+function displayRegisterForm() {
+  document.querySelector(".phoneListingHeading").innerHTML = "Sign Up";
+  document.querySelector(".login-box").innerHTML = `
+    <p id="incorrect-login-text">&nbsp;</p>
+    <div class="login-input-field">
+      First name:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Last name:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Email:
+      <input type="text" value="" />
+    </div>
+    <div class="login-input-field">
+      Password:
+      <input type="password" value="" />
+    </div>
+
+    <div class="login-buttons">
+      <button id="cancel-button">Clear</button>
+      <button id="signup-button">Sign Up</button>
+    </div>
+
+    <p>Already have an account? <a class="toggle-login-btn">Sign in</a></p>
+  `;
+
+  initialPageLoad();
+}
+
+
 // Checks whether the email is already in use
 async function checkEmailInUse(email) {
   let data;
@@ -159,9 +229,9 @@ async function signUpUser() {
 
   if (validated === true) {
     await $.post("/user/registerNewUser", params);
-
-    // TODO: Send verification email before can sign in
     outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
+
+    // TODO: Send verification email
   }
 }
 
@@ -211,9 +281,19 @@ function initialPageLoad() {
     signUpBtn.addEventListener("click", signUpUser);
   }
 
+  var changePassBtn = document.getElementById("password-button");
+  if (changePassBtn !== null) {
+    changePassBtn.addEventListener("click", changePassword);
+  }
+
   var toggleBtn = document.querySelector(".toggle-login-btn");
   if (toggleBtn !== null) {
     toggleBtn.addEventListener("click", loginSignupSwitch);
+  }
+
+  var resetPassBtn = document.querySelector(".reset-password-btn");
+  if (resetPassBtn !== null) {
+    resetPassBtn.addEventListener("click", displayForgotPassword);
   }
 }
 
