@@ -1,7 +1,8 @@
 buttons = [document.getElementById("edit-profile-btn"),
   document.getElementById("change-password-btn"),
   document.getElementById("manage-listings-btn"),
-  document.getElementById("view-comments-btn")
+  document.getElementById("view-comments-btn"),
+  document.getElementById("sign-out-btn")
 ];
 
 tables = [document.getElementById("profile-info-table"),
@@ -14,6 +15,14 @@ tables = [document.getElementById("profile-info-table"),
 function outputMessage(text, colour) {
   document.querySelector("#top-message-text").innerHTML = text;
   document.querySelector("#top-message-text").style.color = colour;
+}
+
+
+// Signs out the user
+async function signOutGoHome() {
+  loggedIn = false;
+  await updateLoggedInState(loggedIn);
+  pageReload("signout");
 }
 
 
@@ -128,6 +137,9 @@ async function initialProfileLoad() {
 
   var viewCommentsBtn = document.getElementById("view-comments-btn");
   viewCommentsBtn.addEventListener("click", viewCommentsPage);
+
+  var signOutBtn = document.getElementById("sign-out-btn");
+  signOutBtn.addEventListener("click", signOutGoHome);
 }
 
 initialProfileLoad();

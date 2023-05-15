@@ -41,6 +41,7 @@
 
 
 .comments-box {
+  width: 100%;
   position: absolute;
   visibility: hidden;
 
@@ -52,13 +53,18 @@
 
 .profile-buttons {
   margin-top: 10%;
-  width: 60%;
+  width: 70%;
   display: flex;
 }
 
 
+#sign-out-btn {
+  background-color: indianred;
+}
+
+
 .profile-buttons button {
-  margin-right: auto;
+  margin-right: 2%;
 }
 
 
