@@ -13,5 +13,6 @@ router.post('/registerNewUser', controller.registerNewUser);
 router.get('/getUserById', controller.getUserById);
 router.get('/getCurrentUser', controller.getCurrentUser);
 router.get('/getUserData', controller.getUserData);
+router.get('/checkEmailInUse', controller.checkEmailInUse);
 
 module.exports = router;

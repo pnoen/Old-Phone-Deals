@@ -165,3 +165,21 @@ module.exports.registerNewUser = async function(req, res) {
   await userlist.registerNewUser(firstname, lastname, email, hashedPass);
   res.send("New user registered");
 }
+
+
+// Checks if the current email is in use already
+module.exports.checkEmailInUse = async function(req, res) {
+  let email = req.query.email;
+
+  userlist.checkEmailInUse(email, function(err, result) {
+  	if (err) {
+  		console.log("DB Error: Could not check the email is in use " + email);
+  	} else {
+      if (result.length === 0) {
+        res.json(true);
+      } else {
+        res.json(false);
+      }
+  	}
+  });
+}

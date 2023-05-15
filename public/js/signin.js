@@ -131,6 +131,20 @@ async function getCurrentUser(email) {
 }
 
 
+// Checks whether the email is already in use
+async function checkEmailInUse(email) {
+  let data;
+  let params = {
+    email: email
+  }
+  await $.getJSON("/user/checkEmailInUse", params, function(res) {
+    data = res;
+  });
+
+  return data;
+}
+
+
 // Registers the new user
 async function signUpUser() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
@@ -151,6 +165,7 @@ async function signUpUser() {
   }
 }
 
+
 // Validates the input for creating an account
 function validateInput(params) {
   if (params.firstname === "" || params.lastname === ""
@@ -159,7 +174,26 @@ function validateInput(params) {
     return false;
   }
 
-  // TODO: Email regex
+  // Checks email entry is valid
+  var emailValid = verifyEmail(params.email);
+  if (emailValid === false) {
+    outputError("Invalid email.", "indianred");
+    return false;
+  }
+
+  // Checks the email is not already in use
+  var emailInUse = checkEmailInUse(params.email);
+  if (emailInUse === false) {
+    outputError("Email already in use.", "indianred");
+    return false;
+  }
+
+  // Checks the password is valid
+  var passwordValid = validatePassword(params.password);
+  if (passwordValid !== "valid") {
+    outputError(passwordValid, "indianred");
+    return false;
+  }
 
   return true;
 }
