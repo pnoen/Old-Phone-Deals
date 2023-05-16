@@ -37,7 +37,7 @@ function updateSearchbarValue(value) {
 }
 
 async function createSearchContainers(brand, priceValue) {
-	if ($("#navBarSearchStateItems").html().length == 0) { // no child elements
+	if ($("#navBarSearchStateItems").length && $("#navBarSearchStateItems").html().length == 0) { // exists and no child elements
 		let data;
 		await $.getJSON("/getHighestPrice", null, function (res) {
 			data = res;

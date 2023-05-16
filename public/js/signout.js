@@ -5,7 +5,7 @@ if (signOutBtn !== null) {
 }
 
 function signOutModal() {
-  document.body.innerHTML += (`
+  document.body.insertAdjacentHTML('beforeend', `
   <div class="sign-out-modal">
     <h1>Confirm Sign Out</h1>
     <p>Are you sure you want to sign out?</p>
@@ -16,6 +16,17 @@ function signOutModal() {
     </div>
   </div>
   `);
+  // document.body.innerHTML += (`
+  // <div class="sign-out-modal">
+  //   <h1>Confirm Sign Out</h1>
+  //   <p>Are you sure you want to sign out?</p>
+
+  //   <div class="login-buttons">
+  //     <button onclick="closeModal();">Cancel</button>
+  //     <button onclick="signOutUser();">Sign Out</button>
+  //   </div>
+  // </div>
+  // `);
 }
 
 
