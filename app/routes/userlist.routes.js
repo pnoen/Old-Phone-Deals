@@ -17,5 +17,7 @@ router.get('/checkEmailInUse', controller.checkEmailInUse);
 router.get('/checkEmailVerified', controller.checkEmailVerified);
 router.get('/verifyEmail/:email/:uniqueString', controller.verifyEmail);
 router.get('/sendVerification', controller.sendVerification);
+router.get('/sendPassChange', controller.sendPassChange);
+router.get('/changePassword/:email/:uniqueString', controller.changePassword);
 
 module.exports = router;
