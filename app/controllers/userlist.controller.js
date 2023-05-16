@@ -197,6 +197,33 @@ module.exports.changePassword = async function(req, res) {
   res.render('passwordChange.ejs', {email:email, uniqueString:uniqueString});
 }
 
+function validatePassword(password) {
+  if (password.length < 8) {
+    return "Password is too short.";
+  }
+
+  var requirements = [false, false, false, false];
+  for (var i = 0; i < password.length; i++) {
+    if (password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) {
+      requirements[0] = true;
+    } else if (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122) {
+      requirements[1] = true;
+    } else if (password.charCodeAt(i) >= 48 && password.charCodeAt(i) <= 57) {
+      requirements[2] = true;
+    } else {
+      requirements[3] = true;
+    }
+  }
+
+  for (var i = 0; i < requirements.length; i++) {
+    if (requirements[i] === false) {
+      return "Password must contain a capital, lowercase, number and punctuation.";
+    }
+  }
+
+  return "valid";
+}
+
 // Changes the user's password
 module.exports.changePasswordByEmail = async function(req, res) {
   var email = req.body.email;
@@ -204,6 +231,11 @@ module.exports.changePasswordByEmail = async function(req, res) {
   var uniqueString = req.body.uniqueString;
   var saltRounds = 5;
 
+  if(validatePassword(password) != "valid"){
+    console.log("REEEE");
+    return false;
+  }
+  console.log("NO REEE");
   let hashedPass = await bcrypt.hash(password, saltRounds);
 
   await userlist.changePasswordByEmail(email, uniqueString, hashedPass, async function(err, result) {
