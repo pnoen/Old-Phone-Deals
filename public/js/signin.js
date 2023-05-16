@@ -75,6 +75,7 @@ async function changePassword() {
   }
 
   // TODO: Send change password email
+  await $.get("/user/sendPassChange", {email: email});
 
   // TODO: Change the password, could use "changePasswordByEmail"
 

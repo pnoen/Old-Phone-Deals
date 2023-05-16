@@ -190,21 +190,60 @@ module.exports.changePasswordById = async function(req, res) {
 }
 
 
+module.exports.changePassword = async function(req, res) {
+  //prompt("HELLO");
+  let {email, uniqueString} = req.params;
+  //await userlist.checkPassRequest
+  res.render('passwordChange.ejs', {email:email, uniqueString:uniqueString});
+}
+
 // Changes the user's password
 module.exports.changePasswordByEmail = async function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
+  var uniqueString = req.body.uniqueString;
   var saltRounds = 5;
 
   let hashedPass = await bcrypt.hash(password, saltRounds);
 
-  await userlist.changePasswordByEmail(email, hashedPass, async function(err, result) {
+  await userlist.changePasswordByEmail(email, uniqueString, hashedPass, async function(err, result) {
     if (err) {
       console.log("DB error: Could not change password.");
     } else {
       res.send("Updated password.");
     }
   });
+}
+
+module.exports.sendPassChange = async function(req, res) {
+  var email = req.query.email;
+  
+  const currUrl = "http://localhost:3000/";
+  const uniqueString = uuidv4();
+
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: "Update your password",
+    html: `<p>Password change requested</p>
+    <p>Press: </p> <a href=${currUrl + "user/changePassword/" + email + "/" + uniqueString}> Here </a>`
+  }
+  transporter.sendMail(mailOptions)
+  .then()
+  .catch((error) => {
+    res.json({
+      status: "FAILED",
+      message: "Email failed",
+    })
+  })
+
+  userlist.setUniqueString(email, uniqueString, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not set verification string");
+		} else {
+			res.send("Verification string set");
+		}
+	});
 }
 
 module.exports.sendVerification = async function(req, res) {
@@ -307,4 +346,10 @@ module.exports.verifyEmail = function (req, res) {
 			res.send("Verified");
 		}
 	});
+}
+
+module.exports.updatePassword = function (req, res) {
+  let password = req.body.password;
+  console.log(password);
+  res.send("test");
 }

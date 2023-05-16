@@ -67,9 +67,9 @@ userlistSchema.statics.changePasswordById = function (id, password, callback) {
 
 
 // Updates the user's password by email
-userlistSchema.statics.changePasswordByEmail = function (email, password, callback) {
+userlistSchema.statics.changePasswordByEmail = function (email, uniqueString, password, callback) {
   return this.updateOne(
-    { email: email },
+    { email: email, verificationString: uniqueString },
     { $set:
       {
         password: password
@@ -109,8 +109,11 @@ userlistSchema.statics.verifyEmail = function (email, uniqueString, callback) {
   ).exec(callback);
 }
 
+userlistSchema.statics.checkPassRequest = function(email, uniqueString, callback){
+  return this.find({'email': email, 'verificationString': uniqueString}).exec(callback);
+}
+
 userlistSchema.statics.setUniqueString = function (email, verification, callback) {
-  console.log(verification)
   return this.updateOne(
     { email: email },
     { $set: {"verificationString": verification} }
