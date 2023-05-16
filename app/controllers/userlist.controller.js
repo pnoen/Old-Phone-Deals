@@ -206,18 +206,16 @@ module.exports.changePasswordByEmail = async function(req, res) {
 
 module.exports.sendVerification = async function(req, res) {
   var email = req.query.email;
-  var firstname = req.query.firstname;
-  var lastname = req.query.lastname;
   
   const currUrl = "http://localhost:3000/";
-  const uniqueString = uuidv4() + email;
+  const uniqueString = uuidv4();
 
   const mailOptions = {
     from: process.env.AUTH_EMAIL,
     to: email,
     subject: "verify your email",
     html: `<p>Verify your email address to complete signup</p>
-    <p>Press: </p> <a href=${currUrl + "user/verifyEmail"}> Here </a>`
+    <p>Press: </p> <a href=${currUrl + "user/verifyEmail/" + email + "/" + uniqueString}> Here </a>`
   }
   transporter.sendMail(mailOptions)
   .then()
@@ -227,6 +225,14 @@ module.exports.sendVerification = async function(req, res) {
       message: "Email failed",
     })
   })
+
+  userlist.setUniqueString(email, uniqueString, function (err, result) {
+		if (err) {
+			console.log("DB Error: Could not set verification string");
+		} else {
+			res.send("Verification string set");
+		}
+	});
 }
 
 // Registers the new user
@@ -289,9 +295,9 @@ module.exports.checkEmailVerified = function (req, res) {
 
 // Verifies an email
 module.exports.verifyEmail = function (req, res) {
-	var email = req.body.email;
-
-	userlist.verifyEmail(email, function (err, result) {
+	//var email = req.body.email;
+  let {email, uniqueString} = req.params;
+	userlist.verifyEmail(email, uniqueString, function (err, result) {
 		if (err) {
 			console.log("DB Error: Could not verify the email.");
 		} else {

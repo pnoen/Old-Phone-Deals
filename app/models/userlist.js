@@ -6,7 +6,8 @@ var userlistSchema = mongoose.Schema({
     lastname: String,
     email: String,
     password: String,
-    isvalid: String
+    isvalid: String,
+    verificationString: String
 })
 
 userlistSchema.statics.getUserById = function (id, callback) {
@@ -101,10 +102,18 @@ userlistSchema.statics.checkEmailVerified = function(email, callback) {
 
 
 // Verifies an email
-userlistSchema.statics.verifyEmail = function (email, callback) {
+userlistSchema.statics.verifyEmail = function (email, uniqueString, callback) {
+  return this.updateOne(
+    { email: email, verificationString: uniqueString },
+    { $set: {"isvalid": ""} }
+  ).exec(callback);
+}
+
+userlistSchema.statics.setUniqueString = function (email, verification, callback) {
+  console.log(verification)
   return this.updateOne(
     { email: email },
-    { $set: {"isvalid": ""} }
+    { $set: {"verificationString": verification} }
   ).exec(callback);
 }
 
