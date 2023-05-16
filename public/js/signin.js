@@ -21,7 +21,7 @@ function outputError(errorMessage, colour) {
 
 
 // Clear the log in input on cancel
-document.getElementById("cancel-button").addEventListener("click", clearLoginSelections);
+// document.getElementById("cancel-button").addEventListener("click", clearLoginSelections);
 function clearLoginSelections() {
   var inputBoxes = document.querySelector(".login-box").querySelectorAll("input");
   for (var i = 0; i < inputBoxes.length; i++) {
@@ -231,6 +231,13 @@ async function signUpUser() {
     return false;
   }
 
+  var emailInUse = await checkEmailInUse(params.email); 
+  console.log(emailInUse);
+  if (emailInUse === false) { 
+    outputError("This email already exist.", "indianred");
+    return false;
+  }
+
   await $.post("/user/registerNewUser", params);
   outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
 
@@ -298,6 +305,11 @@ function initialPageLoad() {
   var resetPassBtn = document.querySelector(".reset-password-btn");
   if (resetPassBtn !== null) {
     resetPassBtn.addEventListener("click", displayForgotPassword);
+  }
+
+  var clearBtn = document.getElementById("cancel-button");
+  if (clearBtn !== null) {
+    clearBtn.addEventListener("click", clearLoginSelections);
   }
 }
 
