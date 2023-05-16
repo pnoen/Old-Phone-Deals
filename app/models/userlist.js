@@ -5,7 +5,8 @@ var userlistSchema = mongoose.Schema({
     firstname: String,
     lastname: String,
     email: String,
-    password: String
+    password: String,
+    isvalid: String
 })
 
 userlistSchema.statics.getUserById = function (id, callback) {
@@ -95,7 +96,7 @@ userlistSchema.statics.checkEmailInUse = function(email, callback) {
 
 // Checks the email is valid
 userlistSchema.statics.checkEmailVerified = function(email, callback) {
-  return this.find({ email: email }, { isvalid: 1 }).exec(callback);
+  return this.find({ 'email': email, 'isvalid': {$exists: true}}).exec(callback);
 }
 
 

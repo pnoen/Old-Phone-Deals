@@ -103,7 +103,11 @@ async function checkEmailVerified(email) {
   }
   await $.getJSON("/user/checkEmailVerified", params, function(res) {
     data = res;
+    console.log(data);
   });
+  if (data.length == 0){
+    return false;
+  }
   if (data[0].isvalid === "") {
     return true;
   }
