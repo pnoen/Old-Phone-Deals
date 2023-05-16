@@ -1,5 +1,28 @@
 var userlist = require("../models/userlist");
 var bcrypt = require('bcrypt');
+var nodemailer = require("nodemailer");
+var {v4: uuidv4} = require("uuid");
+
+require("dotenv").config();
+
+//mailer transporter
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.AUTH_EMAIL,
+    pass: process.env.AUTH_APPPASS,
+  }
+})
+
+transporter.verify((error, success) => {
+  if(error){
+    console.log(error);
+    console.log(process.env.AUTH_PASS);
+  } else {
+    console.log("Ready for messages");
+    console.log(success);
+  }
+})
 
 function initialiseSessionVars(sess) {
 	sess.state = "home";
@@ -191,7 +214,7 @@ module.exports.registerNewUser = async function(req, res) {
   var saltRounds = 5;
 
   let hashedPass = await bcrypt.hash(password, saltRounds);
-	
+	//TODO: send verify email
   await userlist.registerNewUser(firstname, lastname, email, hashedPass);
   res.send("New user registered");
 }
