@@ -235,7 +235,7 @@ async function signUpUser() {
   outputError("Successfully registered. A verification email has been sent.", "lightseagreen");
 
   // TODO: Send verification email
-
+  await $.get("/user/sendVerification", params);
   // TODO: Use the verifyEmail function to set the email as verified
 }
 

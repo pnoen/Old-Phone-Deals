@@ -204,6 +204,30 @@ module.exports.changePasswordByEmail = async function(req, res) {
   });
 }
 
+module.exports.sendVerification = async function(req, res) {
+  var email = req.query.email;
+  var firstname = req.query.firstname;
+  var lastname = req.query.lastname;
+  
+  const currUrl = "http://localhost:3000/";
+  const uniqueString = uuidv4() + email;
+
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: "verify your email",
+    html: `<p>Verify your email address to complete signup</p>
+    <p>Press: </p> <a href=${currUrl + "user/verifyEmail"}> Here </a>`
+  }
+  transporter.sendMail(mailOptions)
+  .then()
+  .catch((error) => {
+    res.json({
+      status: "FAILED",
+      message: "Email failed",
+    })
+  })
+}
 
 // Registers the new user
 module.exports.registerNewUser = async function(req, res) {
@@ -214,11 +238,9 @@ module.exports.registerNewUser = async function(req, res) {
   var saltRounds = 5;
 
   let hashedPass = await bcrypt.hash(password, saltRounds);
-	//TODO: send verify email
   await userlist.registerNewUser(firstname, lastname, email, hashedPass);
   res.send("New user registered");
 }
-
 
 module.exports.getCurrentUserId = async function (req, res) {
   let sess = req.session;
