@@ -347,3 +347,9 @@ module.exports.verifyEmail = function (req, res) {
 		}
 	});
 }
+
+module.exports.updatePassword = function (req, res) {
+  let password = req.body.password;
+  console.log(password);
+  res.send("test");
+}
