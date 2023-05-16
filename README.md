@@ -4,6 +4,8 @@ To run the website the following software will be required
 * [NodeJS](https://nodejs.org/en/download)
 * [MongoDB](https://www.mongodb.com/try/download/community)
 
+The website requires a `.env` file which can be downloaded from the canvas submission. The file should be in the same directory as `server.js`.
+
 Optional software
 * [MongoDB Compass](https://www.mongodb.com/products/compass)
 
